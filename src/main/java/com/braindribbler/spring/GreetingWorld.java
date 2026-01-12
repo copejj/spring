@@ -12,7 +12,7 @@ public class GreetingWorld {
 		return String.format("Hello, %s!", name);
 	}
 
-	@GetMapping
+	@GetMapping("/welcome")
 	public String greet() {
 		return "Welcome to the Spring Boot Application!";
 	}

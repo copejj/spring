@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Styled Page</title>
+    <!-- Link to the CSS file using Thymeleaf expression -->
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+    <div class="error-container">
+        <h1>Hello Spring Boot!</h1>
+        <p>This page is styled with an external CSS file.</p>
+    </div>
+
+</body>
+</html>
