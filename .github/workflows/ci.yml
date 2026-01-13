@@ -1,0 +1,25 @@
+name: CI Pipeline
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      # This environment variable in the runner is set using a GitHub secret
+      DATASOURCE_HOST: ${{ secrets.DB_HOST }}
+      DATASOURCE_USERNAME: ${{ secrets.DB_USER }}  
+      DATASOURCE_PASSWORD: ${{ secrets.DB_PASS }}
+      DATASOURCE_NAME: ${{ secrets.DB_NAME}}
+      DATASOURCE_PORT: 5432
+
+      DATASOURCE_URL: jdbc:postgresql://${DATASOURCE_HOST}:${DATASOURCE_PORT}/${DATASOURCE_NAME}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Build with Maven
+        run: mvn clean install 
