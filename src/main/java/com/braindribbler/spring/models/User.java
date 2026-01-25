@@ -31,7 +31,7 @@ public class User {
 	@Column(name="email")
 	private String email;
 
-	@Column(name="user_name")
+	@Column(name="username")
 	private String userName;
 
 	@Column(name="can_edit")
@@ -40,6 +40,7 @@ public class User {
 	@Column(name="is_admin")
 	private boolean isAdmin;
 
+	/* Getters and Setters */
 	public Long getUserId() {
 		return userId;
 	}	

@@ -3,27 +3,24 @@ package com.braindribbler.spring.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.braindribbler.spring.models.User;
-import com.braindribbler.spring.models.UserService;
+import com.braindribbler.spring.repositories.UserRepository;
 
-@RestController
+@Controller
 public class UserController {
 
 	@Autowired
-	private UserService userService;
+	private UserRepository userRepository;
 
-	@GetMapping("/users")
-	public List<User> getAllUsers() {
-		return userService.getAllUsers();
+	@GetMapping
+	public String listUsers(Model model) {
+		List<User> users = userRepository.findAll();
+		model.addAttribute("users", users);
+		model.addAttribute("message", "Welcome to the User List Page!");
+		return "index"; // Name of the view to render
 	}
-
-	/*
-	@GetMapping("/users/search")
-	public List<User> getUserById(@RequestParam Long id) {
-		return userService.getUserById(id);
-	}
-	*/
 }
