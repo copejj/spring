@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="mainFooter">
+        <p>&copy; <span th:text="${#dates.year(#dates.createNow())}">2025</span> The Brain Dribbler</p>
+    </div>
+</body>
+</html>

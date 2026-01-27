@@ -17,7 +17,6 @@
                 <th>ID</th>
                 <th>First</th>
                 <th>Last</th>
-                <th>User</th>
             </tr>
         </thead>
         <tbody>
@@ -26,10 +25,10 @@
                 <td th:text="${user.userId}"></td>
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.lastName}"></td>
-                <td th:text="${user.userName}"></td>
             </tr>
         </tbody>
     </table>
+    <div th:replace="fragments/footer :: mainFooter"></div>
 </body>
 </html>
 
