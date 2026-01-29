@@ -16,11 +16,11 @@ public class UserController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@GetMapping
+	@GetMapping("/users")
 	public String listUsers(Model model) {
 		List<User> users = userRepository.findAll();
 		model.addAttribute("users", users);
 		model.addAttribute("message", "Welcome to the User List Page!");
-		return "index"; // Name of the view to render
+		return "users"; // Name of the view to render
 	}
 }

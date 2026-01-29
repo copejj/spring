@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="content(pageTitle, content)">
+            <div class='full-page-content'>
+                <h2 th:text="${pageTitle}">Page Title</h2>
+                <div class='body-cont' th:text="${content}">Main Content Goes Here</div>
+            </div>
+        </div>
+    </body>
+</html>
