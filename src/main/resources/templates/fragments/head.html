@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <body>
-        <div th:fragment="title">
+        <div th:fragment="includes">
+            <link rel="icon" type="image/x-icon" sizes="32x32" th:href="@{/images/favicon-32x32.png}">
             <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/favicon-32x32.png}">
             <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon-16x16.png}">
             <link rel="stylesheet" type='text/css' media='all' th:href="@{/css/style.css}" />
@@ -14,9 +15,11 @@
 
 		<div th:fragment="menus">
 			<div class='menu-container links-cont'>
-				<div th:each="menu: ${menus}">
-					<div th:href="${menu.href}" th:text="${menu.text}"></div>
-				</div>
+				<ul th:each="menu: ${menus}">
+                    <li th:class="'link ' + ${menu.cssClass}">
+                        <a th:href="${menu.href}" th:text="${menu.text}"></a>
+                    </li>
+                </ul>
 			</div>
 		</div>
 

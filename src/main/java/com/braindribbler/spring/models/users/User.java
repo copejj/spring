@@ -1,4 +1,4 @@
-package com.braindribbler.spring.models;
+package com.braindribbler.spring.models.users;
 
 import java.time.LocalDateTime;
 
