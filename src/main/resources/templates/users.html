@@ -3,28 +3,11 @@
 	<head>
 		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
 	</head>
-	<body>
+	<body class="full-page-content">
 		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
 		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
-		<div th:replace="~{fragments/body:: content(pageTitle=${pageTitle}, content=${content})}"></div>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>First</th>
-                    <th>Last</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Iterate over the list of products provided by the controller -->
-                <tr th:each="user : ${users}">
-                    <td th:text="${user.userId}"></td>
-                    <td th:text="${user.firstName}"></td>
-                    <td th:text="${user.lastName}"></td>
-                </tr>
-            </tbody>
-        </table>
-        <div th:replace="~{fragments/foot:: footer}"></div>
+		<div th:replace="~{fragments/body:: contentUsers(title=${pageTitle}, users=${users})}"></div>
+		<div th:replace="~{fragments/foot:: footer}"></div>
     </body>
 </html>
 

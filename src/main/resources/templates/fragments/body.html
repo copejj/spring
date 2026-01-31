@@ -1,11 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <body>
-        <div th:fragment="content(pageTitle, content)">
-            <div class='full-page-content'>
-                <h2 th:text="${pageTitle}">Page Title</h2>
-                <div class='body-cont' th:text="${content}">Main Content Goes Here</div>
-            </div>
+    <div th:fragment="title(title)">
+        <div class="sub-header-cont" th:text="${title}">Page Title</div>
+    </div>
+
+    <div th:fragment="content(title, content)">
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+            <div th:utext="${content}">Main Content</div>
         </div>
-    </body>
+    </div>
+
+    <div th:fragment="contentUsers(title, users)">
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First</th>
+                        <th>Last</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Iterate over the list of products provided by the controller -->
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.userId}"></td>
+                        <td th:text="${user.firstName}"></td>
+                        <td th:text="${user.lastName}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </html>

@@ -4,10 +4,10 @@
 	<head>
 		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
 	</head>
-	<body>
+	<body class="full-page-content">
 		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
 		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
-		<div th:replace="~{fragments/body:: content(pageTitle=${pageTitle}, content=${content})}"></div>
+		<div th:replace="~{fragments/body:: content(title=${pageTitle}, content=${content})}"></div>
 		<div th:replace="~{fragments/foot:: footer}"></div>
 	</body>
 </html>
