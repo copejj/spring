@@ -25,6 +25,7 @@ jobs:
             git fetch origin --tags
             echo -e "============\nSWITCHING TO NEW RELEASE\n============"
             git checkout ${{github.ref_name}}
+            git pull origin ${{github.ref_name}}
             echo -e "============\nSETTING PROPERTIES\n============"
             sed -i 's/<db_url>/${{ secrets.DB_URL }}/' src/main/resources/application.properties
             sed -i 's/<db_user>/${{ secrets.DB_USER }}/' src/main/resources/application.properties
