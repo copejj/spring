@@ -20,6 +20,7 @@ jobs:
         run: |
           echo "API_BASE_URL: ${{ vars.API_BASE_URL }}"
           echo "SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}"
+          echo "DB_URL: ${{ secrets.DB_URL }}"
 
       - name: Update db url
         run: sed -i s/<db_url>/${{ secrets.DB_URL }}/' src/main/resources/application.properties
