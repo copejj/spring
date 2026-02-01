@@ -7,19 +7,26 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      DB_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASS: ${{ secrets.DB_PASS }}
+      API_BASE_URL: ${{ vars.API_BASE_URL }}
+      SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}
+
     steps:
       - uses: actions/checkout@v3
       - name: Update db url
-        run: sed -i 's/${DB_URL}/jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}/' src/main/resources/application.properties
+        run: sed -i 's/<db_url>/$DB_URL/' src/main/resources/application.properties
 
       - name: Update db username
-        run: sed -i 's/${DB_USER}>/${{ secrets.DB_USER }}/' src/main/resources/application.properties
+        run: sed -i 's/<db_user>/$DB_USER/' src/main/resources/application.properties
 
       - name: Update db password
-        run: sed -i 's/${DB_PASS}/${{ secrets.DB_PASS }}/' src/main/resources/application.properties
+        run: sed -i 's/<db_pass>/$DB_PASS/' src/main/resources/application.properties
 
       - name: Update api base url
-        run: sed -i 's/${API_BASE_URL}/${{ vars.API_BASE_URL }}/' src/main/resources/application.properties 
+        run: sed -i 's/<api_base_url>/$API_BASE_URL/' src/main/resources/application.properties 
 
       - name: Update server context path
-        run: sed -i 's/${SERVER_CONTEXT_PATH}/${{ vars.SERVER_CONTEXT_PATH }}/' src/main/resources/application.properties
+        run: sed -i 's/<server_context_path>/$SERVER_CONTEXT_PATH/' src/main/resources/application.properties
