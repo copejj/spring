@@ -11,13 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # This environment variable in the runner is set using a GitHub secret
-      DATASOURCE_HOST: ${{ secrets.DB_HOST }}
-      DATASOURCE_USERNAME: ${{ secrets.DB_USER }}  
-      DATASOURCE_PASSWORD: ${{ secrets.DB_PASS }}
-      DATASOURCE_NAME: ${{ secrets.DB_NAME}}
-      DATASOURCE_PORT: 5432
+      SPRING_DATASOURCE_USERNAME: ${{ secrets.DB_USER }}
+      SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASS}}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:5432/${{ secrets.DB_NAME }}
 
-      DATASOURCE_URL: jdbc:postgresql://${DATASOURCE_HOST}:${DATASOURCE_PORT}/${DATASOURCE_NAME}
+      API_BASE_URL: ${{ vars.API_BASE_URL }}
+      SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
