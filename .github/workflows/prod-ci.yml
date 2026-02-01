@@ -1,0 +1,49 @@
+name: Production Build and Deploy
+
+on:
+  push:
+
+jobs:
+  build:
+    name: Deploy to Production
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Executing Remote SSH Commands
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ vars.DRIBBLER_HOST }}
+          username: ${{ vars.DRIBBLER_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+          port: ${{ secrets.SSH_PRIVATE_PORT}}
+          script: |
+            cd ${{ vars.DRIBBLER_PATH }}
+            echo -e "============\nFETCHING RELEASE INFORMATION\n============"
+            git fetch origin --tags
+            echo -e "============\nSWITCHING TO NEW RELEASE\n============"
+            git checkout ${{github.ref_name}}
+            echo -e "============\nINSTALLING...\n============"
+            echo -e "============\nREPORT\n============"
+            git show --summary
+
+#      - uses: actions/checkout@v3
+#      - name: print non-sensitive env variables
+#        run: |
+#          echo "API_BASE_URL: ${{ vars.API_BASE_URL }}"
+#          echo "SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}"
+#
+#      - name: Update db url
+#        run: sed -i 's/<db_url>/${{ secrets.DB_URL }}/' src/main/resources/application.properties
+#
+#      - name: Update db username
+#        run: sed -i 's/<db_user>/${{ secrets.DB_USER }}/' src/main/resources/application.properties
+#
+#      - name: Update db password
+#        run: sed -i 's/<db_pass>/${{ secrets.DB_PASS }}/' src/main/resources/application.properties
+#
+#      - name: Update api base url
+#        run: sed -i 's/<api_base_url>/${{ vars.API_BASE_URL }}/' src/main/resources/application.properties 
+#
+#      - name: Update server context path
+#        run: sed -i 's/<server_context_path>/$SERVER_CONTEXT_PATH/' src/main/resources/application.properties
