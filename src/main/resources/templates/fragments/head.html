@@ -16,8 +16,8 @@
 
 		<div th:fragment="menus">
 			<div class='menu-container links-cont'>
-				<ul th:each="menu: ${menus}">
-                    <li th:class="'link ' + ${menu.cssClass}">
+				<ul>
+                    <li th:each="menu: ${menus}" th:class="'link ' + ${menu.cssClass}">
                         <a th:href="@{${menu.href}}" th:text="${menu.text}"></a>
                     </li>
                 </ul>
