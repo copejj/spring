@@ -1,23 +1,25 @@
 name: Maven CI/CD Pipeline
 
 on:
-  pull_request:
-
   push:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
-    env:
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASS: ${{ secrets.DB_PASS}}
-      DB_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
-
-      API_BASE_URL: ${{ vars.API_BASE_URL }}
-      SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+      - name: Update db url
+        run: sed -i 's/${DB_URL}/jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}/' src/main/resources/application.properties
 
-      - name: Build with Maven
-        run: mvn clean package 
+      - name: Update db username
+        run: sed -i 's/${DB_USER}>/${{ secrets.DB_USER }}/' src/main/resources/application.properties
+
+      - name: Update db password
+        run: sed -i 's/${DB_PASS}/${{ secrets.DB_PASS }}/' src/main/resources/application.properties
+
+      - name: Update api base url
+        run: sed -i 's/${API_BASE_URL}/${{ vars.API_BASE_URL }}/' src/main/resources/application.properties 
+
+      - name: Update server context path
+        run: sed -i 's/${SERVER_CONTEXT_PATH}/${{ vars.SERVER_CONTEXT_PATH }}/' src/main/resources/application.properties
