@@ -7,12 +7,6 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env:
-      DB_URL: jdbc:postgresql://localhost:5432/postgres
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASS: ${{ secrets.DB_PASS }}
-      API_BASE_URL: ${{ vars.API_BASE_URL }}
-      SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}
 
     steps:
       - uses: actions/checkout@v3
@@ -20,7 +14,6 @@ jobs:
         run: |
           echo "API_BASE_URL: ${{ vars.API_BASE_URL }}"
           echo "SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}"
-          echo "DB_URL: ${{ secrets.DB_URL }}"
 
       - name: Update db url
         run: sed -i s/<db_url>/${{ secrets.DB_URL }}/' src/main/resources/application.properties
