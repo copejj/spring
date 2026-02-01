@@ -1,7 +1,8 @@
 name: Production Build and Deploy
 
 on: 
-  push:
+  release:
+    types: [published]
 
 jobs:
   deploy:
@@ -35,29 +36,8 @@ jobs:
             echo -e "============\nBUILDING WAR\n============"
             mvn clean package -DskipTests
             echo -e "============\nINSTALLING\n============"
-            cp ${{ vars.DRIBBLER_TARGET_WAR }} ${{ vars.DRIBBLER_WAR_PATH }}
+            cp ${{ vars.DRIBBLER_TARGET_WAR }} ${{ vars.DRIBBER_WAR_PATH }}/spring-${{github.ref_name}}.war
             echo -e "============\nCLEANING UP\n============"
             git reset --hard HEAD
             echo -e "============\nREPORT\n============"
             git show --summary
-
-#      - uses: actions/checkout@v3
-#      - name: print non-sensitive env variables
-#        run: |
-#          echo "API_BASE_URL: ${{ vars.API_BASE_URL }}"
-#          echo "SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}"
-#
-#      - name: Update db url
-#        run: sed -i 's/<db_url>/${{ secrets.DB_URL }}/' src/main/resources/application.properties
-#
-#      - name: Update db username
-#        run: sed -i 's/<db_user>/${{ secrets.DB_USER }}/' src/main/resources/application.properties
-#
-#      - name: Update db password
-#        run: sed -i 's/<db_pass>/${{ secrets.DB_PASS }}/' src/main/resources/application.properties
-#
-#      - name: Update api base url
-#        run: sed -i 's/<api_base_url>/${{ vars.API_BASE_URL }}/' src/main/resources/application.properties 
-#
-#      - name: Update server context path
-#        run: sed -i 's/<server_context_path>/$SERVER_CONTEXT_PATH/' src/main/resources/application.properties
