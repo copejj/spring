@@ -20,7 +20,7 @@ jobs:
           script: |
             cd ${{ vars.DRIBBLER_PATH }}
             echo -e "============\nCLEANING UP\n============"
-            ./git reset --hard HEAD
+            git reset --hard HEAD
             echo -e "============\nFETCHING RELEASE INFORMATION\n============"
             git fetch origin --tags
             echo -e "============\nSWITCHING TO NEW RELEASE\n============"
@@ -32,11 +32,11 @@ jobs:
             sed -i 's/<api_base_url>/${{ vars.API_BASE_URL }}/' src/main/resources/application.properties 
             sed -i 's/<server_context_path>/${{ vars.SERVER_CONTEXT_PATH }}/' src/main/resources/application.properties
             echo -e "============\nBUILDING WAR\n============"
-            ./mvn clean package -DskipTests
+            mvn clean package -DskipTests
             echo -e "============\nINSTALLING\n============"
-            ./cp ${{ vars.DRIBBLER_TARGET_WAR }} ${{ vars.DRIBBLER_WAR_PATH }}
+            cp ${{ vars.DRIBBLER_TARGET_WAR }} ${{ vars.DRIBBLER_WAR_PATH }}
             echo -e "============\nCLEANING UP\n============"
-            ./git reset --hard HEAD
+            git reset --hard HEAD
             echo -e "============\nREPORT\n============"
             git show --summary
 
