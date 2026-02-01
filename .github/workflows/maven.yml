@@ -23,16 +23,16 @@ jobs:
           echo "SERVER_CONTEXT_PATH: $SERVER_CONTEXT_PATH"
 
       - name: Update db url
-        run: sed -i "s/<db_url>/$DB_URL/" src/main/resources/application.properties
+        run: sed -i s/<db_url>/{{ $DB_URL }}/' src/main/resources/application.properties
 
       - name: Update db username
-        run: sed -i "s/<db_user>/$DB_USER/" src/main/resources/application.properties
+        run: sed -i 's/<db_user>/$DB_USER/' src/main/resources/application.properties
 
       - name: Update db password
-        run: sed -i "s/<db_pass>/$DB_PASS/" src/main/resources/application.properties
+        run: sed -i 's/<db_pass>/$DB_PASS/' src/main/resources/application.properties
 
       - name: Update api base url
-        run: sed -i "s/<api_base_url>/$API_BASE_URL/" src/main/resources/application.properties 
+        run: sed -i 's/<api_base_url>/$API_BASE_URL/' src/main/resources/application.properties 
 
       - name: Update server context path
-        run: sed -i "s/<server_context_path>/$SERVER_CONTEXT_PATH/" src/main/resources/application.properties
+        run: sed -i 's/<server_context_path>/$SERVER_CONTEXT_PATH/' src/main/resources/application.properties
