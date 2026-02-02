@@ -9,7 +9,9 @@ public class BaseController {
 		return List.of(
 			new MenuItem("/", "Home", activeMenu.equals("home") ? "link-selected" : ""),
 			new MenuItem("/users", "Users", activeMenu.equals("users") ? "link-selected" : ""),
-			new MenuItem("/about", "About", "align-right " + (activeMenu.equals("about") ? "link-selected" : ""))
+			new MenuItem("/dashboard", "Dash", activeMenu.equals("dashboard") ? "link-selected" : ""),
+			new MenuItem("/about", "About", "align-right " + (activeMenu.equals("about") ? "link-selected" : "")),
+			new MenuItem("/login", "Login", "align-right " + (activeMenu.equals("login") ? "link-selected" : ""))
 		);
 	}
 }

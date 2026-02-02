@@ -34,6 +34,9 @@ public class User {
 	@Column(name="username")
 	private String userName;
 
+	@Column(name="password_hash")
+	private String password;
+
 	@Column(name="can_edit")
 	private boolean canEdit;
 
@@ -76,6 +79,12 @@ public class User {
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public boolean isCanEdit() {
 		return canEdit;
