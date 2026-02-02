@@ -28,17 +28,6 @@ public class BaseController {
 
 		menus.add(new MenuItem("/about", "About", "align-right " + (activeMenu.equals("about") ? "link-selected" : "")));
 
-
 		return menus;
-		/*
-		return List.of(
-			new MenuItem("/", "Home", activeMenu.equals("home") ? "link-selected" : ""),
-			new MenuItem("/users", "Users", activeMenu.equals("users") ? "link-selected" : ""),
-
-			new MenuItem("/logout", "Logout", "align-right " + (activeMenu.equals("logout") ? "link-selected" : "")),
-			new LoginMenuItem(activeMenu),
-			new MenuItem("/about", "About", "align-right" + (activeMenu.equals("about") ? "link-selected" : ""))
-		);
-		*/
 	}
 }

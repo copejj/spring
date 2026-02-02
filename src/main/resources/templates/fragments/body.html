@@ -48,15 +48,13 @@
             </div>
 
             <form th:action="@{/login}" method="post">
-                <div>
-                    <label>Username:</label>
-                    <input type="text" name="username" required />
+                <div class="input-cont password-input-cont">
+                    <label for="text-username" class="input-label">User Name</label>
+                    <input id="text-username" class="input text-input" type="text" name="username" required />
+                    <label for="password-password" class="input-label">Password</label>
+                    <input id="password-password" class="input text-input" type="password" name="password" required />
                 </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" name="password" required />
-                </div>
-                <button type="submit">Sign In</button>
+                <button class="input submit-input" type="submit">Login</button>
             </form>
         </div>
     </div>
@@ -65,7 +63,7 @@
         <div class="content-cont">
             <div th:replace="~{fragments/body:: title(title=${title})}"></div>
             <form th:action="@{/logout}" method="post">
-                <button type="submit" class="nav-link btn btn-link">Logout</button>
+                <button class="input submit-input" type="submit">Logout</button>
             </form>
         </div>
     </div>
