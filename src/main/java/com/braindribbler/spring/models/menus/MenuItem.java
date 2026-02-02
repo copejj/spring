@@ -5,6 +5,12 @@ public class MenuItem {
 	private String text;
 	private String cssClass;
 
+	public MenuItem(String href, String text) {
+		this.href = href;
+		this.text = text;
+		this.cssClass = "";
+	}
+
 	public MenuItem(String href, String text, String cssClass) {
 		this.href = href;
 		this.text = text;

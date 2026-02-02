@@ -26,7 +26,7 @@ public class SecurityConfig {
             )
             .formLogin(form -> form
                 .loginPage("/login") // Your custom login page URL
-                .defaultSuccessUrl("/dashboard", true) // Redirect after login
+                .defaultSuccessUrl("/", true) // Redirect after login
                 .permitAll()
             )
             .logout(logout -> logout

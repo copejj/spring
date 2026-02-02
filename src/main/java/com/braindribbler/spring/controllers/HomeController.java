@@ -34,12 +34,12 @@ public class HomeController extends BaseController {
 		return "login"; // Return the name of the login view/template
 	}
 
-	@GetMapping("/dashboard")
+	@GetMapping("/logout")
 	public String dashboard(Model model) {
 		model.addAttribute("menus", getDefaultMenus("home"));
-		model.addAttribute("location", "Home");
-		model.addAttribute("pageTitle", "Welcome to the Brain Dribbler!");
+		model.addAttribute("location", "Logout");
+		model.addAttribute("pageTitle", "Logout of Brain Dribbler!");
 		model.addAttribute("content", "This is and was the home page of the Brain Dribbler application.");
-		return "dashboard"; // Return the name of the dashboard view/template
+		return "logout"; // Return the name of the dashboard view/template
 	}
 }

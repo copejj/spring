@@ -60,4 +60,13 @@
             </form>
         </div>
     </div>
+
+    <div th:fragment="logoutForm">
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="nav-link btn btn-link">Logout</button>
+            </form>
+        </div>
+    </div>
 </html>
