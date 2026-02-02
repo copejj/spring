@@ -1,33 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>Login</title>
+		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
 	</head>
+	<body class="full-page-content">
+		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
+		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
+		<div th:replace="~{fragments/body:: loginForm(title=${pageTitle})}"></div>
+		<div th:replace="~{fragments/foot:: footer}"></div>
+	</body>
 	<body>
-		<div th:fragment="loginForm">
-			<h2>Login</h2>
-			
-			<!-- Error Message Handling -->
-			<div th:if="${param.error}" style="color: red;">
-				Invalid username or password.
-			</div>
-			
-			<!-- Logout Message Handling -->
-			<div th:if="${param.logout}" style="color: green;">
-				You have been logged out.
-			</div>
-
-			<form th:action="@{/login}" method="post">
-				<div>
-					<label>Username:</label>
-					<input type="text" name="username" required />
-				</div>
-				<div>
-					<label>Password:</label>
-					<input type="password" name="password" required />
-				</div>
-				<button type="submit">Sign In</button>
-			</form>
-		</div>
 	</body>
 </html>
