@@ -20,7 +20,7 @@ public class DribblerUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// Fetch user from the database
 		// Return the security wrapper
-		User user = userRepository.findByUsername(username)
+		User user = userRepository.findByUserName(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 		return new DribblerUserDetails(user);
 	}

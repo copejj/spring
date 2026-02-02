@@ -43,6 +43,22 @@ public class User {
 	@Column(name="is_admin")
 	private boolean isAdmin;
 
+	public String getRoles() {
+		StringBuilder roles = new StringBuilder();
+		if (isAdmin) {
+			roles.append("ROLE_ADMIN");
+		}
+		if (canEdit) {
+			if (roles.length() > 0) {
+				roles.append(",");
+			}
+			roles.append("ROLE_EDITOR");
+		}
+		if (roles.length() == 0) {
+			roles.append("ROLE_USER");
+		}
+		return roles.toString();
+	}
 	/* Getters and Setters */
 	public Long getUserId() {
 		return userId;

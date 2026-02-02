@@ -1,6 +1,8 @@
 package com.braindribbler.spring.security;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,8 +18,9 @@ public class DribblerUserDetails implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+		return Arrays.stream(user.getRoles().split(","))
+				.map(role -> (GrantedAuthority) () -> role.trim())
+				.collect(Collectors.toList());
 	}
 
 	@Override
