@@ -11,29 +11,6 @@
         </div>
     </div>
 
-    <div th:fragment="contentUsers(title, users)">
-        <div class="content-cont">
-            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>First</th>
-                        <th>Last</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Iterate over the list of products provided by the controller -->
-                    <tr th:each="user : ${users}">
-                        <td th:text="${user.userId}"></td>
-                        <td th:text="${user.firstName}"></td>
-                        <td th:text="${user.lastName}"></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <div th:fragment="loginForm">
         <div class="content-cont">
             <div th:replace="~{fragments/body:: title(title=${title})}"></div>
