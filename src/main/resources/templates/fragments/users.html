@@ -7,9 +7,10 @@
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
-                        <th>First</th>
-                        <th>Last</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
                         <th>Email</th>
+                        <th>User Name</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -18,6 +19,7 @@
                         <td th:text="${user.firstName}"></td>
                         <td th:text="${user.lastName}"></td>
                         <td th:text="${user.email}"></td>
+                        <td th:text="${user.userName}"></td>
                     </tr>
                 </tbody>
             </table>
