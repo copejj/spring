@@ -1,12 +1,18 @@
-package com.braindribbler.spring.models.company;
+package com.braindribbler.spring.models.companies;
 
 import java.time.LocalDateTime;
 
+import com.braindribbler.spring.models.users.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -39,6 +45,11 @@ public class Company {
 	@Column(name="user_id")
 	private Long userId;
 
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id", insertable=false, updatable=false)
+	@JsonBackReference
+	private User user;
+
 	/* Getters and Setters */
 	public Long getCompanyId() { return companyId; }
 	public void setCompanyId(Long companyId) { this.companyId = companyId; }
@@ -56,4 +67,6 @@ public class Company {
 	public void setCompanyFax(String companyFax) { this.companyFax = companyFax; }
 	public Long getUserId() { return userId; }
 	public void setUserId(Long userId) { this.userId = userId; }
+	public User getUser() { return user; }
+	public void setUser(User user) { this.user = user; }
 }
