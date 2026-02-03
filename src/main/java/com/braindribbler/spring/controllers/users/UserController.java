@@ -6,27 +6,60 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.braindribbler.spring.controllers.BaseController;
 import com.braindribbler.spring.models.users.User;
 import com.braindribbler.spring.repositories.users.UserRepository;
-import com.braindribbler.spring.security.DribblerUserDetails;
+import com.braindribbler.spring.security.UserDetailsImpl;
 
 @Controller
 public class UserController extends BaseController {
 
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@GetMapping("/user/id")
-	public String getUserId(@AuthenticationPrincipal DribblerUserDetails userDetails, Model model) {
+	public String getUserId(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
 		if (userDetails != null) {
 			User user = userDetails.getUser();
 			model.addAttribute("message", "The current user data");
+			model.addAttribute("user", user);
+		} else {
+			model.addAttribute("message", "No authenticated user.");
+		}
+		model.addAttribute("menus", getDefaultMenus("user/id"));
+		model.addAttribute("location", "User Details");
+		model.addAttribute("pageTitle", "Current User Information");
+		return "user/id";
+	}
+
+	@PostMapping("/user")
+	public String postUserId(@AuthenticationPrincipal UserDetailsImpl userDetails,
+		@RequestParam String first_name,
+		@RequestParam String last_name,
+		@RequestParam String email,
+		@RequestParam String password,
+		@RequestParam String confirm_password,
+		Model model) {
+		if (userDetails != null) {
+			User user = userDetails.getUser();
+			user.setFirstName(first_name);
+			user.setLastName(last_name);
+			user.setEmail(email);
+			if (password != null && !password.isEmpty() && password.equals(confirm_password)) {
+				String encodedPassword = passwordEncoder.encode(password);
+				user.setPassword(encodedPassword); 
+			}
+			userRepository.save(user);
+			model.addAttribute("message", "User data updated successfully.");
 			model.addAttribute("user", user);
 		} else {
 			model.addAttribute("message", "No authenticated user.");

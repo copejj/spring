@@ -30,7 +30,6 @@ public class HomeController extends BaseController {
 		model.addAttribute("menus", getDefaultMenus("home"));
 		model.addAttribute("location", "Login");
 		model.addAttribute("pageTitle", "Login to Brain Dribbler");
-		model.addAttribute("content", "This is and was the home page of the Brain Dribbler application.");
 		return "login"; // Return the name of the login view/template
 	}
 
@@ -39,7 +38,6 @@ public class HomeController extends BaseController {
 		model.addAttribute("menus", getDefaultMenus("home"));
 		model.addAttribute("location", "Logout");
 		model.addAttribute("pageTitle", "Logout of Brain Dribbler!");
-		model.addAttribute("content", "This is and was the home page of the Brain Dribbler application.");
 		return "logout"; // Return the name of the dashboard view/template
 	}
 }
