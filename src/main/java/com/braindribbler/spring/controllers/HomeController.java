@@ -37,7 +37,7 @@ public class HomeController extends BaseController {
 	public String dashboard(Model model) {
 		model.addAttribute("menus", getDefaultMenus("home"));
 		model.addAttribute("location", "Logout");
-		model.addAttribute("pageTitle", "Logout of Brain Dribbler!");
+		model.addAttribute("pageTitle", "Logout of Brain Dribbler?");
 		return "logout"; // Return the name of the dashboard view/template
 	}
 }

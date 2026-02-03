@@ -41,7 +41,9 @@
 
     <div th:fragment="detailsUser(title, user)" class="container mt-4">
         <div class="content-cont">
-            <div class="sub-header-cont">User</div>
+            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+            <div th:if="${saveError}" style="color: red;" th:text="'Error: ' + ${saveError}"> Error go here. </div>
+            <div th:if="${saveSuccess}" style="color: green;" th:text="${saveSuccess}"> Success go here.  </div>
             <form th:action="@{/user}" method="post">
                 <div class="input-cont -input-cont">
                     <label for="text-user_id" class="input-label">User ID</label>
@@ -69,15 +71,8 @@
     <div th:fragment="loginForm">
         <div class="content-cont">
             <div th:replace="~{fragments/body:: title(title=${title})}"></div>
-
-            <div th:if="${param.error}" style="color: red;">
-                Invalid username or password.
-            </div>
-            
-            <div th:if="${param.logout}" style="color: green;">
-                You have been logged out.
-            </div>
-
+            <div th:if="${param.error}" style="color: red;"> Invalid username or password.  </div>
+            <div th:if="${param.logout}" style="color: green;"> You have been logged out.  </div>
             <form th:action="@{/login}" method="post">
                 <div class="input-cont password-input-cont">
                     <label for="text-username" class="input-label">User Name</label>

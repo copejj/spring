@@ -59,10 +59,10 @@ public class UserController extends BaseController {
 				user.setPassword(encodedPassword); 
 			}
 			userRepository.save(user);
-			model.addAttribute("message", "User data updated successfully.");
+			model.addAttribute("saveSuccess", "User data updated successfully.");
 			model.addAttribute("user", user);
 		} else {
-			model.addAttribute("message", "No authenticated user.");
+			model.addAttribute("saveError", "No authenticated user.");
 		}
 		model.addAttribute("menus", getDefaultMenus("user/id"));
 		model.addAttribute("location", "User Details");
