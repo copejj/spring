@@ -9,6 +9,7 @@
                         <th>ID</th>
                         <th>First</th>
                         <th>Last</th>
+                        <th>Email</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -16,6 +17,7 @@
                         <td th:text="${user.userId}"></td>
                         <td th:text="${user.firstName}"></td>
                         <td th:text="${user.lastName}"></td>
+                        <td th:text="${user.email}"></td>
                     </tr>
                 </tbody>
             </table>
@@ -32,6 +34,64 @@
                     });
                 });
             </script>
+        </div>
+    </div>
+
+    <div th:fragment="detailsUser(title, user)" class="container mt-4">
+        <div class="content-cont">
+            <div class="sub-header-cont">User</div>
+            <form th:action="@{/user/id}" method="post">
+                <div class="input-cont -input-cont">
+                    <label for="text-first_name" class="input-label">First Name</label>
+                    <input th:value="${user.firstName}" type="text" name="first_name" class="input text-input" id="text-first_name" />
+                    <label for="text-last_name" class="input-label">Last Name</label>
+                    <input th:value="${user.lastName}" type="text" name="last_name" class="input text-input" id="text-last_name" />
+                    <label for="text-email" class="input-label">Email</label>
+                    <input th:value="${user.email}" type="text" name="email" class="input text-input" id="text-email" />
+                    <label for="text-username" class="input-label">User Name</label>
+                    <input th:value="${user.userName}" type="text" name="username" class="input text-input" id="text-username" />
+                    <div class="input-cont -input-cont line-separator">
+                        <label for="password-password" class="input-label">Change Password</label>
+                        <input type="password" name="password" value="" class="input password-input" id="password-password" placeholder="●●●●●●●●●●●●●●●●●●●●">
+                        <label for="password-confirm_password" class="input-label">Confirm Change</label>
+                        <input type="password" name="confirm_password" value="" class="input password-input" id="password-confirm_password" placeholder="●●●●●●●●●●●●●●●●●●●●">
+                    </div>
+                </div>
+                <input type="submit" name="save_user" value="Save" class="input submit-input" id="submit-save_user" />
+            </form>		
+        </div>
+    </div>
+
+    <div th:fragment="loginForm">
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+
+            <div th:if="${param.error}" style="color: red;">
+                Invalid username or password.
+            </div>
+            
+            <div th:if="${param.logout}" style="color: green;">
+                You have been logged out.
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="input-cont password-input-cont">
+                    <label for="text-username" class="input-label">User Name</label>
+                    <input id="text-username" class="input text-input" type="text" name="username" required />
+                    <label for="password-password" class="input-label">Password</label>
+                    <input id="password-password" class="input text-input" type="password" name="password" required />
+                </div>
+                <button class="input submit-input" type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div th:fragment="logoutForm">
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+            <form th:action="@{/logout}" method="post">
+                <button class="input submit-input" type="submit">Logout</button>
+            </form>
         </div>
     </div>
 </html>

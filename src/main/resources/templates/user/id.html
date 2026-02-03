@@ -6,9 +6,7 @@
 	<body class="full-page-content">
 		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
 		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
-		<div th:replace="~{fragments/users:: logoutForm(title=${pageTitle})}"></div>
+		<div th:replace="~{fragments/users:: detailsUser(title=${pageTitle}, user=${user})}"></div>
 		<div th:replace="~{fragments/foot:: footer}"></div>
-	</body>
-	<body>
-	</body>
+    </body>
 </html>

@@ -16,6 +16,14 @@ public class DribblerUserDetails implements UserDetails{
 		this.user = user;
 	}	
 
+	public Long getUserId() {
+		return user.getUserId();
+	}
+
+	public User getUser() {
+		return user;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Arrays.stream(user.getRoles().split(","))

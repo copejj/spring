@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.braindribbler.spring.controllers.BaseController;
 import com.braindribbler.spring.models.users.User;
 import com.braindribbler.spring.repositories.users.UserRepository;
+import com.braindribbler.spring.security.DribblerUserDetails;
 
 @Controller
 public class UserController extends BaseController {
@@ -19,7 +22,23 @@ public class UserController extends BaseController {
 	@Autowired
 	private UserRepository userRepository;
 
+	@GetMapping("/user/id")
+	public String getUserId(@AuthenticationPrincipal DribblerUserDetails userDetails, Model model) {
+		if (userDetails != null) {
+			User user = userDetails.getUser();
+			model.addAttribute("message", "The current user data");
+			model.addAttribute("user", user);
+		} else {
+			model.addAttribute("message", "No authenticated user.");
+		}
+		model.addAttribute("menus", getDefaultMenus("user/id"));
+		model.addAttribute("location", "User Details");
+		model.addAttribute("pageTitle", "Current User Information");
+		return "user/id";
+	}
+
 	@GetMapping("/users")
+	@Secured("ROLE_ADMIN")
 	public String listUsers(Model model,
 		@RequestParam(defaultValue = "userId") String sortField,
 		@RequestParam(defaultValue = "asc") String sortDir,

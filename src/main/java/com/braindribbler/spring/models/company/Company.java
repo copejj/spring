@@ -1,0 +1,59 @@
+package com.braindribbler.spring.models.company;
+
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="companies")
+public class Company {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="company_id")
+	private Long companyId;	
+
+	@Column(name="created_date")
+	private LocalDateTime createdDate;
+
+	@Column(name="name")
+	private String companyName;
+
+	@Column(name="email")
+	private String companyEmail;
+
+	@Column(name="website")
+	private String companyWebsite;
+
+	@Column(name="phone")
+	private String companyPhone;
+
+	@Column(name="fax")
+	private String companyFax;
+
+	@Column(name="user_id")
+	private Long userId;
+
+	/* Getters and Setters */
+	public Long getCompanyId() { return companyId; }
+	public void setCompanyId(Long companyId) { this.companyId = companyId; }
+	public LocalDateTime getCreatedDate() { return createdDate; }
+	public void setCreatedDate(LocalDateTime createdDate) { this.createdDate = createdDate; }
+	public String getCompanyName() { return companyName; }
+	public void setCompanyName(String companyName) { this.companyName = companyName; }
+	public String getCompanyEmail() { return companyEmail; }
+	public void setCompanyEmail(String companyEmail) { this.companyEmail = companyEmail; }
+	public String getCompanyWebsite() { return companyWebsite; }
+	public void setCompanyWebsite(String companyWebsite) { this.companyWebsite = companyWebsite; }
+	public String getCompanyPhone() { return companyPhone; }
+	public void setCompanyPhone(String companyPhone) { this.companyPhone = companyPhone; }
+	public String getCompanyFax() { return companyFax; }
+	public void setCompanyFax(String companyFax) { this.companyFax = companyFax; }
+	public Long getUserId() { return userId; }
+	public void setUserId(Long userId) { this.userId = userId; }
+}

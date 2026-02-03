@@ -10,38 +10,4 @@
             <div th:utext="${content}">Main Content</div>
         </div>
     </div>
-
-    <div th:fragment="loginForm">
-        <div class="content-cont">
-            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
-            <!-- Error Message Handling -->
-            <div th:if="${param.error}" style="color: red;">
-                Invalid username or password.
-            </div>
-            
-            <!-- Logout Message Handling -->
-            <div th:if="${param.logout}" style="color: green;">
-                You have been logged out.
-            </div>
-
-            <form th:action="@{/login}" method="post">
-                <div class="input-cont password-input-cont">
-                    <label for="text-username" class="input-label">User Name</label>
-                    <input id="text-username" class="input text-input" type="text" name="username" required />
-                    <label for="password-password" class="input-label">Password</label>
-                    <input id="password-password" class="input text-input" type="password" name="password" required />
-                </div>
-                <button class="input submit-input" type="submit">Login</button>
-            </form>
-        </div>
-    </div>
-
-    <div th:fragment="logoutForm">
-        <div class="content-cont">
-            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
-            <form th:action="@{/logout}" method="post">
-                <button class="input submit-input" type="submit">Logout</button>
-            </form>
-        </div>
-    </div>
 </html>
