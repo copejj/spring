@@ -8,8 +8,10 @@
 		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
         <div class="content-cont">
             <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+
             <div th:if="${saveError}" style="color: red;" th:text="'Error: ' + ${saveError}"> Error go here. </div>
             <div th:if="${saveSuccess}" style="color: green;" th:text="${saveSuccess}"> Success go here.  </div>
+
             <form th:action="@{/user}" method="post">
                 <div class="input-cont -input-cont">
                     <label for="text-user_id" class="input-label">User ID</label>

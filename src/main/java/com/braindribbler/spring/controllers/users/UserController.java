@@ -97,6 +97,7 @@ public class UserController extends BaseController {
 		model.addAttribute("menus", getDefaultMenus("home"));
 		model.addAttribute("location", "Login");
 		model.addAttribute("pageTitle", "Login to Brain Dribbler");
+
 		return "user/login"; // Return the name of the login view/template
 	}
 
@@ -105,6 +106,7 @@ public class UserController extends BaseController {
 		model.addAttribute("menus", getDefaultMenus("home"));
 		model.addAttribute("location", "Logout");
 		model.addAttribute("pageTitle", "Logout of Brain Dribbler?");
+		
 		return "user/logout"; // Return the name of the dashboard view/template
 	}
 }
