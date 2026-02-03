@@ -25,13 +25,6 @@ public class UserDetailsImpl implements UserDetails{
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Arrays.stream(user.getRoles().split(","))
-				.map(role -> (GrantedAuthority) () -> role.trim())
-				.collect(Collectors.toList());
-	}
-
-	@Override
 	public String getPassword() {
 		return user.getPassword();
 	}
@@ -40,7 +33,14 @@ public class UserDetailsImpl implements UserDetails{
 	public String getUsername() {
 		return user.getUserName();
 	}
-	
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Arrays.stream(user.getRoles().split(","))
+				.map(role -> (GrantedAuthority) () -> role.trim())
+				.collect(Collectors.toList());
+	}
+
 	// Usually return true for these unless you have specific logic
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }
