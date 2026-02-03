@@ -166,8 +166,29 @@ div#methods_group div.check-div {
     width: 10%;
 }
 
-table.dataTable th div.dt-column-header {
-    flex-direction: row !important;
+div.table table.dataTable>tbody>tr:nth-child(even),
+div.table table.dataTable tbody tr:nth-child(even) { 
+    background-color: #9c9da740;
+}
+
+div.table table.dataTable>tbody>tr:nth-child(odd),
+div.table table.dataTable tbody tr:nth-child(odd) {
+    background-color: #586e8a45;
+}
+
+div.table table.dataTable>tbody>tr:hover,
+div.table table.dataTable tbody tr:hover {
+    color: #ffffff;
+    background-color: #475e7bf0;
+    transition: background-color 0.2s ease-in-out;
+}
+
+div.table table.dataTable tbody tr:hover a,
+div.table table.dataTable tbody tr:hover a:visited,
+div.table table.dataTable tbody tr:hover a:link {
+    color: #ffffff;
+    background-color: transparent; 
+    transition: color 0.2s ease-in-out;
 }
 
 div.table table.dataTable th.dt-type-numeric,
@@ -318,4 +339,15 @@ div#pageContent .sub-header-cont {
     border-top: 2px #a4a4a8 solid;
     margin-top: 1rem;
     width: 21rem;
+}
+
+.input-group {
+    display: flex;
+    align-items: center; 
+    gap: 8px;
+}
+
+/* Ensure the input doesn't take up 100% width by default */
+.input-group input {
+    width: 100rem; 
 }

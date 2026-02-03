@@ -23,8 +23,10 @@
                     <input th:value="${company.companyEmail}" type="text" name="email" class="input text-input" id="text-companyemail" />
 
                     <label for="text-website" class="input-label">Company Website</label>
-                    <input th:value="${company.companyWebsite}" type="text" name="companywebsite" class="input text-input" id="text-companywebsite"/>
-					<a th:href="${company.companyWebsite}" target="_blank">VIEW</a>
+					<div class="input-group">
+						<input th:value="${company.companyWebsite}" type="text" name="companywebsite" class="input text-input" id="text-companywebsite"/>
+						<a th:href="${company.companyWebsite}" target="_blank">VIEW</a>
+					</div>
 
                     <label for="text-companyphone" class="input-label">Company Phone</label>
                     <input th:value="${company.companyPhone}" type="text" name="companyphone" class="input text-input" id="text-companyphone"/>

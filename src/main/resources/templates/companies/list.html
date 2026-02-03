@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
+		<th:block th:replace="~{fragments/head:: includes(location=${location})}"></th:block>
 	</head>
 	<body class="full-page-content">
 		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
 		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
-        <div class="content-cont">
+        <div class="content-cont table">
             <div th:replace="~{fragments/body:: title(title=${title})}"></div>
-            <table id="companyTable" class="table table-striped table-hover" style="width:100%">
+            <table id="companyTable" class="datatables table table-striped table-hover stripe" style="width:100%">
                 <thead class="table-dark">
                     <tr>
                         <th></th>
@@ -31,13 +31,15 @@
             <script>
                 $(document).ready(function () {
                     $('#companyTable').DataTable({
+                        "pageLength": -1,
+                        "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
                         "paging": true,
                         "lengthChange": true,
                         "searching": true,
                         "ordering": true,
                         "info": true,
                         "autoWidth": false,
-                        "order": { "idx": 1, "dir": 'asc' }, 
+                        "order": { "idx": 2, "dir": 'asc' }, 
                         "columnDefs": [
                             { width: '70px', targets: [0, 1] }, 
                             { orderable: false, targets: [0] }
