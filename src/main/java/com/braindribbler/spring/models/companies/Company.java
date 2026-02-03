@@ -81,7 +81,6 @@ public class Company {
 			if (!this.companyWebsite.isEmpty()) {
 				URI uri = new URI(this.companyWebsite);
 				this.companyUrl = uri.getScheme() + "://" + uri.getHost();
-				System.out.println(this.companyName + "\n\tURL: " + this.companyUrl + "\n\tWebsite: " + this.companyWebsite);
 			}
 		} catch (URISyntaxException ex) { 
 			this.companyUrl = "";

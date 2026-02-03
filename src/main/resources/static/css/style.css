@@ -165,6 +165,11 @@ div#actions_group div.check-div {
 div#methods_group div.check-div {
     width: 10%;
 }
+
+table.dataTable th div.dt-column-header {
+    flex-direction: row !important;
+}
+
 div.table table.dataTable th.dt-type-numeric,
 div.table table.dataTable th.dt-type-date,
 div.table table.dataTable td.dt-type-numeric,
