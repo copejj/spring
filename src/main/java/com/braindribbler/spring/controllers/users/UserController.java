@@ -26,7 +26,7 @@ public class UserController extends BaseController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@GetMapping("/user/id")
+	@GetMapping("/user")
 	public String getUserId(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
 		if (userDetails != null) {
 			User user = userDetails.getUser();
@@ -38,7 +38,7 @@ public class UserController extends BaseController {
 		model.addAttribute("menus", getDefaultMenus("user/id"));
 		model.addAttribute("location", "User Details");
 		model.addAttribute("pageTitle", "Current User Information");
-		return "user/id";
+		return "user/detail";
 	}
 
 	@PostMapping("/user")
@@ -67,7 +67,7 @@ public class UserController extends BaseController {
 		model.addAttribute("menus", getDefaultMenus("user/id"));
 		model.addAttribute("location", "User Details");
 		model.addAttribute("pageTitle", "Current User Information");
-		return "user/id";
+		return "user/detail";
 	}
 
 	@GetMapping("/users")
@@ -76,6 +76,7 @@ public class UserController extends BaseController {
 		@RequestParam(defaultValue = "userId") String sortField,
 		@RequestParam(defaultValue = "asc") String sortDir,
 		@RequestParam(required = false) String keyword) {
+
 		Sort sort = sortDir.equalsIgnoreCase("asc") ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
 
 		List<User> users = (keyword != null && !keyword.isEmpty()) ?
@@ -86,13 +87,24 @@ public class UserController extends BaseController {
 		model.addAttribute("location", "Users");
 		model.addAttribute("pageTitle", "User List");
 		model.addAttribute("message", "Welcome to the User List Page!");
-
 		model.addAttribute("users", users);
-		model.addAttribute("sortField", sortField);
-		model.addAttribute("sortDir", sortDir);
-		model.addAttribute("keyword", keyword);
-		model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
 
-		return "users"; // Name of the view to render
+		return "user/list"; // Name of the view to render
+	}
+
+	@GetMapping("/login")
+	public String login(Model model) {
+		model.addAttribute("menus", getDefaultMenus("home"));
+		model.addAttribute("location", "Login");
+		model.addAttribute("pageTitle", "Login to Brain Dribbler");
+		return "user/login"; // Return the name of the login view/template
+	}
+
+	@GetMapping("/logout")
+	public String dashboard(Model model) {
+		model.addAttribute("menus", getDefaultMenus("home"));
+		model.addAttribute("location", "Logout");
+		model.addAttribute("pageTitle", "Logout of Brain Dribbler?");
+		return "user/logout"; // Return the name of the dashboard view/template
 	}
 }

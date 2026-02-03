@@ -1,5 +1,7 @@
 package com.braindribbler.spring.models.companies;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 
 import com.braindribbler.spring.models.users.User;
@@ -13,7 +15,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PostLoad;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name="companies")
@@ -36,6 +42,9 @@ public class Company {
 	@Column(name="website")
 	private String companyWebsite;
 
+	@Transient
+	private String companyUrl;
+
 	@Column(name="phone")
 	private String companyPhone;
 
@@ -49,6 +58,40 @@ public class Company {
 	@JoinColumn(name="user_id", insertable=false, updatable=false)
 	@JsonBackReference
 	private User user;
+
+    private String formatUrl(String url) {
+		if (!url.matches("^[a-zA-Z0-9]+://.*$")) {
+			url = "https://" + url;
+		}
+        return url;
+    }
+
+	@PrePersist
+    @PreUpdate
+    private void initWebsite() {
+        if (this.companyWebsite != null && !this.companyWebsite.isEmpty()) {
+            this.companyWebsite = formatUrl(this.companyWebsite);
+        }
+    }
+
+	@PostLoad
+	public void initCompanyUrl() {
+		try {
+			initWebsite();
+			if (!this.companyWebsite.isEmpty()) {
+				URI uri = new URI(this.companyWebsite);
+				this.companyUrl = uri.getScheme() + "://" + uri.getHost();
+				System.out.println(this.companyName + "\n\tURL: " + this.companyUrl + "\n\tWebsite: " + this.companyWebsite);
+			}
+		} catch (URISyntaxException ex) { 
+			this.companyUrl = "";
+		} 
+	}
+
+	public String getCompanyUrl() { 
+		initCompanyUrl();
+		return companyUrl; 
+	}
 
 	/* Getters and Setters */
 	public Long getCompanyId() { return companyId; }

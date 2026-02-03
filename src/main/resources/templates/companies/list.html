@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
+	</head>
+	<body class="full-page-content">
+		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
+		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+            <table id="companyTable" class="table table-striped table-hover" style="width:100%">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Edit</th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Website</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="company : ${companies}">
+                        <td><a class="btn btn-primary" th:href="'/company/' + ${company.companyId} ">Edit</a></td>
+                        <td th:text="${company.companyId}"></td>
+                        <td th:text="${company.companyName}"></td>
+                        <td><a th:href="${company.companyWebsite}" th:text="${company.companyUrl}" target="_blank">  </a></td>
+                        <td th:text="${company.companyEmail}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#companyTable').DataTable({
+                        "paging": true,
+                        "lengthChange": true,
+                        "searching": true,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "responsive": true
+                    });
+                });
+            </script>
+        </div>
+		<div th:replace="~{fragments/foot:: footer}"></div>
+    </body>
+</html>

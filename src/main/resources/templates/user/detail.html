@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
+	</head>
+	<body class="full-page-content">
+		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
+		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+            <div th:if="${saveError}" style="color: red;" th:text="'Error: ' + ${saveError}"> Error go here. </div>
+            <div th:if="${saveSuccess}" style="color: green;" th:text="${saveSuccess}"> Success go here.  </div>
+            <form th:action="@{/user}" method="post">
+                <div class="input-cont -input-cont">
+                    <label for="text-user_id" class="input-label">User ID</label>
+                    <input th:value="${user.userId}" type="text" name="user_id" class="input text-input" id="text-user_id" readonly />
+                    <label for="text-first_name" class="input-label">First Name</label>
+                    <input th:value="${user.firstName}" type="text" name="first_name" class="input text-input" id="text-first_name" />
+                    <label for="text-last_name" class="input-label">Last Name</label>
+                    <input th:value="${user.lastName}" type="text" name="last_name" class="input text-input" id="text-last_name" />
+                    <label for="text-email" class="input-label">Email</label>
+                    <input th:value="${user.email}" type="text" name="email" class="input text-input" id="text-email" />
+                    <label for="text-username" class="input-label">User Name</label>
+                    <input th:value="${user.userName}" type="text" name="username" class="input text-input" id="text-username" readonly />
+                    <div class="input-cont -input-cont line-separator">
+                        <label for="password-password" class="input-label">Change Password</label>
+                        <input type="password" name="password" value="" class="input password-input" id="password-password" placeholder="●●●●●●●●●●●●●●●●●●●●">
+                        <label for="password-confirm_password" class="input-label">Confirm Change</label>
+                        <input type="password" name="confirm_password" value="" class="input password-input" id="password-confirm_password" placeholder="●●●●●●●●●●●●●●●●●●●●">
+                    </div>
+                </div>
+                <input type="submit" name="save_user" value="Save" class="input submit-input" id="submit-save_user" />
+            </form>		
+        </div>
+		<div th:replace="~{fragments/foot:: footer}"></div>
+    </body>
+</html>

@@ -41,8 +41,9 @@ public class BaseController {
 			if (isAdmin) {
 				menus.add(new MenuItem("/users", "Users", activeMenu.equals("users") ? "link-selected" : ""));
 			}
+			menus.add(new MenuItem("/companies", "Companies", activeMenu.equals("companies") ? "link-selected" : ""));
 			menus.add(new MenuItem("/logout", "Logout", "align-right " + (activeMenu.equals("logout") ? "link-selected" : "")));
-			menus.add(new MenuItem("/user/id", profileName, "align-right " + (activeMenu.equals("user/id") ? "link-selected" : "")));
+			menus.add(new MenuItem("/user", profileName, "align-right " + (activeMenu.equals("user/id") ? "link-selected" : "")));
 		} else {
 			menus.add(new MenuItem("/login", "Login", "align-right " + (activeMenu.equals("login") ? "link-selected" : "")));
 			menus.add(new MenuItem("/about", "About", "align-right " + (activeMenu.equals("about") ? "link-selected" : "")));

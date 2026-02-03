@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
+	</head>
+	<body class="full-page-content">
+		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
+		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
+		<div class="content-cont">
+			<div th:replace="~{fragments/body:: title(title=${title})}"></div>
+			<div class="card">
+				<div class="card-body">
+					<h5 class="card-title" th:text="${company.companyName}">Company Name</h5>
+					<p class="card-text">
+						<strong>Website:</strong> <a th:href="${company.companyWebsite}" th:text="${company?.companyUrl}" target="_blank">  </a><br/>
+						<strong>Email:</strong> <span th:text="${company.companyEmail}"></span><br/>
+					</p>
+				</div>
+			</div>
+		</div>
+		<div th:replace="~{fragments/foot:: footer}"></div>
+    </body>
+</html>
