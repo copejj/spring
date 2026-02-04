@@ -1,4 +1,4 @@
-package com.braindribbler.spring.service.users;
+package com.braindribbler.spring.service.users.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

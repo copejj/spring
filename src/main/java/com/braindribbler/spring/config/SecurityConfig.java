@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity	
+@EnableWebSecurity(debug=true)	
 @EnableMethodSecurity(securedEnabled=true)
 public class SecurityConfig {
 	
@@ -23,11 +23,15 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/about", "/css/**", "/images/**", "/favicon.ico").permitAll() // Public paths
-                .anyRequest().authenticated() // Everything else is locked
+                // 1. Explicitly permit the login page and static assets
+                .requestMatchers("/", "/login", "/about", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll() 
+                // 2. Ensure the "error" and "logout" parameters aren't blocked
+                .requestMatchers("/login?error", "/login?logout").permitAll()
+                .anyRequest().authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/login") // Your custom login page URL
+                .loginProcessingUrl("/login") // URL to submit the username and password
                 .defaultSuccessUrl("/", true) // Redirect after login
                 .permitAll()
             )

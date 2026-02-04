@@ -20,11 +20,15 @@
                 </thead>
                 <tbody>
                     <tr th:each="user : ${users}">
-                        <td th:text="${user.userId}"></td>
+                        <td style="text-align: center;">
+                            <a th:href="@{/users/{id}(id=${user.userId})}">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            </a>
+                        </td>
+                        <td th:text="${user.userName}"></td>
                         <td th:text="${user.firstName}"></td>
                         <td th:text="${user.lastName}"></td>
                         <td th:text="${user.email}"></td>
-                        <td th:text="${user.userName}"></td>
                     </tr>
                 </tbody>
             </table>
@@ -39,11 +43,11 @@
                         "ordering": true,
                         "info": true,
                         "autoWidth": false,
-                        "order": { "idx": 0, "dir": 'asc' }, 
-                        "columnDefs": [{ 
-                            width: '70px', 
-                            targets: [0] 
-                        }],
+                        "order": { "idx": 2, "dir": 'asc' }, 
+                        "columnDefs": [
+                            { width: '70px', targets: [0, 1] }, 
+                            { orderable: false, targets: [0] }
+                        ],
                         "responsive": true
                     });
                 });

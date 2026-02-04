@@ -2,12 +2,12 @@ package com.braindribbler.spring.service.users;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
+import com.braindribbler.spring.dto.users.UserDTO;
 import com.braindribbler.spring.models.users.User;
 
-public interface UserService extends JpaRepository<User, Long> {
-	@Query("from User")
+public interface UserService {
+    UserDTO getUserDtoById(Long userId);
+    void updateUser(UserDTO dto);
+    void updatePassword(Long userId, String newPassword);
 	List<User> getAllUsers();
 }

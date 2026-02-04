@@ -43,7 +43,7 @@ public class BaseController {
 			}
 			menus.add(new MenuItem("/companies", "Companies", activeMenu.equals("companies") ? "link-selected" : ""));
 			menus.add(new MenuItem("/logout", "Logout", "align-right " + (activeMenu.equals("logout") ? "link-selected" : "")));
-			menus.add(new MenuItem("/user", profileName, "align-right " + (activeMenu.equals("user/id") ? "link-selected" : "")));
+			menus.add(new MenuItem("/users/current", profileName, "align-right " + (activeMenu.equals("users") ? "link-selected" : "")));
 		} else {
 			menus.add(new MenuItem("/login", "Login", "align-right " + (activeMenu.equals("login") ? "link-selected" : "")));
 			menus.add(new MenuItem("/about", "About", "align-right " + (activeMenu.equals("about") ? "link-selected" : "")));
