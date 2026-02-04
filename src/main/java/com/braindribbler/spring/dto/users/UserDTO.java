@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 public record UserDTO (
 	Long userId,
 
-	@NotBlank(message = "Username is required") 
+	@NotBlank(message = "User name is required") 
 	String userName,
 
 	@Email(message = "Email should be valid") 

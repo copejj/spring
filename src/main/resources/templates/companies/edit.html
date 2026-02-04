@@ -11,9 +11,9 @@
             <div th:if="${saveError}" style="color: red;" th:text="'Error: ' + ${saveError}"> Error go here. </div>
             <div th:if="${saveSuccess}" style="color: green;" th:text="${saveSuccess}"> Success go here.  </div>
 
-            <form th:action="@{/company}" th:object="${company}" th:method="put">
+            <form th:action="@{/companies}" th:object="${company}" th:method="put">
                 <div class="input-cont -input-cont">
-                    <input th:field="${companyId}" type="hidden" />
+                    <input th:field="*{companyId}" type="hidden" />
 
                     <label for="*{companyName}" class="input-label">Company Name</label>
                     <input th:field="*{companyName}" type="text" class="input text-input" />
@@ -31,7 +31,7 @@
                     <input th:field="*{companyPhone}" type="text" class="input text-input" />
 
                     <label for="*{companyFax}" class="input-label">Company Fax</label>
-                    <input th:field="${companyFax}" type="text" class="input text-input" />
+                    <input th:field="*{companyFax}" type="text" class="input text-input" />
 				</div>
                 <input type="submit" name="save_company" value="Save" class="input submit-input" id="submit-save_company" />
                 <input type="button" value="Cancel" class="input submit-input" onclick="location.href='/companies'" />
