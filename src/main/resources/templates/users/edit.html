@@ -30,7 +30,8 @@
                     <label for="confirmPassword" class="input-label">Confirm Change</label>
                     <input th:field="*{passwordData.confirmPassword}" type="password" class="input password-input" placeholder="   [ Passwords are not changed by default on save ] " />
                 </div>
-                <input type="submit" name="save_user" value="Save" class="input submit-input" id="submit-save_user" />
+                <input type="submit" value="Save" class="input submit-input" id="submit-save_user" />
+                <input type="button" value="Cancel" class="input submit-input" onclick="location.href='/users'" />
             </form>		
         </div>
 		<div th:replace="~{fragments/foot:: footer}"></div>

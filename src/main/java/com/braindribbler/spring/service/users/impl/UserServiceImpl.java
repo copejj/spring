@@ -1,18 +1,16 @@
 package com.braindribbler.spring.service.users.impl;
 
-import com.braindribbler.spring.dto.users.UserDTO;
-import com.braindribbler.spring.dto.users.PasswordDTO;
-import com.braindribbler.spring.models.users.User;
-import com.braindribbler.spring.repositories.users.UserRepository;
-import com.braindribbler.spring.service.users.UserService;
-
-import jakarta.persistence.EntityNotFoundException;
-
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.braindribbler.spring.dto.users.PasswordDTO;
+import com.braindribbler.spring.dto.users.UserDTO;
+import com.braindribbler.spring.models.users.User;
+import com.braindribbler.spring.repositories.users.UserRepository;
+import com.braindribbler.spring.service.users.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {

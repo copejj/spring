@@ -20,7 +20,7 @@
                 </thead>
                 <tbody>
                     <tr th:each="company : ${companies}">
-                        <td><a class="btn btn-primary" th:href="'/company/' + ${company.companyId} ">Edit</a></td>
+                        <td><a class="btn btn-primary" th:href="'/companies/edit/' + ${company.companyId} ">Edit</a></td>
                         <td th:text="${company.companyId}"></td>
                         <td th:text="${company.companyName}"></td>
                         <td><a th:href="${company.companyWebsite}" th:text="${company.companyUrl}" target="_blank">  </a></td>
