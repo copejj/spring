@@ -39,6 +39,8 @@ jobs:
             mvn clean package -DskipTests
             echo -e "============\nINSTALLING\n============"
             cp ${{ vars.DRIBBLER_TARGET_WAR }} ${{ vars.DRIBBLER_WAR_PATH }}/spring-${{github.ref_name}}.war
+            echo -e "============\nDEPLOYING to PROD\n============"
+            cp -f ${{ vars.DRIBBLER_WAR_PATH }}/spring-${{github.ref_name}}.war ${{ vars.DRIBBLER_WAR_PATH }}/ROOT.war
             echo -e "============\nCLEANING UP\n============"
             git reset --hard HEAD
             echo -e "============\nREPORT\n============"
