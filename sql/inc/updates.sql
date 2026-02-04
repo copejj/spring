@@ -1,4 +1,4 @@
--- push password hash updates for users 1 and 3, changed immediately
+-- push password hash updates for users 1 and 3, change immediately
 update users t1
 set password_hash = t2.password_hash
 from (
