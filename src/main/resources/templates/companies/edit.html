@@ -7,6 +7,7 @@
 		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
 		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
 		<div class="content-cont">
+            <p>Debug Title: [[${pageTitle}]]</p>
 			<div th:replace="~{fragments/body:: title(title=${pageTitle})}"></div>
             <div th:if="${saveError}" style="color: red;" th:text="'Error: ' + ${saveError}"> Error go here. </div>
             <div th:if="${saveSuccess}" style="color: green;" th:text="${saveSuccess}"> Success go here.  </div>

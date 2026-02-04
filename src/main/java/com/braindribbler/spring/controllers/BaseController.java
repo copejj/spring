@@ -35,18 +35,18 @@ public class BaseController {
 		}
 
 		List<MenuItem> menus = new ArrayList<>();
-		menus.add(new MenuItem("/", "Home", activeMenu.equals("home") ? "link-selected" : ""));
+		menus.add(new MenuItem("/", "Home"));
 
 		if (isLoggedIn) {
 			if (isAdmin) {
-				menus.add(new MenuItem("/users", "Users", activeMenu.equals("users") ? "link-selected" : ""));
+				menus.add(new MenuItem("/users", "Users"));
 			}
-			menus.add(new MenuItem("/companies", "Companies", activeMenu.equals("companies") ? "link-selected" : ""));
-			menus.add(new MenuItem("/logout", "Logout", "align-right " + (activeMenu.equals("logout") ? "link-selected" : "")));
-			menus.add(new MenuItem("/users/current", profileName, "align-right " + (activeMenu.equals("users") ? "link-selected" : "")));
+			menus.add(new MenuItem("/companies", "Companies"));
+			menus.add(new MenuItem("/logout", "Logout", "align-right"));
+			menus.add(new MenuItem("/users/current", profileName, "align-right"));
 		} else {
-			menus.add(new MenuItem("/login", "Login", "align-right " + (activeMenu.equals("login") ? "link-selected" : "")));
-			menus.add(new MenuItem("/about", "About", "align-right " + (activeMenu.equals("about") ? "link-selected" : "")));
+			menus.add(new MenuItem("/login", "Login", "align-right"));
+			menus.add(new MenuItem("/about", "About", "align-right"));
 		}
 
 

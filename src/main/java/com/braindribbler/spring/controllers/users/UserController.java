@@ -1,12 +1,9 @@
 package com.braindribbler.spring.controllers.users;
 
 import java.util.List;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.braindribbler.spring.controllers.BaseController;
 import com.braindribbler.spring.dto.users.UserDTO;
@@ -30,11 +27,9 @@ import jakarta.validation.Valid;
 public class UserController extends BaseController {
 
 	private final UserService userService;
-	private final PasswordEncoder passwordEncoder;
 
-	public UserController(UserService userService, PasswordEncoder passwordEncoder) {
+	public UserController(UserService userService) {
 		this.userService = userService;
-		this.passwordEncoder = passwordEncoder;
 	}
 
 	@GetMapping("/current")
@@ -52,37 +47,34 @@ public class UserController extends BaseController {
 		UserDTO userDto = userService.getUserDtoById(userId);
 
 		model.addAttribute("user", userDto);
-		model.addAttribute("location", "User Details");
+		model.addAttribute("location", "Edit User");
 		model.addAttribute("pageTitle", "User Information");
-		model.addAttribute("menus", getDefaultMenus("users/id"));
+		model.addAttribute("menus", getDefaultMenus("users"));
 
-		return "users/detail";
+		return "users/edit";
 	}
 
 	@PutMapping
 	@PreAuthorize("hasRole('ADMIN') or #userDto.userId == principal.user.userId")
 	public String updateUser(@Valid @ModelAttribute("userDto") UserDTO userDto, 
 							BindingResult result, 
-							Model model) {
-		
-		// 1. Validate User Data
-		if (result.hasErrors()) {
-			// If validation fails (e.g. bad email), send them back to the edit page
-			model.addAttribute("location", "Edit User");
-			return "user/edit"; 
-		}
-
-		// 2. Logic for Password (if provided)
+							Model model,
+							RedirectAttributes ra) {
 		String newPassword = userDto.passwordData().newPassword();
 		String confirmPassword = userDto.passwordData().confirmPassword();
 		if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals(confirmPassword)) {
 			model.addAttribute("saveError", "Passwords do not match.");
-			model.addAttribute("location", "Edit User");
-			return "users/edit"; // Return to form (NOT redirect) to show error
+		} else if (result.hasErrors()) {
+			model.addAttribute("saveError", "Save failed");
 		}
 
+		if (model.containsAttribute("saveError")) {
+			return getUserById(userDto.userId(), model); 
+		}	
+
 		userService.updateUser(userDto);
-		
+		ra.addFlashAttribute("saveSuccess", "User information updated successfully.");
+
 		return "redirect:/users/edit/" + userDto.userId();
 	}
 

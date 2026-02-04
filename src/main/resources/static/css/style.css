@@ -173,7 +173,7 @@ div.table table.dataTable tbody tr:nth-child(even) {
 
 div.table table.dataTable>tbody>tr:nth-child(odd),
 div.table table.dataTable tbody tr:nth-child(odd) {
-    background-color: #586e8a45;
+    background-color: #586e8a00;
 }
 
 div.table table.dataTable>tbody>tr:hover,
