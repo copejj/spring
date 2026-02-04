@@ -39,15 +39,14 @@ public class UserController extends BaseController {
 
 	@GetMapping("/current")
 	public String getUser(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-		if (userDetails != null) {
-			return getUserById(userDetails.getUser().getUserId(), model);
+		if (userDetails == null) {
+			return "redirect:/login";
 		} 
 
-		model.addAttribute("message", "No authenticated user.");
-		return "users/detail";
+		return "redirect:/users/edit/" + userDetails.getUser().getUserId();
 	}
 
-	@GetMapping("/{userId}")
+	@GetMapping("/edit/{userId}")
 	@PreAuthorize("hasRole('ADMIN') or #userId == principal.user.userId")
 	public String getUserById(@PathVariable Long userId, Model model) {
 		UserDTO userDto = userService.getUserDtoById(userId);
@@ -58,36 +57,33 @@ public class UserController extends BaseController {
 		model.addAttribute("menus", getDefaultMenus("users/id"));
 
 		return "users/detail";
-
 	}
 
 	@PutMapping
 	@PreAuthorize("hasRole('ADMIN') or #userDto.userId == principal.user.userId")
 	public String updateUser(@Valid @ModelAttribute("userDto") UserDTO userDto, 
 							BindingResult result, 
-							@RequestParam(required = false) String newPassword,
-							@RequestParam(required = false) String confirmPassword,
 							Model model) {
 		
+		// 1. Validate User Data
 		if (result.hasErrors()) {
 			// If validation fails (e.g. bad email), send them back to the edit page
 			model.addAttribute("location", "Edit User");
 			return "user/edit"; 
 		}
 
-		userService.updateUser(userDto);
-
 		// 2. Logic for Password (if provided)
-		if (newPassword != null && !newPassword.isEmpty()) {
-			if (newPassword.equals(confirmPassword)) {
-				userService.updatePassword(userDto.userId(), newPassword);
-			} else {
-				// Handle password mismatch error
-			}
+		String newPassword = userDto.passwordData().newPassword();
+		String confirmPassword = userDto.passwordData().confirmPassword();
+		if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals(confirmPassword)) {
+			model.addAttribute("saveError", "Passwords do not match.");
+			model.addAttribute("location", "Edit User");
+			return "users/edit"; // Return to form (NOT redirect) to show error
 		}
+
+		userService.updateUser(userDto);
 		
-		// Redirect back to their profile or the list
-		return "redirect:/users/" + userDto.userId();
+		return "redirect:/users/edit/" + userDto.userId();
 	}
 
 	@GetMapping

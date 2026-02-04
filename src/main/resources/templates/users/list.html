@@ -21,7 +21,7 @@
                 <tbody>
                     <tr th:each="user : ${users}">
                         <td style="text-align: center;">
-                            <a th:href="@{/users/{id}(id=${user.userId})}">
+                            <a th:href="@{/users/edit/{id}(id=${user.userId})}">
                                 <i class="fa-solid fa-pen-to-square"></i> Edit
                             </a>
                         </td>

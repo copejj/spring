@@ -8,6 +8,5 @@ import com.braindribbler.spring.models.users.User;
 public interface UserService {
     UserDTO getUserDtoById(Long userId);
     void updateUser(UserDTO dto);
-    void updatePassword(Long userId, String newPassword);
 	List<User> getAllUsers();
 }

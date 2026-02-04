@@ -50,22 +50,14 @@ public class UserServiceImpl implements UserService {
 		user.setFirstName(dto.firstName());
 		user.setLastName(dto.lastName());
 
-        userRepository.save(user);
-    }
-
-    @Override
-    @Transactional
-    public void updatePassword(Long userId, String newPassword) {
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
-        // Hash the plain text password before saving
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        user.setPassword(encodedPassword);
+        String newPass = dto.passwordData().newPassword();
+        if (newPass != null && !newPass.isEmpty()) {
+            // Hashing happens here in the Service Layer
+            user.setPassword(passwordEncoder.encode(newPass));
+        }
 
         userRepository.save(user);
     }
-
 
 	@Override
 	@Transactional(readOnly = true)
