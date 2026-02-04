@@ -51,7 +51,7 @@ public class CompanyController extends BaseController {
 	 * @param model
 	 * @return The company detail view.
 	 */
-	@GetMapping("/company/{companyId}")
+	@GetMapping("/companies/{companyId}")
 	public String getCompanyById(@PathVariable Long companyId, Model model) {
 		model.addAttribute("menus", getDefaultMenus("companies"));
 		model.addAttribute("location", "Company Details");
