@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
+	</head>
+	<body class="full-page-content">
+		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
+		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
+		<div class="content-cont">
+            <p>Debug Title: [[${pageTitle}]]</p>
+			<div th:replace="~{fragments/body:: title(title=${pageTitle})}"></div>
+            <div th:if="${saveError}" style="color: red;" th:text="'Error: ' + ${saveError}"> Error go here. </div>
+            <div th:if="${saveSuccess}" style="color: green;" th:text="${saveSuccess}"> Success go here.  </div>
+
+            <form th:action="@{/company}" method="post">
+                <div class="input-cont -input-cont">
+                    <label for="text-company_id" class="input-label">Company ID</label>
+                    <input th:value="${company.companyId}" type="text" name="company_id" class="input text-input" id="text-company_id" readonly />
+
+                    <label for="text-companyname" class="input-label">Company Name</label>
+                    <input th:value="${company.companyName}" type="text" name="companyname" class="input text-input" id="text-companyname"/>
+
+                    <label for="text-email" class="input-label">Company Email</label>
+                    <input th:value="${company.companyEmail}" type="text" name="email" class="input text-input" id="text-companyemail" />
+
+                    <label for="text-website" class="input-label">Company Website</label>
+					<div class="input-group">
+						<input th:value="${company.companyWebsite}" type="text" name="companywebsite" class="input text-input" id="text-companywebsite"/>
+						<a th:href="${company.companyWebsite}" target="_blank">VIEW</a>
+					</div>
+
+                    <label for="text-companyphone" class="input-label">Company Phone</label>
+                    <input th:value="${company.companyPhone}" type="text" name="companyphone" class="input text-input" id="text-companyphone"/>
+
+                    <label for="text-companyfax" class="input-label">Company Fax</label>
+                    <input th:value="${company.companyFax}" type="text" name="companyFax" class="input text-input" id="text-companyfax"/>
+				</div>
+                <input type="submit" name="save_company" value="Save" class="input submit-input" id="submit-save_company" />
+            </form>		
+		</div>
+		<div th:replace="~{fragments/foot:: footer}"></div>
+    </body>
+</html>

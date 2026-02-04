@@ -10,6 +10,7 @@ import com.braindribbler.spring.models.users.User;
 
 public interface UserRepository extends JpaRepository<User, Long> 	{
 	Optional<User> findByUserName(String userName);
+	Optional<User> findByUserId(Long userId);
 
 	List<User> findByFirstNameContaining(String keyword, Sort sort);
 }

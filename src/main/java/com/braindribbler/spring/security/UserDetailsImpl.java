@@ -9,10 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.braindribbler.spring.models.users.User;
 
-public class DribblerUserDetails implements UserDetails{
+public class UserDetailsImpl implements UserDetails{
 	private final User user;
 
-	public DribblerUserDetails(User user) {
+	public UserDetailsImpl(User user) {
 		this.user = user;
 	}	
 
@@ -25,13 +25,6 @@ public class DribblerUserDetails implements UserDetails{
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Arrays.stream(user.getRoles().split(","))
-				.map(role -> (GrantedAuthority) () -> role.trim())
-				.collect(Collectors.toList());
-	}
-
-	@Override
 	public String getPassword() {
 		return user.getPassword();
 	}
@@ -40,7 +33,14 @@ public class DribblerUserDetails implements UserDetails{
 	public String getUsername() {
 		return user.getUserName();
 	}
-	
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Arrays.stream(user.getRoles().split(","))
+				.map(role -> (GrantedAuthority) () -> role.trim())
+				.collect(Collectors.toList());
+	}
+
 	// Usually return true for these unless you have specific logic
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }

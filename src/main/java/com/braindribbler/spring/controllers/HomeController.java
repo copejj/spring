@@ -24,22 +24,4 @@ public class HomeController extends BaseController {
 		model.addAttribute("content", "Brain Dribbler is a sample Spring Boot application demonstrating basic web functionalities.");
 		return "index"; // Name of the view to render
 	}
-
-	@GetMapping("/login")
-	public String login(Model model) {
-		model.addAttribute("menus", getDefaultMenus("home"));
-		model.addAttribute("location", "Login");
-		model.addAttribute("pageTitle", "Login to Brain Dribbler");
-		model.addAttribute("content", "This is and was the home page of the Brain Dribbler application.");
-		return "login"; // Return the name of the login view/template
-	}
-
-	@GetMapping("/logout")
-	public String dashboard(Model model) {
-		model.addAttribute("menus", getDefaultMenus("home"));
-		model.addAttribute("location", "Logout");
-		model.addAttribute("pageTitle", "Logout of Brain Dribbler!");
-		model.addAttribute("content", "This is and was the home page of the Brain Dribbler application.");
-		return "logout"; // Return the name of the dashboard view/template
-	}
 }

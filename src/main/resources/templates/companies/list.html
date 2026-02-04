@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:replace="~{fragments/head:: includes(location=${location})}"></th:block>
+	</head>
+	<body class="full-page-content">
+		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
+		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
+        <div class="content-cont table">
+            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+            <table id="companyTable" class="datatables table table-striped table-hover stripe" style="width:100%">
+                <thead class="table-dark">
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Website</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="company : ${companies}">
+                        <td><a class="btn btn-primary" th:href="'/company/' + ${company.companyId} ">Edit</a></td>
+                        <td th:text="${company.companyId}"></td>
+                        <td th:text="${company.companyName}"></td>
+                        <td><a th:href="${company.companyWebsite}" th:text="${company.companyUrl}" target="_blank">  </a></td>
+                        <td th:text="${company.companyEmail}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#companyTable').DataTable({
+                        "pageLength": -1,
+                        "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                        "paging": true,
+                        "lengthChange": true,
+                        "searching": true,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "order": { "idx": 2, "dir": 'asc' }, 
+                        "columnDefs": [
+                            { width: '70px', targets: [0, 1] }, 
+                            { orderable: false, targets: [0] }
+                        ],
+                        "responsive": true
+                    });
+                });
+            </script>
+        </div>
+		<div th:replace="~{fragments/foot:: footer}"></div>
+    </body>
+</html>

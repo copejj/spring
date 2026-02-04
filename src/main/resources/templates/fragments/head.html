@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <body>
-        <div th:fragment="includes">
+        <th:block th:fragment="includes">
             <meta charset="UTF-8">
             <title th:text="'Brain Dribbler' + (${location} ? ' - ' + ${location} : '')"></title>
-            <link rel="icon" type="image/x-icon" sizes="32x32" th:href="@{/images/favicon-32x32.png}">
-            <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/favicon-32x32.png}">
-            <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon-16x16.png}">
+
+            <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/favicon-32x32.png}" />
+            <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon-16x16.png}" />
+
             <link rel="stylesheet" type='text/css' media='all' th:href="@{/css/style.css}" />
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.4/luxon.min.js"></script>
             <link rel="stylesheet" th:href="@{/css/datatables/datatables.min.css}" integrity="sha384-R2Fgx8DD9wAkVgw6wT8uF062Yb82xSJ9SoEeo6yG3TnkFB1xM/YFXwjBYo0kQ0ct" crossorigin="anonymous" />
-            <script th:src="@{/js/datatables/datatables.min.js}" integrity="sha384-UeCeWNYLaY2mvxN9AsU1R1+aV0hde/ksgd68wqgf87HJF8ge3gGnhUPPh0hHFooK" crossorigin="anonymous"></script>
-        </div>
+            <script th:src="@{/js/datatables/datatables.min.js}" integrity="sha384-UeCeWNYLaY2mvxN9AsU1R1+aV0hde/ksgd68wqgf87HJF8ge3gGnhUPPh0hHFooK" crossorigin="anonymous" /></script>
+        </th:block>
 
 		<div th:fragment="menus">
 			<div class='menu-container links-cont'>

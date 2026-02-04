@@ -33,6 +33,8 @@ jobs:
             sed -i 's/<db_pass>/${{ secrets.DB_PASS }}/' src/main/resources/application.properties
             sed -i 's/<api_base_url>/${{ vars.API_BASE_URL }}/' src/main/resources/application.properties 
             sed -i 's/<server_context_path>/${{ vars.SERVER_CONTEXT_PATH }}/' src/main/resources/application.properties
+            echo -e "============\nDatabase Updates\n============"
+            bin/update.sh
             echo -e "============\nBUILDING WAR\n============"
             mvn clean package -DskipTests
             echo -e "============\nINSTALLING\n============"

@@ -6,7 +6,14 @@
 	<body class="full-page-content">
 		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
 		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
-		<div th:replace="~{fragments/users:: contentUsers(title=${pageTitle}, users=${users})}"></div>
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${pageTitle})}"></div>
+            <form th:action="@{/logout}" method="post">
+                <button class="input submit-input" type="submit">Logout</button>
+            </form>
+        </div>
 		<div th:replace="~{fragments/foot:: footer}"></div>
-    </body>
+	</body>
+	<body>
+	</body>
 </html>
