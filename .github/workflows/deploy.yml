@@ -10,6 +10,7 @@ jobs:
                 uses: appleboy/ssh-action@v1.2.0
                 with:
                     host: ${{ vars.PROD_HOST }}
+                    port: ${{ secrets.SSH_PRIVATE_PORT }}
                     username: ${{ secrets.SSH_PRIVATE_USERNAME }}
                     key: ${{ secrets.SSH_PRIVATE_KEY }}
                     # IMPORTANT: All variables used in the script must be listed here
