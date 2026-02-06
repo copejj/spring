@@ -40,6 +40,7 @@ public class BaseController {
 		if (isLoggedIn) {
 			if (isAdmin) {
 				menus.add(new MenuItem("/users", "Users"));
+				menus.add(new MenuItem("/admin/migrations", "Admin"));
 			}
 			menus.add(new MenuItem("/companies", "Companies"));
 			menus.add(new MenuItem("/logout", "Logout", "align-right"));
