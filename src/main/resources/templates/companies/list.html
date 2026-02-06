@@ -4,7 +4,46 @@
 	layout:decorate="~{layout/default}">
 	<body>
         <div layout:fragment="content"> 
-			Company List Page
+            <table id="companyTable" class="datatables table table-striped table-hover stripe" style="width:100%">
+                <thead class="table-dark">
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Website</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="company : ${companies}">
+                        <td><a class="btn btn-primary" th:href="'/companies/edit/' + ${company.companyId} ">Edit</a></td>
+                        <td th:text="${company.companyId}"></td>
+                        <td th:text="${company.companyName}"></td>
+                        <td><a th:href="${company.companyWebsite}" th:text="${company.companyUrl}" target="_blank">  </a></td>
+                        <td th:text="${company.companyEmail}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#companyTable').DataTable({
+                        "pageLength": -1,
+                        "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                        "paging": true,
+                        "lengthChange": true,
+                        "searching": true,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "order": { "idx": 2, "dir": 'asc' }, 
+                        "columnDefs": [
+                            { width: '70px', targets: [0, 1] }, 
+                            { orderable: false, targets: [0] }
+                        ],
+                        "responsive": true
+                    });
+                });
+            </script>
 		</div>
 	</body>
 </html>
