@@ -15,7 +15,7 @@ public class SchemaMigrations {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private Long id;
+	private Long schemaMigrationId;
 
 	@Column(name="filename")
 	private String filename;
@@ -32,8 +32,8 @@ public class SchemaMigrations {
 	@Column(name="error_message")
 	private String errorMessage;
 
-	public Long getId() { return id; }
-	public void setId(Long id) { this.id = id; }
+	public Long getSchemaMigrationId() { return schemaMigrationId; }
+	public void setSchemaMigrationId(Long schemaMigrationId) { this.schemaMigrationId = schemaMigrationId; }
 	public String getFilename() { return filename; }
 	public void setFilename(String filename) { this.filename = filename; }
 	public String getStatus() { return status; }
