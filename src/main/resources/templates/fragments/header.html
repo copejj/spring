@@ -5,4 +5,9 @@
 			<div class='header-cont' th:text="'The Brain Dribbler' + (${location} ? ' - ' + ${location} : '')"></div>
 		</div>
 	</div>
+
+	<div th:fragment="title-fragment">
+		<div class="sub-header-cont" th:text="${title}"></div>
+
+	</div>
 </html>

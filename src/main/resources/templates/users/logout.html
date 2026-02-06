@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz"
+	layout:decorate="~{layout/default}">
+    <body>
+        <div layout:fragment="content">
+            <form th:action="@{/logout}" method="post">
+                <button class="input submit-input" type="submit">Logout</button>
+            </form>
+        </div>
+    </body>
+</html>

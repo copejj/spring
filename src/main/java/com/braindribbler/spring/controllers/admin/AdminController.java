@@ -25,7 +25,7 @@ public class AdminController {
 		List<SchemaMigrations> migrations = migrationService.getAll();
 
 		model.addAttribute("location", "Admin: Migrations");
-		model.addAttribute("pageTitle", "Schema Migrations");
+		model.addAttribute("title", "Schema Migrations");
 
 		model.addAttribute("migrations", migrations);
 		return "admin/migrations";

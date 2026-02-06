@@ -10,7 +10,7 @@ public class LoginController {
 	@GetMapping("/login")
 	public String login(Model model) {
 		model.addAttribute("location", "Login");
-		model.addAttribute("pageTitle", "Login to Brain Dribbler");
+		model.addAttribute("title", "Login to Brain Dribbler");
 
 		return "users/login";
 	}
@@ -18,7 +18,7 @@ public class LoginController {
 	@GetMapping("/logout")
 	public String dashboard(Model model) {
 		model.addAttribute("location", "Logout");
-		model.addAttribute("pageTitle", "Logout of Brain Dribbler?");
+		model.addAttribute("title", "Logout of Brain Dribbler?");
 		
 		return "users/logout";
 	}

@@ -30,4 +30,8 @@ public class MenuItem {
 	public void setCssClass(String cssClass) { this.cssClass = cssClass; }
 	public List<MenuItem> getChildren() { return children; }
 	public void setChildren(List<MenuItem> children) { this.children = children; }
+
+	public String toString() {
+		return this.text + " " + this.href;
+	}
 }

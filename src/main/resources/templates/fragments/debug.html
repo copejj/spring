@@ -11,6 +11,11 @@
 				Total items found: <span th:text="${#lists.size(menuItems)}"></span>
 			</li>
 		</ul>
+		<ul class="navbar-nav me-auto">
+			<li th:each="item : ${menuItems}" 
+				th:replace="~{fragments/navbar :: menu-item(item=${item})}">
+			</li>
+		</ul>
 		<!-- This prints the raw string representation of the list -->
 		<pre th:text="${menuItems}"></pre>
 	</div>
