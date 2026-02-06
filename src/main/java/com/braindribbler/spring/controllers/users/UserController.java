@@ -1,6 +1,7 @@
 package com.braindribbler.spring.controllers.users;
 
 import java.util.List;
+
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.braindribbler.spring.controllers.BaseController;
 import com.braindribbler.spring.dto.users.UserDTO;
 import com.braindribbler.spring.models.users.User;
 import com.braindribbler.spring.security.UserDetailsImpl;
@@ -24,7 +24,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/users")
-public class UserController extends BaseController {
+public class UserController {
 
 	private final UserService userService;
 
@@ -49,7 +49,6 @@ public class UserController extends BaseController {
 		model.addAttribute("user", userDto);
 		model.addAttribute("location", "Edit User");
 		model.addAttribute("pageTitle", "User Information");
-		model.addAttribute("menus", getDefaultMenus("users"));
 
 		return "users/edit";
 	}
@@ -84,7 +83,6 @@ public class UserController extends BaseController {
 
 		List<User> users = userService.getAllUsers();
 
-		model.addAttribute("menus", getDefaultMenus("users"));
 		model.addAttribute("location", "Users");
 		model.addAttribute("pageTitle", "User List");
 		model.addAttribute("users", users);

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
-	</head>
-	<body class="full-page-content">
-		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
-		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
-		<div th:replace="~{fragments/body:: content(title=${pageTitle}, content=${content})}"></div>
-		<div th:replace="~{fragments/foot:: footer}"></div>
-	</body>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz"
+	layout:decorate="~{layout/default}">
+    <head>
+        <title>Dashboard</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <h1>Dashboard</h1>
+            <p>Your content here.</p>
+        </div>
+    </body>
 </html>

@@ -7,13 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.braindribbler.spring.controllers.BaseController;
 import com.braindribbler.spring.models.admin.SchemaMigrations;
 import com.braindribbler.spring.service.admin.SchemaMigrationService;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminController extends BaseController {
+public class AdminController {
 
 	private final SchemaMigrationService migrationService;
 	
@@ -25,7 +24,6 @@ public class AdminController extends BaseController {
 	public String getAll(Model model) {
 		List<SchemaMigrations> migrations = migrationService.getAll();
 
-		model.addAttribute("menus", getDefaultMenus("admin"));
 		model.addAttribute("location", "Admin: Migrations");
 		model.addAttribute("pageTitle", "Schema Migrations");
 

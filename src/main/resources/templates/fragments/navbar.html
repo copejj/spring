@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<nav th:fragment="nav-fragment" class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container">
+			<a class="navbar-brand" th:href="@{/}">MySite</a>
+			<div class="collapse navbar-collapse">
+				<ul class="navbar-nav me-auto">
+					<li th:each="item : ${menuItems}" 
+						th:replace="~{::menu-item(item=${item})}">
+					</li>
+				</ul>
+				
+				<ul class="navbar-nav">
+					<li class="nav-item" sec:authorize="isAnonymous()">
+						<a class="nav-link" th:href="@{/login}">Login</a>
+					</li>
+					<li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+						<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+							<span sec:authentication="name">User</span>
+						</a>
+						<ul class="dropdown-menu dropdown-menu-end">
+							<li><a class="dropdown-item" th:href="@{/profile}">Settings</a></li>
+							<li><hr class="dropdown-divider"></li>
+							<li>
+								<form th:action="@{/logout}" method="post" class="px-3">
+									<button type="submit" class="btn btn-sm btn-danger w-100">Logout</button>
+								</form>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<th:block th:fragment="menu-item(item)">
+		<th:block th:if="${item != null}">
+			<li th:if="${#lists.isEmpty(item.children ?: {})}" 
+				th:class="${#request.getAttribute('isNested')} ? '' : 'nav-item'">
+				
+				<a th:href="@{${item.href}}" 
+				th:text="${item.text}"
+				th:class="${#request.getAttribute('isNested')} ? 'dropdown-item' : 'nav-link'"
+				th:classappend="${#request.requestURI == item.href ? 'active' : ''}">
+				</a>
+			</li>
+
+			<li th:if="${not #lists.isEmpty(item.children ?: {})}" 
+				th:class="${#request.getAttribute('isNested')} ? 'dropdown-submenu' : 'nav-item dropdown'">
+				
+				<a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+				th:text="${item.text}"
+				th:classappend="${(#request.getAttribute('isNested') ? 'dropdown-item' : 'nav-link') + (#request.requestURI.startsWith(item.href) ? ' active' : '')}">
+				</a>
+				<ul class="dropdown-menu">
+					<!-- Set a flag so children know they are nested -->
+					<th:block th:each="child : ${item.children}" th:with="isNested=true">
+						<div th:replace="~{::menu-item(item=${child})}"></div>
+					</th:block>
+				</ul>
+			</li>
+		</th:block>
+	</th:block>
+
+</html>

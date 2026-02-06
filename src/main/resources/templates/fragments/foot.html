@@ -1,14 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <body>
-        <div th:fragment="footer">
-            <div class='footer-cont'> 
-                <p>&copy;<span th:text="${#dates.year(#dates.createNow())}">2025</span> The Brain Dribbler</p>
-            </div>
-            <dialog id="pageModal" class='page-modal'>
-                <button id="closeModal"> X </button>
-                <div id="pageContent" class='page-content'></div>
-            </dialog>
+        <div th:fragment="foot-fragment">
             <script th:src="@{js/main.js}"></script>
         </div>
     </body>
