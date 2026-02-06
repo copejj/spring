@@ -24,7 +24,7 @@ public class SecurityConfig {
 		http
 			.authorizeHttpRequests(auth -> auth
                 // 1. Explicitly permit the login page and static assets
-                .requestMatchers("/", "/login", "/about", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll() 
+                .requestMatchers("/", "/error", "/login", "/about", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll() 
                 // 2. Ensure the "error" and "logout" parameters aren't blocked
                 .requestMatchers("/login?error", "/login?logout").permitAll()
                 .anyRequest().authenticated()

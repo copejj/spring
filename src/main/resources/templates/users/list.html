@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
-	</head>
-	<body class="full-page-content">
-		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
-		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
-        <div class="content-cont table">
-            <div th:replace="~{fragments/body:: title(title=${title})}"></div>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz"
+	layout:decorate="~{layout/default}">
+	<body>
+		<h2>/user/list.html</h2>
+        <div layout:fragment="content"> 
             <table id="userTable" class="datatables table table-striped table-hover stripe" style="width:100%">
                 <thead class="table-dark">
                     <tr>
@@ -53,6 +50,6 @@
                 });
             </script>
         </div>
-		<div th:replace="~{fragments/foot:: footer}"></div>
-    </body>
+		</div>
+	</body>
 </html>

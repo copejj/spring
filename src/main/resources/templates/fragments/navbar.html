@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<nav th:fragment="nav-fragment" class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="menu-container links-cont">
+			<ul>
+				<li th:each="item : ${menuItems}" th:class="'link ' + ${item.cssClass}">
+					<a th:href="${item.href}" th:text="${item.text}" />
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<th:block th:fragment="menu-item-basic(item)">
+		<li th:text="${item}"></li>
+		<!--li th:class="'link ' + ${item.cssClass}">
+			<a th:href="${item.href}" th:text="${item.text}" />
+		</li!-->
+	</th:block>
+
+	<th:block th:fragment="menu-item(item)">
+		<th:block th:if="${item != null}">
+			<li th:if="${#lists.isEmpty(item.children ?: {})}" 
+				th:class="${#request.getAttribute('isNested')} ? '' : 'nav-item'">
+				
+				<a th:href="@{${item.href}}" 
+				th:text="${item.text}"
+				th:class="${#request.getAttribute('isNested')} ? 'dropdown-item' : 'nav-link'"
+				th:classappend="${#request.requestURI == item.href ? 'active' : ''}">
+				</a>
+			</li>
+
+			<li th:if="${not #lists.isEmpty(item.children ?: {})}" 
+				th:class="${#request.getAttribute('isNested')} ? 'dropdown-submenu' : 'nav-item dropdown'">
+				
+				<a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+				th:text="${item.text}"
+				th:classappend="${(#request.getAttribute('isNested') ? 'dropdown-item' : 'nav-link') + (#request.requestURI.startsWith(item.href) ? ' active' : '')}">
+				</a>
+				<ul class="dropdown-menu">
+					<!-- Set a flag so children know they are nested -->
+					<th:block th:each="child : ${item.children}" th:with="isNested=true">
+						<div th:replace="~{::menu-item(item=${child})}"></div>
+					</th:block>
+				</ul>
+			</li>
+		</th:block>
+	</th:block>
+
+</html>

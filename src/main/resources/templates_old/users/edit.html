@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-	xmlns:layout="http://www.ultraq.net.nz"
-	layout:decorate="~{layout/default}">
-	<body>
-        <div layout:fragment="content"> 
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
+	</head>
+	<body class="full-page-content">
+		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
+		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${pageTitle})}"></div>
+
             <div th:if="${saveError}" style="color: red;" th:text="'Error: ' + ${saveError}"> Error go here. </div>
             <div th:if="${saveSuccess}" style="color: green;" th:text="${saveSuccess}"> Success go here.  </div>
 
@@ -28,6 +33,7 @@
                 <input type="submit" value="Save" class="input submit-input" id="submit-save_user" />
                 <input type="button" value="Cancel" class="input submit-input" onclick="location.href='/users'" />
             </form>		
-		</div>
-	</body>
+        </div>
+		<div th:replace="~{fragments/foot:: footer}"></div>
+    </body>
 </html>

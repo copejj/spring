@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.braindribbler.spring.controllers.BaseController;
 import com.braindribbler.spring.dto.companies.CompanyDTO;
 import com.braindribbler.spring.security.UserDetailsImpl;
 import com.braindribbler.spring.service.companies.CompanyService;
@@ -20,7 +19,7 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/companies")
-public class CompanyController extends BaseController {
+public class CompanyController {
 
 	private final CompanyService companyService;
 
@@ -42,9 +41,8 @@ public class CompanyController extends BaseController {
 
         model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
 
-		model.addAttribute("menus", getDefaultMenus("companies"));
 		model.addAttribute("location", "Companies");
-		model.addAttribute("pageTitle", "Companies List");
+		model.addAttribute("title", "Companies List");
 
 		model.addAttribute("view", "companies/list :: companyTable(companies=${companies})");
         return "companies/list";
@@ -61,9 +59,8 @@ public class CompanyController extends BaseController {
 
 		CompanyDTO companyDto = companyService.getCompanyDTOById(companyId);
 
-		model.addAttribute("menus", getDefaultMenus("companies"));
 		model.addAttribute("location", "Company Details");
-		model.addAttribute("pageTitle", "Company Information");	
+		model.addAttribute("title", "Company Information");	
 		
 		model.addAttribute("company", companyDto);
 

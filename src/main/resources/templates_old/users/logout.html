@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<div th:replace="~{fragments/head:: includes(location=${location})}"></div>
+	</head>
+	<body class="full-page-content">
+		<div th:replace="~{fragments/head:: header(location=${location})}"></div>
+		<div th:replace="~{fragments/head:: menus(menus=${menus})}"></div>
+        <div class="content-cont">
+            <div th:replace="~{fragments/body:: title(title=${pageTitle})}"></div>
+            <form th:action="@{/logout}" method="post">
+                <button class="input submit-input" type="submit">Logout</button>
+            </form>
+        </div>
+		<div th:replace="~{fragments/foot:: footer}"></div>
+	</body>
+	<body>
+	</body>
+</html>
