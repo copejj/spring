@@ -42,7 +42,7 @@ public class CompanyController {
         model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
 
 		model.addAttribute("location", "Companies");
-		model.addAttribute("pageTitle", "Companies List");
+		model.addAttribute("title", "Companies List");
 
 		model.addAttribute("view", "companies/list :: companyTable(companies=${companies})");
         return "companies/list";
@@ -60,7 +60,7 @@ public class CompanyController {
 		CompanyDTO companyDto = companyService.getCompanyDTOById(companyId);
 
 		model.addAttribute("location", "Company Details");
-		model.addAttribute("pageTitle", "Company Information");	
+		model.addAttribute("title", "Company Information");	
 		
 		model.addAttribute("company", companyDto);
 

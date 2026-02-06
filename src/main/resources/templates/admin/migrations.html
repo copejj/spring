@@ -3,8 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz"
 	layout:decorate="~{layout/default}">
 	<body>
-		<div layout:fragment="content" th:text="${content}"> 
-			<div th:text="${migrations}"></div>
+		<main layout:fragment="content"> 
 			<table id="userTable" class="datatables table table-striped table-hover stripe" style="width:100%">
 				<thead class="table-dark">
 					<tr>
@@ -44,6 +43,6 @@
 					});
 				});
 			</script>
-		</div>
+		</main>
 	</body>
 </html>

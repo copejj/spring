@@ -48,7 +48,7 @@ public class UserController {
 
 		model.addAttribute("user", userDto);
 		model.addAttribute("location", "Edit User");
-		model.addAttribute("pageTitle", "User Information");
+		model.addAttribute("title", "User Information");
 
 		return "users/edit";
 	}
@@ -84,7 +84,7 @@ public class UserController {
 		List<User> users = userService.getAllUsers();
 
 		model.addAttribute("location", "Users");
-		model.addAttribute("pageTitle", "User List");
+		model.addAttribute("title", "User List");
 		model.addAttribute("users", users);
 
 		return "users/list";
