@@ -1,5 +1,7 @@
 package com.braindribbler.spring.dto.companies;
 
+import java.util.List;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -16,7 +18,9 @@ public record CompanyDTO (
 	String companyWebsite,
 	String companyPhone,
 	String companyFax,
-	Long userId
+
+	Long userId,
+	List<CompanyAddressDTO> addresses
 )
 {}
 
