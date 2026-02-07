@@ -1,6 +1,7 @@
 package com.braindribbler.spring.forms.common;
 
 public class AddressFormItem {
+	private Long addressId;
     private String type;
     private String street;
     private String streetExt;
@@ -21,4 +22,6 @@ public class AddressFormItem {
 	public void setStateAbbr(String stateAbbr) { this.stateAbbr = stateAbbr; }
 	public String getZip() { return zip; }
 	public void setZip(String zip) { this.zip = zip; }
+    public Long getAddressId() { return addressId; }
+    public void setAddressId(Long addressId) { this.addressId = addressId; }
 }

@@ -7,7 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.braindribbler.spring.dto.companies.CompanyAddressDTO;
 import com.braindribbler.spring.dto.companies.CompanyDTO;
+import com.braindribbler.spring.forms.companies.CompanyForm;
+import com.braindribbler.spring.models.common.Address;
+import com.braindribbler.spring.models.common.AddressType;
+import com.braindribbler.spring.models.common.State;
 import com.braindribbler.spring.models.companies.Company;
+import com.braindribbler.spring.models.companies.CompanyAddress;
+import com.braindribbler.spring.repositories.common.AddressTypeRepository;
+import com.braindribbler.spring.repositories.common.StateRepository;
 import com.braindribbler.spring.repositories.companies.CompanyRepository;
 import com.braindribbler.spring.service.companies.CompanyService;
 
@@ -15,9 +22,13 @@ import com.braindribbler.spring.service.companies.CompanyService;
 public class CompanyServiceImpl implements CompanyService {
 
 	private final CompanyRepository companyRepository;
+	private final AddressTypeRepository addressTypeRepository;
+	private final StateRepository stateRepository;
 
-	public CompanyServiceImpl(CompanyRepository companyRepository) {
+	public CompanyServiceImpl(CompanyRepository companyRepository, AddressTypeRepository addressTypeRepository, StateRepository stateRepository) {
 		this.companyRepository = companyRepository;
+		this.addressTypeRepository = addressTypeRepository;
+		this.stateRepository = stateRepository;
 	}
 
 	public List<CompanyAddressDTO> getCompanyAddresses(Long companyId) {
@@ -49,6 +60,7 @@ public class CompanyServiceImpl implements CompanyService {
 		);
 	}
 
+	/*
 	@Override
 	@Transactional
 	public void updateCompany(CompanyDTO dto) {
@@ -73,6 +85,54 @@ public class CompanyServiceImpl implements CompanyService {
 
 		companyRepository.save(company);
 	}
+	*/
+
+	@Override
+	@Transactional
+	public void updateCompany(CompanyForm form) {
+		// 1. Fetch the existing entity
+		Company company = companyRepository.findByIdWithAddresses(form.getCompanyId())
+			.orElseThrow(() -> new RuntimeException("Company not found"));
+
+		// 2. Update basic company fields from the form
+		company.setCompanyName(form.getCompanyName());
+		company.setCompanyEmail(form.getCompanyEmail());
+		company.setCompanyWebsite(form.getCompanyWebsite());
+		company.setCompanyPhone(form.getCompanyPhone());
+		company.setCompanyFax(form.getCompanyFax());
+
+		// 3. Clear existing addresses 
+		// (JPA will delete these from DB because of orphanRemoval = true)
+		company.getCompanyAddresses().clear();
+		
+		// 4. Map from Form POJOs back to Entities
+		form.getAddresses().forEach(formItem -> {
+			// Create the physical Address entity
+			Address address = new Address();
+			address.setStreet(formItem.getStreet());
+			address.setStreetExt(formItem.getStreetExt());
+			address.setCity(formItem.getCity());
+			address.setZip(formItem.getZip());
+			
+			State state = stateRepository.findByAbbr(formItem.getStateAbbr())
+                .orElseThrow(() -> new RuntimeException("State not found: " + formItem.getStateAbbr()));
+            address.setState(state);
+
+            CompanyAddress join = new CompanyAddress();
+            join.setAddress(address);
+
+            AddressType type = addressTypeRepository.findByName(formItem.getType())
+                .orElseThrow(() -> new RuntimeException("Type not found: " + formItem.getType()));
+            join.setAddressType(type);
+			
+			// Link them using your helper method
+			company.addCompanyAddress(join);
+		});
+
+		// 5. Save everything in one transaction
+		companyRepository.save(company);
+	}
+
 
 	@Override
 	@Transactional(readOnly = true)

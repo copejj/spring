@@ -1,0 +1,15 @@
+package com.braindribbler.spring.repositories.common;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.braindribbler.spring.models.common.State;
+
+@Repository
+public interface StateRepository extends JpaRepository<State, Integer> {
+    // Used to find "ID" or "CA" from the form submission
+    Optional<State> findByAbbr(String abbreviation);
+    Optional<State> findByName(String abbreviation);
+}

@@ -13,7 +13,7 @@ public class State {
     @Column(name = "state_id")
     private Integer stateId;
     
-    private String name;      // e.g., "Idaho"
+    private String name; // e.g., "Idaho"
     private String abbr; // e.g., "ID"
 
     public Integer getStateId() { return this.stateId; }

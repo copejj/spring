@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.braindribbler.spring.dto.companies.CompanyDTO;
+import com.braindribbler.spring.forms.companies.CompanyForm;
 import com.braindribbler.spring.security.UserDetailsImpl;
 import com.braindribbler.spring.service.companies.CompanyService;
 
@@ -68,13 +69,22 @@ public class CompanyController {
 	}
 
 	@PutMapping
-	public String updateCompany(@Valid @ModelAttribute("companyDto") CompanyDTO companyDto, BindingResult result, Model model, RedirectAttributes ra) {
-		if (model.containsAttribute("saveError")) {
-			return getCompanyById(companyDto.companyId(), model); 
-		}	
+	public String updateCompany(@Valid @ModelAttribute("companyDto") CompanyForm companyForm,
+								BindingResult result, 
+								RedirectAttributes ra) {
+		if (result.hasErrors()) {
+            return "companies/edit"; 
+        }
 
-		companyService.updateCompany(companyDto);
-		ra.addFlashAttribute("saveSuccess", "Company information updated successfully");
-		return "redirect:/companies/edit/" + companyDto.companyId();
+        try {
+            // Service handles the complex 5-table sync we built
+            companyService.updateCompany(companyForm);
+            ra.addFlashAttribute("saveSuccess", "Company and addresses updated successfully");
+        } catch (Exception e) {
+            ra.addFlashAttribute("saveError", "Update failed: " + e.getMessage());
+        }
+
+        return "redirect:/companies/edit/" + companyForm.getCompanyId();
+    }
 	}
 }
