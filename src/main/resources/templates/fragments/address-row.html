@@ -1,0 +1,29 @@
+<div th:fragment="addressForm(index)" class="address-row" style="border: 1px solid #eee; padding: 15px; margin-bottom: 15px;">
+    <h4>New Address</h4>
+	<label class="input-label">Type</label>
+    <select th:name="|addresses[${index}].type|" class="input text-input">
+        <option th:each="t : ${allAddressTypes}" th:value="${t.name}" th:text="${t.name}"></option>
+    </select>
+
+    <label class="input-label">Street</label>
+    <input th:name="|addresses[${index}].street|" type="text" class="input text-input" />
+
+    <label class="input-label">Street Ext</label>
+    <input th:name="|addresses[${index}].streetExt|" type="text" class="input text-input" />
+
+	<label class="input-label">City</label>
+	<input th:name="|addresses[${index}].city|" type="text" class="input text-input" />
+
+	<label class="input-label">State</label>
+	<select th:name="|addresses[${index}].stateAbbr|" class="input text-input">
+		<option value=""> [ Select a state ] </option>
+		<option th:each="st : ${allStates}" 
+				th:value="${st.abbr}" 
+				th:text="|${st.abbr} - ${st.name}|"></option>
+	</select>
+
+	<label class="input-label">Zip</label>
+	<input th:name="|addresses[${index}].zip|" type="text" class="input text-input" />
+
+    <button type="button" class="btn-danger" onclick="this.closest('.address-row').remove()">Remove</button>
+</div>

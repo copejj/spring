@@ -7,12 +7,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.braindribbler.spring.dto.companies.CompanyDTO;
 import com.braindribbler.spring.forms.companies.CompanyForm;
+import com.braindribbler.spring.repositories.common.AddressTypeRepository;
+import com.braindribbler.spring.repositories.common.StateRepository;
 import com.braindribbler.spring.security.UserDetailsImpl;
 import com.braindribbler.spring.service.companies.CompanyService;
 
@@ -23,9 +24,13 @@ import jakarta.validation.Valid;
 public class CompanyController {
 
 	private final CompanyService companyService;
+	private final StateRepository stateRepository;
+	private final AddressTypeRepository addressTypeRepository;
 
-	public CompanyController(CompanyService companyService) {
+	public CompanyController(CompanyService companyService, StateRepository stateRepository, AddressTypeRepository addressTypeRepository) {
 		this.companyService = companyService;
+		this.stateRepository = stateRepository;
+		this.addressTypeRepository = addressTypeRepository;
 	}
 	
 	/**
@@ -49,42 +54,38 @@ public class CompanyController {
         return "companies/list";
     }
 
-	/**
-	 * Display a single company by its ID.
-	 * @param companyId The target company ID.
-	 * @param model
-	 * @return The company detail view.
-	 */
 	@GetMapping("/edit/{companyId}")
-	public String getCompanyById(@PathVariable Long companyId, Model model) {
-
-		CompanyDTO companyDto = companyService.getCompanyDTOById(companyId);
-
+	public String showEditForm(@PathVariable Long companyId, Model model) {
+		CompanyDTO dto = companyService.getCompanyDTOById(companyId);
+		// Convert to writable form
+		CompanyForm form = companyService.convertToForm(dto);
+		
 		model.addAttribute("location", "Company Details");
 		model.addAttribute("title", "Company Information");	
 		
-		model.addAttribute("company", companyDto);
+		model.addAttribute("allStates", stateRepository.findAll());
+		model.addAttribute("allAddressTypes", addressTypeRepository.findAll());
 
+		model.addAttribute("company", form); // 'company' matches th:object in your HTML
 		return "companies/edit";
 	}
 
-	@PutMapping
-	public String updateCompany(@Valid @ModelAttribute("companyDto") CompanyForm companyForm,
+	@PostMapping("/update")
+	public String updateCompany(@Valid @ModelAttribute("company") CompanyForm companyForm,
 								BindingResult result, 
-								RedirectAttributes ra) {
+								Model model) {
+		companyForm.getAddresses().removeIf(addr -> 
+			(addr.getStreet() == null || addr.getStreet().isBlank()) &&
+			(addr.getCity() == null || addr.getCity().isBlank())
+		);
+
 		if (result.hasErrors()) {
+			model.addAttribute("location", "Edit Company");
+			model.addAttribute("title", "Fix Errors");
             return "companies/edit"; 
         }
 
-        try {
-            // Service handles the complex 5-table sync we built
-            companyService.updateCompany(companyForm);
-            ra.addFlashAttribute("saveSuccess", "Company and addresses updated successfully");
-        } catch (Exception e) {
-            ra.addFlashAttribute("saveError", "Update failed: " + e.getMessage());
-        }
-
+		companyService.updateCompany(companyForm);
         return "redirect:/companies/edit/" + companyForm.getCompanyId();
     }
-	}
 }

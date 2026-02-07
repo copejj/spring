@@ -83,3 +83,16 @@ async function copy_detail_data(btn)
 		$(container).addClass('error');
 	}
 }
+
+function addAddress() {
+    const container = document.getElementById('address-container');
+    const index = container.getElementsByClassName('address-row').length;
+    
+    // Get the HTML from the template tag
+    const template = document.getElementById('address-template').innerHTML;
+    
+    // Replace the placeholder __INDEX__ with the actual current index
+    const newRowHtml = template.replace(/__INDEX__/g, index);
+    
+    container.insertAdjacentHTML('beforeend', newRowHtml);
+}

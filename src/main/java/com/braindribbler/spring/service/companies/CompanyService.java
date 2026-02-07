@@ -10,5 +10,6 @@ public interface CompanyService {
 	CompanyDTO getCompanyDTOById(Long companyId);
 	//void updateCompany(CompanyDTO dto);
 	void updateCompany(CompanyForm companyForm);
+	CompanyForm convertToForm(CompanyDTO dto);
 	List<Company> getAll(Long userId);
 }

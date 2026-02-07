@@ -1,12 +1,14 @@
 package com.braindribbler.spring.service.companies.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.braindribbler.spring.dto.companies.CompanyAddressDTO;
 import com.braindribbler.spring.dto.companies.CompanyDTO;
+import com.braindribbler.spring.forms.common.AddressFormItem;
 import com.braindribbler.spring.forms.companies.CompanyForm;
 import com.braindribbler.spring.models.common.Address;
 import com.braindribbler.spring.models.common.AddressType;
@@ -107,6 +109,10 @@ public class CompanyServiceImpl implements CompanyService {
 		
 		// 4. Map from Form POJOs back to Entities
 		form.getAddresses().forEach(formItem -> {
+			if (formItem.getStreet() == null || formItem.getStreet().isBlank()) {
+				return; // Skip this iteration
+			}
+
 			// Create the physical Address entity
 			Address address = new Address();
 			address.setStreet(formItem.getStreet());
@@ -116,6 +122,7 @@ public class CompanyServiceImpl implements CompanyService {
 			
 			State state = stateRepository.findByAbbr(formItem.getStateAbbr())
                 .orElseThrow(() -> new RuntimeException("State not found: " + formItem.getStateAbbr()));
+			
             address.setState(state);
 
             CompanyAddress join = new CompanyAddress();
@@ -133,6 +140,34 @@ public class CompanyServiceImpl implements CompanyService {
 		companyRepository.save(company);
 	}
 
+	@Override
+	public CompanyForm convertToForm(CompanyDTO dto) {
+		CompanyForm form = new CompanyForm();
+		
+		// 1. Map top-level Company fields
+		form.setCompanyId(dto.companyId());
+		form.setCompanyName(dto.companyName());
+		form.setCompanyEmail(dto.companyEmail());
+		form.setCompanyWebsite(dto.companyWebsite());
+		form.setCompanyPhone(dto.companyPhone());
+		form.setCompanyFax(dto.companyFax());
+
+		// 2. Map the nested Address Records to Address Form POJOs
+		List<AddressFormItem> formAddresses = dto.addresses().stream()
+			.map(addrDto -> {
+				AddressFormItem item = new AddressFormItem();
+				item.setType(addrDto.type());
+				item.setStreet(addrDto.street());
+				item.setStreetExt(addrDto.streetExt());
+				item.setCity(addrDto.city());
+				item.setStateAbbr(addrDto.stateAbbr());
+				item.setZip(addrDto.zip());
+				return item;
+			}).collect(Collectors.toList());
+
+		form.setAddresses(formAddresses);
+		return form;
+	}
 
 	@Override
 	@Transactional(readOnly = true)

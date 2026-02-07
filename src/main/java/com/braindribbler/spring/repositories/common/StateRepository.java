@@ -10,6 +10,6 @@ import com.braindribbler.spring.models.common.State;
 @Repository
 public interface StateRepository extends JpaRepository<State, Integer> {
     // Used to find "ID" or "CA" from the form submission
-    Optional<State> findByAbbr(String abbreviation);
-    Optional<State> findByName(String abbreviation);
+    Optional<State> findByAbbr(String abbr);
+    Optional<State> findByName(String abbr);
 }

@@ -12,14 +12,18 @@ public record CompanyAddressDTO(
     String zip
 ) {
 	public static CompanyAddressDTO fromEntity(CompanyAddress ca) {
+        var addr = ca.getAddress();
+        var state = addr.getState(); // This might be null due to your LEFT JOIN
+
         return new CompanyAddressDTO(
-            ca.getAddressType().getName(),
-            ca.getAddress().getStreet(),
-            ca.getAddress().getStreetExt(),
-            ca.getAddress().getCity(),
-            ca.getAddress().getState().getAbbr(),
-            ca.getAddress().getState().getName(),
-            ca.getAddress().getZip()
+            ca.getAddressType() != null ? ca.getAddressType().getName() : "N/A",
+            addr.getStreet(),
+            addr.getStreetExt(),
+            addr.getCity(),
+            // Null-safe check for State
+            state != null ? state.getAbbr() : "", 
+            state != null ? state.getName() : "",
+            addr.getZip()
         );
     }
 }

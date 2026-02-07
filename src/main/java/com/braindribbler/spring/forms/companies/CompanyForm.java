@@ -6,9 +6,17 @@ import java.util.List;
 import com.braindribbler.spring.forms.common.AddressFormItem;
 import com.braindribbler.spring.models.users.User;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class CompanyForm {
 	private Long companyId;
+
+	@NotBlank(message = "Company Name cannot be empty")
     private String companyName;
+
+	@Email(message = "Invalid email format")
 	private String companyEmail;
 	private String companyWebsite;
 	private String companyUrl;
@@ -16,6 +24,8 @@ public class CompanyForm {
 	private String companyFax;
 	private Long userId;
 	private User user;
+
+	@Valid
     private List<AddressFormItem> addresses = new ArrayList<>();
 
     // Standard Getters/Setters 
