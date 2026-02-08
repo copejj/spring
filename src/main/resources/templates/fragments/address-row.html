@@ -1,0 +1,54 @@
+<div th:fragment="addressForm(index)" class="input-cont address-group-input-cont inputs-address-group address-row">
+    <h4>New Address <span class="address-number">__INDEX_DISPLAY__</span></h4>
+    <input type="hidden" name="addresses[__INDEX__].addressId" />
+
+    <label class="input-label" for="addresses[__INDEX__].type">Type</label>
+    <select id="addresses[__INDEX__].type" 
+            name="addresses[__INDEX__].type" 
+            class="input text-input">
+        <option value=""> [ Select Type ] </option>
+        <option th:each="t : ${allAddressTypes}" 
+                th:value="${t.name}" 
+                th:text="${t.name}">
+        </option>
+    </select>
+
+    <label class="input-label" for="addresses[__INDEX__].street">Street</label>
+    <input autocomplete="section-__INDEX__ address-line1" oninput="parse_address(this)"
+      id="addresses[__INDEX__].street" 
+      name="addresses[__INDEX__].street" 
+      type="text" class="input text-input" />
+
+    <label class="input-label" for="addresses[__INDEX__].streetExt">Suite/Apt</label>
+    <input autocomplete="section-__INDEX__ address-line2"
+      id="addresses[__INDEX__].streetExt" 
+      name="addresses[__INDEX__].streetExt" 
+      type="text" class="input text-input" />
+
+    <label class="input-label" for="addresses[__INDEX__].city">City</label>
+    <input autocomplete="section-__INDEX__ address-level2"
+      id="addresses[__INDEX__].city" 
+      name="addresses[__INDEX__].city" 
+      type="text" class="input text-input" />
+
+    <label class="input-label" for="addresses[__INDEX__].stateAbbr">State</label>
+    <select autocomplete="section-__INDEX__ address-level1 region"
+      id="addresses[__INDEX__].stateAbbr" 
+      name="addresses[__INDEX__].stateAbbr" 
+      class="input select-input">
+      <option value=""> [ Select State ] </option>
+      <option th:each="st : ${allStates}" 
+        th:value="${st.abbr}" 
+        th:data-full-name="${st.name}"
+        th:text="${st.name}">Idaho</option>
+      </option>
+    </select>
+
+    <label class="input-label" for="addresses[__INDEX__].zip">Zip</label>
+    <input autocomplete="section-__INDEX__ postal-code"
+      id="addresses[__INDEX__].zip" 
+      name="addresses[__INDEX__].zip" 
+      type="text" class="input text-input" />
+
+    <button type="button" class="btn-danger input submit-input" onclick="removeAndReindex(this)"> Remove This Address </button>
+</div>

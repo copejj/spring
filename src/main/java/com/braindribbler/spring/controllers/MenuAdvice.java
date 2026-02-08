@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import com.braindribbler.spring.models.menus.MenuItem;
 import com.braindribbler.spring.security.UserDetailsImpl;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @ControllerAdvice
 public class MenuAdvice {
 
@@ -40,5 +42,10 @@ public class MenuAdvice {
         list.add(new MenuItem("/about", "About", "align-right"));
         
         return list;
+    }
+
+    @ModelAttribute("currentUri")
+    public String currentUri(HttpServletRequest request) {
+        return request.getRequestURI();
     }
 }

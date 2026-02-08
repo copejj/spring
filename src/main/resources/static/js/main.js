@@ -83,3 +83,99 @@ async function copy_detail_data(btn)
 		$(container).addClass('error');
 	}
 }
+
+function addAddress() {
+    const container = document.getElementById('address-container');
+    const template = document.getElementById('address-template').innerHTML;
+    
+    // Calculate the next index based on current rows
+    const nextIndex = container.querySelectorAll('.address-row').length;
+    
+    // Replace all instances of __INDEX__ with the actual number
+    let newRowHtml = template.replace(/__INDEX__/g, nextIndex);
+    newRowHtml = newRowHtml.replace(/__INDEX_DISPLAY__/g, nextIndex + 1);
+    
+    // Append to the container
+    container.insertAdjacentHTML('beforeend', newRowHtml);
+}
+
+function removeAndReindex(btn) {
+    const container = document.getElementById('address-container');
+    btn.closest('.address-row').remove();
+    
+    // Loop through all remaining rows to fix indices (0, 1, 2...)
+    container.querySelectorAll('.address-row').forEach((row, index) => {
+        row.querySelectorAll('input, select, label').forEach(el => {
+            // Fix 1Password sections
+            if (el.hasAttribute('autocomplete')) {
+                el.setAttribute('autocomplete', el.getAttribute('autocomplete').replace(/section-\d+/, `section-${index}`));
+            }
+            // Fix Spring indices in name, id, and for
+            ['name', 'id', 'for'].forEach(attr => {
+                if (el.hasAttribute(attr)) {
+                    el.setAttribute(attr, el.getAttribute(attr).replace(/\[\d+\]|\d+/, index));
+                }
+            });
+        });
+    });
+}
+
+function parse_address(element) {
+    const row = element.closest('.address-row');
+    if (!row) return;
+
+    let full = element.value.trim();
+    
+    // Regex breakdown:
+    // (.*)             -> Group 1: Everything before the city/state (Street/Ext)
+    // ,\s*             -> REQUIRED: A comma and optional space
+    // ([A-Za-z\s.\-]+) -> Group 2: City Name
+    // [,\s]+           -> FLEXIBLE: A comma OR space(s) between City and State
+    // ([A-Z]{2}|[A-Za-z\s]+) -> Group 3: State (ID or Idaho)
+    // [,\s]+           -> FLEXIBLE: A comma OR space(s) between State and Zip
+    // (\d{5}(?:-\d{4})?) $ -> Group 4: Zip Code at the very end
+    const addressRegex = /^(.*),\s*([A-Za-z\s.\-]+)[,\s]+([A-Z]{2}|[A-Za-z\s]+)[,\s]+(\d{5}(?:-\d{4})?)$/;
+    
+    const match = full.match(addressRegex);
+
+    if (match) {
+        let streetPart = match[1].trim(); // Everything before the first comma
+        let city = match[2].trim();
+        let state = match[3].trim();
+        let zip = match[4].trim();
+        
+        let street = streetPart;
+        let streetExt = '';
+
+        // Optional: Check the streetPart for a second comma to extract StreetExt
+        if (streetPart.includes(',')) {
+            let subParts = streetPart.split(',');
+            street = subParts[0].trim();
+            streetExt = subParts.slice(1).join(', ').trim();
+        }
+
+        // Helper to update fields
+        const set = (sel, val) => { 
+            const el = row.querySelector(sel);
+            if (el) el.value = val;
+        };
+
+        set('input[name*=".street"]', street);
+        set('input[name*=".streetExt"]', streetExt);
+        set('input[name*=".city"]', city);
+        set('input[name*=".zip"]', zip);
+
+        // Update State Dropdown
+        const stateSelect = row.querySelector('select[name*=".stateAbbr"]');
+        if (stateSelect) {
+            const opt = [...stateSelect.options].find(o => 
+                [o.value, o.text].some(v => v.toLowerCase() === state.toLowerCase())
+            );
+            if (opt) stateSelect.value = opt.value;
+        }
+    } else {
+        // If it fails the regex (e.g., no comma), we do nothing.
+        // The text stays in the street input exactly as the user (or 1Password) typed it.
+        console.log("Address format not recognized; skipping auto-parse.");
+    }
+}

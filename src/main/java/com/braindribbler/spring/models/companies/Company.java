@@ -3,10 +3,13 @@ package com.braindribbler.spring.models.companies;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.braindribbler.spring.models.users.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PostLoad;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -58,6 +62,23 @@ public class Company {
 	@JoinColumn(name="user_id", insertable=false, updatable=false)
 	@JsonBackReference
 	private User user;
+
+	@OneToMany(
+		mappedBy = "company", 
+		cascade = CascadeType.ALL, 
+		orphanRemoval = true
+	)
+	private List<CompanyAddress> companyAddresses = new ArrayList<>();
+
+	public void addCompanyAddress(CompanyAddress companyAddress) {
+		companyAddresses.add(companyAddress);
+		companyAddress.setCompany(this); // Crucial for the foreign key!
+	}
+
+	public void removeCompanyAddress(CompanyAddress companyAddress) {
+		companyAddresses.remove(companyAddress);
+		companyAddress.setCompany(null);
+	}
 
     private String formatUrl(String url) {
 		if (!url.matches("^[a-zA-Z0-9]+://.*$")) {
@@ -111,4 +132,6 @@ public class Company {
 	public void setUserId(Long userId) { this.userId = userId; }
 	public User getUser() { return user; }
 	public void setUser(User user) { this.user = user; }
+    public List<CompanyAddress> getCompanyAddresses() { return companyAddresses; }
+    public void setCompanyAddresses(List<CompanyAddress> companyAddresses) { this.companyAddresses = companyAddresses; }
 }

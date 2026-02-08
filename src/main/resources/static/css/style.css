@@ -347,7 +347,19 @@ div#pageContent .sub-header-cont {
     gap: 8px;
 }
 
-/* Ensure the input doesn't take up 100% width by default */
 .input-group input {
     width: 100rem; 
+}
+
+select.select-input:required:invalid {
+    color: #999; /* Grey placeholder color */
+}
+
+select.select-input option {
+    color: #000;
+}
+
+select.select-input {
+    appearance: none;
+    -webkit-appearance: none;
 }
