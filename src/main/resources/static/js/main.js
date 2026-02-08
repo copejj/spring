@@ -86,13 +86,12 @@ async function copy_detail_data(btn)
 
 function addAddress() {
     const container = document.getElementById('address-container');
-    const index = container.getElementsByClassName('address-row').length;
-    
-    // Get the HTML from the template tag
     const template = document.getElementById('address-template').innerHTML;
     
-    // Replace the placeholder __INDEX__ with the actual current index
-    const newRowHtml = template.replace(/__INDEX__/g, index);
+    const nextIndex = container.querySelectorAll('.address-row').length;
     
-    container.insertAdjacentHTML('beforeend', newRowHtml);
+    let rowHtml = template.replace(/__INDEX__/g, nextIndex);
+    rowHtml = rowHtml.replace(/__INDEX_DISPLAY__/g, nextIndex + 1);
+    
+    container.insertAdjacentHTML('beforeend', rowHtml);
 }

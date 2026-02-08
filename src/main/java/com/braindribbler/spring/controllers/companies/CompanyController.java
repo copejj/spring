@@ -1,5 +1,6 @@
 package com.braindribbler.spring.controllers.companies;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,7 +65,7 @@ public class CompanyController {
 		model.addAttribute("title", "Company Information");	
 		
 		model.addAttribute("allStates", stateRepository.findAll());
-		model.addAttribute("allAddressTypes", addressTypeRepository.findAll());
+		model.addAttribute("allAddressTypes", addressTypeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
 
 		model.addAttribute("company", form); // 'company' matches th:object in your HTML
 		return "companies/edit";

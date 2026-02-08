@@ -1,29 +1,54 @@
-<div th:fragment="addressForm(index)" class="address-row" style="border: 1px solid #eee; padding: 15px; margin-bottom: 15px;">
-    <h4>New Address</h4>
-	<label class="input-label">Type</label>
-    <select th:name="|addresses[${index}].type|" class="input text-input">
-        <option th:each="t : ${allAddressTypes}" th:value="${t.name}" th:text="${t.name}"></option>
+<div th:fragment="addressForm(index)" class="input-cont address-group-input-cont inputs-address-group address-row">
+    <!-- Use a simple span or placeholder for JS to swap the display number -->
+    <h4>New Address <span class="address-number">__INDEX_DISPLAY__</span></h4>
+
+    <!-- We use the literal string __INDEX__ so JS can .replace() it -->
+    <input type="hidden" name="addresses[__INDEX__].addressId" />
+
+    <label class="input-label" th:for="|addresses__INDEX__.type|">Type</label>
+    <select th:id="|addresses__INDEX__.type|" 
+            name="addresses[__INDEX__].type" 
+            class="input text-input">
+        <option value="">-- Select Type --</option>
+        <option th:each="t : ${allAddressTypes}" 
+                th:value="${t.name}" 
+                th:text="${t.name}">
+        </option>
     </select>
 
-    <label class="input-label">Street</label>
-    <input th:name="|addresses[${index}].street|" type="text" class="input text-input" />
+    <label class="input-label" th:for="|addresses__INDEX__.street|">Street</label>
+    <input th:id="|addresses__INDEX__.street|" 
+		name="addresses[__INDEX__].street" 
+		type="text" class="input text-input" />
 
-    <label class="input-label">Street Ext</label>
-    <input th:name="|addresses[${index}].streetExt|" type="text" class="input text-input" />
+    <label class="input-label" th:for="|addresses__INDEX__.streetExt|">Suite/Apt</label>
+    <input th:id="|addresses__INDEX__.streetExt|" 
+		name="addresses[__INDEX__].streetExt" 
+		type="text" class="input text-input" />
 
-	<label class="input-label">City</label>
-	<input th:name="|addresses[${index}].city|" type="text" class="input text-input" />
+    <label class="input-label" th:for="|addresses__INDEX__.city|">City</label>
+    <input th:id="|addresses__INDEX__.city|" 
+		name="addresses[__INDEX__].city" 
+		type="text" class="input text-input" />
 
-	<label class="input-label">State</label>
-	<select th:name="|addresses[${index}].stateAbbr|" class="input text-input">
-		<option value=""> [ Select a state ] </option>
-		<option th:each="st : ${allStates}" 
-				th:value="${st.abbr}" 
-				th:text="|${st.abbr} - ${st.name}|"></option>
-	</select>
+    <label class="input-label" th:for="|addresses__INDEX__.stateAbbr|">State</label>
+    <select th:id="|addresses__INDEX__.stateAbbr|" 
+            name="addresses[__INDEX__].stateAbbr|" 
+            class="input select-input">
+        <option value="">-- Select State --</option>
+        <option th:each="st : ${allStates}" 
+                th:value="${st.abbr}" 
+                th:text="|${st.abbr} - ${st.name}|">
+        </option>
+    </select>
 
-	<label class="input-label">Zip</label>
-	<input th:name="|addresses[${index}].zip|" type="text" class="input text-input" />
+    <label class="input-label" th:for="|addresses__INDEX__.zip|">Zip</label>
+    <input th:id="|addresses__INDEX__.zip|" 
+		name="addresses[__INDEX__].zip" 
+		type="text" class="input text-input" />
 
-    <button type="button" class="btn-danger" onclick="this.closest('.address-row').remove()">Remove</button>
+    <button type="button" class="btn-danger input submit-input" 
+            onclick="this.closest('.address-row').remove()"> 
+        Remove This Address 
+    </button>
 </div>

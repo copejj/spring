@@ -80,8 +80,8 @@
                 <input type="submit" name="save_company" value="Save" class="input submit-input" id="submit-save_company" />
                 <input type="button" value="Cancel" class="input submit-input" onclick="location.href='/companies'" />
                 <template id="address-template">
-                    <div th:replace="~{fragments/address-row :: addressForm(index='__INDEX__')}"></div>
-                </template>`
+                    <div class="address-row-template" th:insert="~{fragments/address-row :: addressForm(index='__INDEX__')}"></div>
+                </template>
             </form>		
 		</div>
 	</body>
