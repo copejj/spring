@@ -1,6 +1,12 @@
 on:
     release:
         types: [published]
+    workflow_dispatch: 
+        inputs:
+            test_tag:
+                description: 'Tag to use for testing (e.g. v1.0.0-test)'
+                required: false
+                default: 'testing'
 
 jobs:
     deploy-to-production:
@@ -27,17 +33,18 @@ jobs:
                         
                         BACKUP_FILE="/tmp/pre_deploy_backup_$(date +%F_%H%M%S).sql"
 
+                        # Define a cleanup/rollback function
                         cleanup_on_failure() {
                             EXIT_CODE=$?
                             if [ $EXIT_CODE -ne 0 ]; then
                                 echo "!!! ERROR DETECTED (Exit Code: $EXIT_CODE) !!!"
                                 if [ -f "$BACKUP_FILE" ]; then
                                     echo "Rolling back database to $BACKUP_FILE..."
-                                    psql $PSQL_ARGS -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
+                                    # Reset the public schema and ensure whammy owns it
+                                    psql $PSQL_ARGS -c "DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public; ALTER SCHEMA public OWNER TO whammy; GRANT ALL ON SCHEMA public TO public;"
                                     psql $PSQL_ARGS -f "$BACKUP_FILE"
                                     echo "Rollback complete."
                                 fi
-                                # Ensure we still clean up the properties file even on failure
                                 git checkout .
                                 exit $EXIT_CODE
                             fi
@@ -65,12 +72,16 @@ jobs:
                             if [ "$ALREADY_RUN" == "1" ]; then continue; fi
 
                             echo "Executing migration: $FILENAME"
-                            psql $PSQL_ARGS -c "BEGIN;
-                                INSERT INTO schema_migrations (filename, status) VALUES ('$FILENAME', 'pending') 
-                                ON CONFLICT (filename) DO UPDATE SET status='pending', started_at=NOW(), ended_at=NULL;
-                                \i $FILE
-                                UPDATE schema_migrations SET ended_at=NOW(), status='completed' WHERE filename='$FILENAME';
-                                COMMIT;"
+                            
+                            # We wrap the file content with the tracking SQL and pipe it all to psql.
+                            # This avoids \i and the EOF indentation issue.
+                            (
+                                echo "BEGIN;"
+                                echo "INSERT INTO schema_migrations (filename, status) VALUES ('$FILENAME', 'pending') ON CONFLICT (filename) DO UPDATE SET status='pending', started_at=NOW(), ended_at=NULL;"
+                                cat "$FILE"
+                                echo "UPDATE schema_migrations SET ended_at=NOW(), status='completed' WHERE filename='$FILENAME';"
+                                echo "COMMIT;"
+                            ) | psql $PSQL_ARGS
                         done
 
                         # 5. Configuration & Build
@@ -107,4 +118,4 @@ jobs:
                     DB_URL: ${{ secrets.DB_URL }}
                     API_BASE_URL: ${{ vars.API_BASE_URL }}
                     SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}
-                    TAG_NAME: ${{ github.event.release.tag_name }}
+                    TAG_NAME: ${{ github.event.inputs.test_tag || github.event.release.tag_name }}
