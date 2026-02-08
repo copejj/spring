@@ -9,7 +9,7 @@
     <select th:id="|addresses__INDEX__.type|" 
             name="addresses[__INDEX__].type" 
             class="input text-input">
-        <option value="">-- Select Type --</option>
+        <option value=""> [ Select Type ] </option>
         <option th:each="t : ${allAddressTypes}" 
                 th:value="${t.name}" 
                 th:text="${t.name}">
@@ -17,33 +17,39 @@
     </select>
 
     <label class="input-label" th:for="|addresses__INDEX__.street|">Street</label>
-    <input th:id="|addresses__INDEX__.street|" 
+    <input autocomplete="address-line1"
+		th:id="|addresses__INDEX__.street|" 
 		name="addresses[__INDEX__].street" 
 		type="text" class="input text-input" />
 
     <label class="input-label" th:for="|addresses__INDEX__.streetExt|">Suite/Apt</label>
-    <input th:id="|addresses__INDEX__.streetExt|" 
+    <input autocomplete="address-line2"
+		th:id="|addresses__INDEX__.streetExt|" 
 		name="addresses[__INDEX__].streetExt" 
 		type="text" class="input text-input" />
 
     <label class="input-label" th:for="|addresses__INDEX__.city|">City</label>
-    <input th:id="|addresses__INDEX__.city|" 
+    <input autocomplete="address-level2"
+		th:id="|addresses__INDEX__.city|" 
 		name="addresses[__INDEX__].city" 
 		type="text" class="input text-input" />
 
     <label class="input-label" th:for="|addresses__INDEX__.stateAbbr|">State</label>
-    <select th:id="|addresses__INDEX__.stateAbbr|" 
-            name="addresses[__INDEX__].stateAbbr|" 
-            class="input select-input">
-        <option value="">-- Select State --</option>
-        <option th:each="st : ${allStates}" 
-                th:value="${st.abbr}" 
-                th:text="|${st.abbr} - ${st.name}|">
-        </option>
-    </select>
+    <select autocomplete="address-level1 region"
+		th:id="|addresses__INDEX__.stateAbbr|" 
+        name="addresses[__INDEX__].stateAbbr" 
+        class="input select-input">
+        <option value=""> [ Select State ] </option>
+		<option th:each="st : ${allStates}" 
+			th:value="${st.abbr}" 
+			th:data-full-name="${st.name}"
+			th:text="${st.name}">Idaho</option>
+		</option>
+	</select>
 
     <label class="input-label" th:for="|addresses__INDEX__.zip|">Zip</label>
-    <input th:id="|addresses__INDEX__.zip|" 
+    <input autocomplete="postal-code"
+		th:id="|addresses__INDEX__.zip|" 
 		name="addresses[__INDEX__].zip" 
 		type="text" class="input text-input" />
 

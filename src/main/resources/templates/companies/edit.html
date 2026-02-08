@@ -44,7 +44,7 @@
 
                             <label th:for="*{addresses[__${iter.index}__].type}" class="input-label">Type</label>
                             <select th:field="*{addresses[__${iter.index}__].type}" class="input text-input">
-                                <option value="">-- Select Type --</option>
+                                <option value=""> [ Select Type ] </option>
                                 <option th:each="t : ${allAddressTypes}" 
                                         th:value="${t.name}" 
                                         th:text="${t.name}">
@@ -52,25 +52,27 @@
                             </select>
 
                             <label th:for="*{addresses[__${iter.index}__].street}" class="input-label">Street</label>
-                            <input th:field="*{addresses[__${iter.index}__].street}" type="text" class="input text-input" />
+                            <input autocomplete="address-line1" th:field="*{addresses[__${iter.index}__].street}" type="text" class="input text-input" />
 
                             <label th:for="*{addresses[__${iter.index}__].streetExt}" class="input-label">Suite/Apt</label>
-                            <input th:field="*{addresses[__${iter.index}__].streetExt}" type="text" class="input text-input" />
+                            <input autocomplete="address-line2" th:field="*{addresses[__${iter.index}__].streetExt}" type="text" class="input text-input" />
 
                             <label th:for="*{addresses[__${iter.index}__].city}" class="input-label">City</label>
-                            <input th:field="*{addresses[__${iter.index}__].city}" type="text" class="input text-input" />
+                            <input autocomplete="address-level2" th:field="*{addresses[__${iter.index}__].city}" type="text" class="input text-input" />
 
                             <label th:for="*{addresses[__${iter.index}__].stateAbbr}" class="input-label">State</label>
-                            <select th:field="*{addresses[__${iter.index}__].stateAbbr}" class="input select-input">
-                            <option value="">-- Select State --</option>
-                                <!-- Format: 'ID - Idaho' -->
+                            <select autocomplete="address-level1 region" 
+                                th:field="*{addresses[__${iter.index}__].stateAbbr}" 
+                                class="input select-input">
+                                <option value=""> [ Select State ] </option>
                                 <option th:each="st : ${allStates}" 
-                                        th:value="${st.abbr}" 
-                                        th:text="|${st.abbr} - ${st.name}|">
+                                    th:value="${st.abbr}" 
+                                    th:data-full-name="${st.name}"
+                                    th:text="${st.name}">Idaho</option>
                                 </option>
                             </select>
 
-                            <label th:for="*{addresses[__${iter.index}__].zip}" class="input-label">Zip</label>
+                            <label autocomplete="postal-code" th:for="*{addresses[__${iter.index}__].zip}" class="input-label">Zip</label>
                             <input th:field="*{addresses[__${iter.index}__].zip}" type="text" class="input text-input" />
                             <button type="button" class="btn-danger input submit-input" onclick="this.closest('.address-row').remove()"> Remove This Address </button>
                         </div>
