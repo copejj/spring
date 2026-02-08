@@ -23,7 +23,7 @@ jobs:
                         
                         # Specific args for psql vs pg_dump
                         PSQL_ARGS="-h $DB_HOST -U $DB_USER -d $DB_NAME -t -v ON_ERROR_STOP=1"
-                        DUMP_ARGS="-h $DB_HOST -U $DB_USER -d $DB_NAME --no-subscriptions --no-publications"
+                        DUMP_ARGS="-h $DB_HOST -U $DB_USER -d $DB_NAME --no-subscriptions --no-publications -x -O"
                         
                         BACKUP_FILE="/tmp/pre_deploy_backup_$(date +%F_%H%M%S).sql"
 
