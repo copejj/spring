@@ -33,14 +33,14 @@ jobs:
                         
                         BACKUP_FILE="/tmp/pre_deploy_backup_$(date +%F_%H%M%S).sql"
 
-                        # Define a cleanup/rollback function
+                        # Define cleanup_on_failure
                         cleanup_on_failure() {
                             EXIT_CODE=$?
                             if [ $EXIT_CODE -ne 0 ]; then
                                 echo "!!! ERROR DETECTED (Exit Code: $EXIT_CODE) !!!"
                                 if [ -f "$BACKUP_FILE" ]; then
                                     echo "Rolling back database to $BACKUP_FILE..."
-                                    # Reset the public schema and ensure whammy owns it
+                                    # This specific sequence is required for non-superusers
                                     psql $PSQL_ARGS -c "DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public; ALTER SCHEMA public OWNER TO whammy; GRANT ALL ON SCHEMA public TO public;"
                                     psql $PSQL_ARGS -f "$BACKUP_FILE"
                                     echo "Rollback complete."
@@ -61,7 +61,7 @@ jobs:
                         git fetch --tags --all
                         git checkout "$TAG_NAME"
 
-                        # 4. Database Migrations
+                        # 4. Database Migrations (The "No-Backslash" version)
                         echo "[Step 4/8] Running database migrations..."
                         psql $PSQL_ARGS -c "BEGIN;" -f sql/init_schema.sql -c "COMMIT;"
 
@@ -73,8 +73,7 @@ jobs:
 
                             echo "Executing migration: $FILENAME"
                             
-                            # We wrap the file content with the tracking SQL and pipe it all to psql.
-                            # This avoids \i and the EOF indentation issue.
+                            # Using ( ) | psql ensures the file content is read correctly without \i
                             (
                                 echo "BEGIN;"
                                 echo "INSERT INTO schema_migrations (filename, status) VALUES ('$FILENAME', 'pending') ON CONFLICT (filename) DO UPDATE SET status='pending', started_at=NOW(), ended_at=NULL;"
