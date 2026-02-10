@@ -4,13 +4,15 @@
 	<head th:replace="~{fragments/head :: head-fragment}">
 	</head>
 	<body>
-		<div th:replace="~{fragments/header :: header-fragment}"></div>
-		<nav th:replace="~{fragments/navbar :: nav-fragment}"></nav>
-		<div class="content-cont table">
-			<nav th:replace="~{fragments/header :: title-fragment}"></nav>
-			<main layout:fragment="content"></main>
+		<div class="full-page-content">
+			<div th:replace="~{fragments/header :: header-fragment}"></div>
+			<nav th:replace="~{fragments/navbar :: nav-fragment}"></nav>
+			<div class="content-cont table">
+				<nav th:replace="~{fragments/header :: title-fragment}"></nav>
+				<main layout:fragment="content"></main>
+			</div>
+			<footer th:replace="~{fragments/footer :: footer-fragment}"></footer>
+			<div th:replace="~{fragments/foot :: foot-fragment}"> </div>
 		</div>
-		<footer th:replace="~{fragments/footer :: footer-fragment}"></footer>
-		<div th:replace="~{fragments/foot :: foot-fragment}"> </div>
 	</body>
 </html>

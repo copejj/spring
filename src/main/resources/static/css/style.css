@@ -1,4 +1,5 @@
 html, body {
+    height: 100%;
     margin: 0;
     padding: 0;
 }
@@ -12,11 +13,16 @@ pre {
     font-family: "Fira Code", "Courier New", monospace;
 }
 .full-page-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    box-sizing: border-box;
     background-color: #f0f0f0;
-    height: 100%;
-    box-sizing: content-box;
     border-right: .5rem solid transparent;
     border-image: linear-gradient(to bottom, #1b2a3b, #f0f0f0, #f0f0f0, #00067d) 1;
+}
+.full-page-content > div:last-of-type {
+    margin-top: auto;
 }
 .header-cont, 
 .footer-cont,
@@ -24,31 +30,6 @@ div#pageContent .sub-header-cont {
     background-image: linear-gradient(to right, #2d5375, #9192a7, #a4a4a8);
 	color: white;
 	padding: 1rem;
-}
-.links-cont {
-    background-image: linear-gradient(to right, #ffffff, #9192a7, #a4a4a8);
-	margin-bottom: 1rem;
-    display: inline-flex;
-    width: 100%;
-    box-sizing: border-box;
-}
-.link.link-selected {
-    background-image: linear-gradient(to right, #2d5375, #31517d, #2d5375);
-    color: white;
-    border: 2px solid #305576;
-    border-radius: 0 0 5px 5px;
-}
-.link {
-    padding: 0.5rem;
-    width: 5rem;
-    text-align: center;
-}
-.link a {
-    text-decoration: none;
-    color: #32517e;
-}
-.link.link-selected a {
-    color: white;
 }
 .header-cont {
     height: 5vh;
@@ -63,16 +44,18 @@ div#pageContent .sub-header-cont {
     font-style: italic;
 }
 .footer-cont {
-	margin-top: 1rem;
+    flex-shrink: 0;
+	margin-top: auto;
 	font-size: .75rem;
 	font-style: italic;
     border-top: .5rem solid transparent;
     border-image: linear-gradient(to right, #2d5375, #282d90) 1;
 }
 .content-cont {
+    flex: 1 0 auto;
     margin: 1rem;
-    min-height: 73.7vh;
     box-sizing: border-box;
+    display: block;
 }
 .select-input {
     min-width: 20rem;
@@ -287,10 +270,6 @@ dialog.page-modal table td.detail-control.error .fa-copy {
     font-style: italic;
     padding-left: 1rem;
 }
-div#pageContent .content-cont {
-    height: 90vh;
-    margin: 0;
-}
 .table.details-table {
     height: 80vh;
     min-width: 30rem;
@@ -317,23 +296,14 @@ div#pageContent .sub-header-cont {
     background-image: linear-gradient(to right, #2d5375, #a35900);
     background-clip: text;
 }
-.menu-container {
-    overflow: hidden; /* Clear floats within the container */
-}
-.menu-container ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
 .menu-container li {
     display: inline-block; /* Display list items inline */
 }
 .align-right {
-    float: right; /* Align the entire menu to the right */
+    margin-left: auto;
 }
 .align-left {
-    float: left; /* Align the entire menu to the left */
+    margin-right: auto;
 }
 .input-cont.line-separator {
     border-top: 2px #a4a4a8 solid;
@@ -362,4 +332,164 @@ select.select-input option {
 select.select-input {
     appearance: none;
     -webkit-appearance: none;
+}
+.nav-item.link {
+    text-align: center;
+}
+.link {
+    padding: 0.2rem;
+    width: 5rem;
+}
+.link a {
+    text-decoration: none;
+    color: #e3e4e5;
+}
+.nav-link.link.link-selected {
+    background-image: linear-gradient(to right, #2d5375, #31517d, #2d5375);
+    color: white;
+    border: 2px solid #305576;
+    border-radius: 0 0 5px 5px;
+}
+.nav-link.link.link-selected a {
+    color: white;
+}
+
+.nav-item, .link {
+    flex-shrink: 0;     
+}
+
+.dropdown-menu li {
+    display: block !important;
+    width: 100% !important;
+    text-align: left;
+    padding: 0;
+}
+
+.nav-item.align-right:first-of-type {
+    margin-left: auto;
+}
+
+.align-right .dropdown-menu {
+    left: auto !important;
+    right: 0 !important;
+}
+
+.nav-item:hover > .dropdown-menu {
+    display: block !important;
+}
+
+.align-right .dropdown-menu {
+    left: auto !important;
+    right: 0 !important;
+}
+
+/* 1. LAYOUT: Sticky Footer & Full Height */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.full-page-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+}
+
+/* Middle section grows to fill space */
+.content-cont {
+    flex: 1 0 auto; 
+    margin: 1rem;
+}
+
+/* Footer stays at bottom */
+.footer-cont {
+    flex-shrink: 0;
+    margin-top: auto; 
+}
+
+/* 2. NAVIGATION BAR: Container & Alignment */
+.links-cont {
+    background: #496b89;
+    margin-bottom: 1rem;
+    display: flex;
+    width: 100%;
+    overflow: visible !important; /* Critical for dropdowns */
+    flex-shrink: 0;
+}
+
+.menu-container {
+    width: 100%;
+    overflow: visible !important;
+}
+
+.menu-container ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.nav-item.align-right:first-of-type {
+    margin-left: auto;
+}
+
+.nav-item.align-right {
+    margin-left: 0; 
+}
+
+.nav-item {
+    position: relative !important;
+    width: 6rem;
+}
+
+.nav-link {
+    display: block;
+    padding: 0.5rem;
+    text-decoration: none;
+    color: #e3e4e5;
+}
+
+.dropdown-menu {
+    position: absolute !important;
+    top: 100% !important; /* Below the bar */
+    left: 0;
+    z-index: 1000;
+    display: none !important; /* Hidden by default */
+    border: none !important;
+    min-width: 10rem;
+    background: #496b89e0;
+    border-radius: 0 0 1rem 1rem;
+}
+
+/* Show on Hover Logic */
+.nav-item:hover > .dropdown-menu {
+    display: block !important;
+}
+
+/* Right-aligned items fly out to the left or align to right edge */
+.align-right .dropdown-menu {
+    left: auto !important;
+    right: 0 !important;
+}
+
+/* Vertical Stacking inside Dropdowns */
+.dropdown-menu li {
+    display: block !important;
+    width: 100% !important;
+    text-align: left;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem !important;
+    display: block !important;
+    text-decoration: none;
+}
+
+.dropdown-item:hover {
+    background: #496b89;
+    border-radius: 0 0 1rem 1rem;
 }

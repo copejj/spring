@@ -1,50 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<!-- Main Navbar -->
-	<nav th:fragment="nav-fragment" class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<div class="menu-container links-cont">
-			<ul>
+	<nav th:fragment="nav-fragment" class="links-cont navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="menu-container">
+			<ul class="navbar-nav">
 				<th:block th:each="item : ${menuItems}">
-					<th:block th:replace="~{fragments/navbar :: top-level-item(item=${item})}"></th:block>
+					<th:block th:replace="~{::menu-item(item=${item}, depth=0)}"></th:block>
 				</th:block>
 			</ul>
 		</div>
 	</nav>
 
-	<!-- FRAGMENT 1: Top Level (The links visible on the bar) -->
-	<th:block th:fragment="top-level-item(item)">
-		<li th:if="${#lists.isEmpty(item.children ?: {})}" 
-			class="link nav-item" 
-			th:classappend="${currentUri == item.href ? 'link-selected' : ''}
-				+ ' ' + ${item.cssClass}">
-			<a class="nav-link" th:href="@{${item.href}}" th:text="${item.text}"></a>
-		</li>
+	<th:block th:fragment="menu-item(item, depth)">
+		<li th:with="hasChildren=${not #lists.isEmpty(item.children)}, isTop=${depth == 0}"
+			th:class="'link' + ${isTop ? ' nav-item' : ''} + ${hasChildren ? (isTop ? ' dropdown' : ' dropdown-submenu') : ''} + ${currentUri == item.href ? ' link-selected' : ''} + ' ' + ${item.cssClass}">
+			
+			<!-- Link Logic -->
+			<a th:class="${isTop ? 'nav-link' : 'dropdown-item'} + ${hasChildren ? ' dropdown-toggle' : ''} "
+				th:href="${hasChildren ? '#' : item.href}" 
+				th:text="${item.text}"
+				th:data-bs-toggle="${hasChildren ? 'dropdown' : ''}"></a>
 
-		<li th:if="${not #lists.isEmpty(item.children ?: {})}" class="nav-item dropdown">
-			<a class="link nav-link dropdown-toggle" th:classappend="${currentUri.startsWith(item.href) ? 'link-selected' : ''}" 
-			href="#" role="button" data-bs-toggle="dropdown" th:text="${item.text}"></a>
-			<ul class="dropdown-menu">
+			<!-- Recursive Step -->
+			<ul th:if="${hasChildren}" class="dropdown-menu">
 				<th:block th:each="child : ${item.children}">
-					<!-- SWITCH TO NESTED FRAGMENT for children -->
-					<th:block th:replace="~{::nested-item(item=${child})}"></th:block>
-				</th:block>
-			</ul>
-		</li>
-	</th:block>
-
-	<!-- FRAGMENT 2: Nested Level (The links inside the dropdowns) -->
-	<th:block th:fragment="nested-item(item)">
-		<li th:if="${#lists.isEmpty(item.children ?: {})}">
-			<a class="link dropdown-item" th:classappend="${currentUri == item.href ? 'link-selected' : ''}" 
-			th:href="@{${item.href}}" th:text="${item.text}"></a>
-		</li>
-
-		<li th:if="${not #lists.isEmpty(item.children ?: {})}" class="dropdown-submenu">
-			<a class="dropdown-item dropdown-toggle" href="#" th:text="${item.text}"></a>
-			<ul class="dropdown-menu">
-				<th:block th:each="child : ${item.children}">
-					<!-- RECURSE using the nested fragment -->
-					<th:block th:replace="~{::nested-item(item=${child})}"></th:block>
+					<th:block th:replace="~{::menu-item(item=${child}, depth=${depth + 1})}"></th:block>
 				</th:block>
 			</ul>
 		</li>
