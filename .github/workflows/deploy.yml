@@ -22,6 +22,7 @@ jobs:
                     # IMPORTANT: All variables used in the script must be listed here
                     envs: DB_NAME,DB_USER,DB_PASS,DB_HOST,DB_URL,API_BASE_URL,SERVER_CONTEXT_PATH,TAG_NAME
                     script: |
+                        CURRENT_STEP="INITIALIZATION"
                         # 1. Initialization and Output
                         echo "--- Starting Deployment for $TAG_NAME ---"
                         cd ${{ vars.PROD_APP_PATH }}
@@ -37,31 +38,36 @@ jobs:
                         cleanup_on_failure() {
                             EXIT_CODE=$?
                             if [ $EXIT_CODE -ne 0 ]; then
-                                echo "!!! ERROR DETECTED (Exit Code: $EXIT_CODE) !!!"
-                                if [ -f "$BACKUP_FILE" ]; then
+                                echo "!!! ERROR DETECTED in Step: $CURRENT_STEP (Exit Code: $EXIT_CODE) !!!"
+                                
+                                # ONLY rollback DB if the failure happened during Step 4 (Migrations)
+                                if [ "$CURRENT_STEP" == "DATABASE_MIGRATION" ] && [ -f "$BACKUP_FILE" ]; then
                                     echo "Rolling back database to $BACKUP_FILE..."
-                                    # This specific sequence is required for non-superusers
-                                    psql $PSQL_ARGS -c "DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public; ALTER SCHEMA public OWNER TO whammy; GRANT ALL ON SCHEMA public TO public;"
+                                    psql $PSQL_ARGS -c "DROP SCHEMA IF EXISTS public CASCADE; CREATE SCHEMA public; ALTER SCHEMA public OWNER TO $DB_USER; GRANT ALL ON SCHEMA public TO public;"
                                     psql $PSQL_ARGS -f "$BACKUP_FILE"
-                                    echo "Rollback complete."
                                 fi
+                                
                                 git checkout .
+                                rm -f "$BACKUP_FILE"
                                 exit $EXIT_CODE
                             fi
                         }
                         trap cleanup_on_failure ERR
 
+                        CURRENT_STEP="DATABASE_BACKUP"
                         # 2. Database Backup
                         echo "[Step 2/8] Creating pre-deployment database backup..."
                         pg_dump $DUMP_ARGS -f "$BACKUP_FILE"
                         echo "Backup saved to $BACKUP_FILE"
 
+                        CURRENT_STEP="SOURCE_CHECKOUT"
                         # 3. Sync Code
                         echo "[Step 3/8] Fetching code for tag: $TAG_NAME"
                         git fetch --tags --all
                         # git checkout "$TAG_NAME"
                         git checkout -b "release-$TAG_NAME" "$TAG_NAME"
 
+                        CURRENT_STEP="DATABASE_MIGRATION"
                         # 4. Database Migrations (The "No-Backslash" version)
                         echo "[Step 4/8] Running database migrations..."
                         psql $PSQL_ARGS -c "BEGIN;" -f sql/init_schema.sql -c "COMMIT;"
@@ -84,6 +90,7 @@ jobs:
                             ) | psql $PSQL_ARGS
                         done
 
+                        CURRENT_STEP="BUILD"
                         # 5. Configuration & Build
                         echo "[Step 5/8] Configuring application properties and building..."
                         sed -i "s|<db_url>|$DB_URL|g" src/main/resources/application.properties
@@ -93,6 +100,7 @@ jobs:
                         sed -i "s|<server_context_path>|$SERVER_CONTEXT_PATH|g" src/main/resources/application.properties
                         mvn clean package -DskipTests
 
+                        CURRENT_STEP="DEPLOYMENT"
                         # 6. Deploy to Tomcat (Parallel Deployment)
                         echo "[Step 6/8] Deploying versioned WAR..."
                         VERSION_NAME="ROOT##${TAG_NAME}.war"
@@ -101,24 +109,27 @@ jobs:
                         # Copy to webapps. Tomcat keeps the old version running for existing users!
                         cp "$BUILD_WAR" "${{ vars.PROD_DEPLOY_PATH }}/$VERSION_NAME"
 
-                        # 7. Verification Loop (No Restart Needed)
+                        CURRENT_STEP="DEPLOYMENT_VERIFICATION"
+                        # 7. Verification Loop
                         echo "[Step 7/8] Monitoring health check for new version..."
-                        for i in {1..15}; do
-                            # -6 forces IPv6 if needed, -sL follows redirects and stays quiet
-                            RESPONSE=$(curl -6 -sL http://localhost:8080/actuator/health)
+                        for i in {1..20}; do
+                            # Added --retry and --retry-connrefused to handle the "startup" lag
+                            RESPONSE=$(curl -6 -sL --connect-timeout 5 http://localhost:8080/actuator/health || echo "offline")
+                            
                             if [[ "$RESPONSE" == *'"status":"UP"'* ]]; then
                                 echo "Successfully deployed $TAG_NAME - New version is UP!"
                                 break
                             fi
                             
-                            if [ $i -eq 15 ]; then
+                            if [ $i -eq 20 ]; then
                                 echo "!!! Health check timed out !!!"
                                 exit 1
                             fi
-                            echo "Waiting for Spring Boot to initialize... ($((i*10))s)"
+                            echo "Waiting for Spring Boot to initialize... (Attempt $i/20)"
                             sleep 10
                         done
 
+                        CURRENT_STEP="FINAL_CLEANUP"
                         # 8. Final Cleanup
                         echo "[Step 8/8] Cleaning up environment..."
                         git checkout .
