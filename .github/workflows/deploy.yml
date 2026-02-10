@@ -93,15 +93,31 @@ jobs:
                         sed -i "s|<server_context_path>|$SERVER_CONTEXT_PATH|g" src/main/resources/application.properties
                         mvn clean package -DskipTests
 
-                        # 6. Deploy to Tomcat
-                        echo "[Step 6/8] Deploying WAR to Tomcat..."
-                        BUILD_WAR="${{ vars.PROD_APP_PATH}}/target/${{ vars.PROD_APP_NAME }}.war"
-                        cp "$BUILD_WAR" "${{ vars.PROD_DEPLOY_PATH }}/${{ vars.PROD_APP_NAME }}-$TAG_NAME.war"
-                        cp "$BUILD_WAR" "${{ vars.PROD_DEPLOY_PATH }}/${{ vars.PROD_DEPLOY_NAME }}.war"
+                        # 6. Deploy to Tomcat (Parallel Deployment)
+                        echo "[Step 6/8] Deploying versioned WAR..."
+                        VERSION_NAME="ROOT##${TAG_NAME}.war"
+                        BUILD_WAR="${{ vars.PROD_APP_PATH }}/target/${{ vars.PROD_APP_NAME }}.war"
 
-                        # 7. Restart Tomcat
-                        echo "[Step 7/8] Restarting Tomcat service..."
-                        sudo /usr/bin/systemctl restart tomcat
+                        # Copy to webapps. Tomcat keeps the old version running for existing users!
+                        cp "$BUILD_WAR" "${{ vars.PROD_DEPLOY_PATH }}/$VERSION_NAME"
+
+                        # 7. Verification Loop (No Restart Needed)
+                        echo "[Step 7/8] Monitoring health check for new version..."
+                        for i in {1..15}; do
+                            # -6 forces IPv6 if needed, -sL follows redirects and stays quiet
+                            RESPONSE=$(curl -6 -sL http://localhost:8080/actuator/health)
+                            if [[ "$RESPONSE" == *'"status":"UP"'* ]]; then
+                                echo "Successfully deployed $TAG_NAME - New version is UP!"
+                                break
+                            fi
+                            
+                            if [ $i -eq 15 ]; then
+                                echo "!!! Health check timed out !!!"
+                                exit 1
+                            fi
+                            echo "Waiting for Spring Boot to initialize... ($((i*10))s)"
+                            sleep 10
+                        done
 
                         # 8. Final Cleanup
                         echo "[Step 8/8] Cleaning up environment..."
