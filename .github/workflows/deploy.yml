@@ -59,7 +59,8 @@ jobs:
                         # 3. Sync Code
                         echo "[Step 3/8] Fetching code for tag: $TAG_NAME"
                         git fetch --tags --all
-                        git checkout "$TAG_NAME"
+                        # git checkout "$TAG_NAME"
+                        git checkout -b "release-$TAG_NAME" "$TAG_NAME"
 
                         # 4. Database Migrations (The "No-Backslash" version)
                         echo "[Step 4/8] Running database migrations..."
