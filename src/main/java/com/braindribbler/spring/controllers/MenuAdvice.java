@@ -29,10 +29,13 @@ public class MenuAdvice {
             list.add(new MenuItem("/companies", "Companies"));
 
             if (isAdmin) {
-                list.add(new MenuItem("/users", "Users"));
-                list.add(new MenuItem("/admin/migrations", "Admin"));
+                MenuItem adminMenu = new MenuItem("/admin", "Admin");
+                adminMenu.addChild(new MenuItem("/admin/users", "Users"));// (new MenuItem("/users", "Users"));
+                adminMenu.addChild(new MenuItem("/admin/migrations", "Migrations"));// (new MenuItem("/users", "Users"));
+                list.add(adminMenu);
+            } else {
+                list.add(new MenuItem("/admin/users/current", "Profile", "align-right"));
             }
-
             list.add(new MenuItem("/logout", "Logout", "align-right"));
         } else {
             // Links for GUESTS only

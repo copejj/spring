@@ -16,32 +16,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.braindribbler.spring.dto.users.UserDTO;
+import com.braindribbler.spring.models.admin.SchemaMigrations;
 import com.braindribbler.spring.models.users.User;
 import com.braindribbler.spring.security.UserDetailsImpl;
+import com.braindribbler.spring.service.admin.SchemaMigrationService;
 import com.braindribbler.spring.service.users.UserService;
 
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/users")
-public class UserController {
+@RequestMapping("/admin")
+public class AdminController {
 
+	private final SchemaMigrationService migrationService;
 	private final UserService userService;
 
-	public UserController(UserService userService) {
+	public AdminController(UserService userService, SchemaMigrationService migrationService) {
 		this.userService = userService;
+		this.migrationService = migrationService;
 	}
 
-	@GetMapping("/current")
+	@GetMapping("/users/current")
 	public String getUser(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
 		if (userDetails == null) {
 			return "redirect:/login";
 		} 
 
-		return "redirect:/users/edit/" + userDetails.getUser().getUserId();
+		return "redirect:/admin/users/edit/" + userDetails.getUser().getUserId();
 	}
 
-	@GetMapping("/edit/{userId}")
+	@GetMapping("/users/edit/{userId}")
 	@PreAuthorize("hasRole('ADMIN') or #userId == principal.user.userId")
 	public String getUserById(@PathVariable Long userId, Model model) {
 		UserDTO userDto = userService.getUserDtoById(userId);
@@ -53,7 +57,7 @@ public class UserController {
 		return "users/edit";
 	}
 
-	@PutMapping
+	@PutMapping("/users")
 	@PreAuthorize("hasRole('ADMIN') or #userDto.userId == principal.user.userId")
 	public String updateUser(@Valid @ModelAttribute("userDto") UserDTO userDto, 
 							BindingResult result, 
@@ -74,10 +78,10 @@ public class UserController {
 		userService.updateUser(userDto);
 		ra.addFlashAttribute("saveSuccess", "User information updated successfully.");
 
-		return "redirect:/users/edit/" + userDto.userId();
+		return "redirect:/admin/users/edit/" + userDto.userId();
 	}
 
-	@GetMapping
+	@GetMapping("/users")
 	@Secured("ROLE_ADMIN")
 	public String getAll(Model model) {
 
@@ -88,5 +92,16 @@ public class UserController {
 		model.addAttribute("users", users);
 
 		return "users/list";
+	}
+
+	@GetMapping("/migrations")
+	public String getAllMigrations(Model model) {
+		List<SchemaMigrations> migrations = migrationService.getAll();
+
+		model.addAttribute("location", "Admin: Migrations");
+		model.addAttribute("title", "Schema Migrations");
+
+		model.addAttribute("migrations", migrations);
+		return "admin/migrations";
 	}
 }

@@ -3,35 +3,35 @@
 	xmlns:layout="http://www.ultraq.net.nz"
 	layout:decorate="~{layout/default}">
 	<body>
-		<h2>/user/list.html</h2>
+		<h2>/logs/list.html</h2>
         <div layout:fragment="content"> 
-            <table id="userTable" class="datatables table table-striped table-hover stripe" style="width:100%">
+            <table id="logTable" class="datatables table table-striped table-hover stripe" style="width:100%">
                 <thead class="table-dark">
                     <tr>
                         <th></th>
-                        <th>User Name</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
+                        <th>Action Date</th>
+                        <th>Title</th>
+                        <th>Company Name</th>
+                        <th>Job Number</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="user : ${users}">
+                    <tr th:each="log : ${logs}">
                         <td style="text-align: center;">
-                            <a th:href="@{/admin/users/edit/{id}(id=${user.userId})}">
+                            <a th:href="@{/logs/edit/{id}(id=${log.logId})}">
                                 <i class="fa-solid fa-pen-to-square"></i> Edit
                             </a>
                         </td>
-                        <td th:text="${user.userName}"></td>
-                        <td th:text="${user.firstName}"></td>
-                        <td th:text="${user.lastName}"></td>
-                        <td th:text="${user.email}"></td>
+                        <td th:text="${log.actionDate}"></td>
+                        <td th:text="${log.title}"></td>
+                        <td th:text="${log.company.companyName}"></td>
+                        <td th:text="${log.jobNumber}"></td>
                     </tr>
                 </tbody>
             </table>
             <script>
                 $(document).ready(function () {
-                    $('#userTable').DataTable({
+                    $('#logsTable').DataTable({
                         "pageLength": -1,
                         "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
                         "paging": true,
