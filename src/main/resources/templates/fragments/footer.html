@@ -3,7 +3,18 @@
     <body>
         <div th:fragment="footer-fragment">
             <div class='footer-cont'> 
-                <p>&copy;<span th:text="${#dates.year(#dates.createNow())}">2025</span> The Brain Dribbler</p>
+                <div class="legal-info">
+                    <small>
+                        &copy; <span th:text="${#temporals.year(#temporals.createNow())}">2024</span> 
+                        Brain Dribbler. All rights reserved.
+                    </small>
+                </div>
+                <div class="version-info">
+                    <small class="text-muted">
+                        <span th:text="${gitBranch}">main</span> 
+                        (<span th:text="${gitHash}">abcd123</span>)
+                    </small>
+                </div>
             </div>
             <dialog id="pageModal" class='page-modal'>
                 <button id="closeModal"> X </button>
