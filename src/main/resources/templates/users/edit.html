@@ -26,7 +26,7 @@
                     <input th:field="*{passwordData.confirmPassword}" type="password" class="input password-input" placeholder="   [ Passwords are not changed by default on save ] " />
                 </div>
                 <input type="submit" value="Save" class="input submit-input" id="submit-save_user" />
-                <input type="button" value="Cancel" class="input submit-input" onclick="location.href='/admin/users'" />
+                <input th:if="${isAdmin}" type="button" value="Cancel" class="input submit-input" onclick="location.href='/admin/users'" />
             </form>		
 		</div>
 	</body>

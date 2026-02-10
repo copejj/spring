@@ -33,10 +33,9 @@ public class MenuAdvice {
                 adminMenu.addChild(new MenuItem("/admin/users", "Users"));// (new MenuItem("/users", "Users"));
                 adminMenu.addChild(new MenuItem("/admin/migrations", "Migrations"));// (new MenuItem("/users", "Users"));
                 list.add(adminMenu);
-            } else {
-                list.add(new MenuItem("/admin/users/current", "Profile", "align-right"));
             }
             list.add(new MenuItem("/logout", "Logout", "align-right"));
+            list.add(new MenuItem("/admin/users/current", "Profile", "align-right"));
         } else {
             // Links for GUESTS only
             list.add(new MenuItem("/login", "Login", "align-right"));

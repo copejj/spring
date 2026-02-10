@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,10 +48,14 @@ public class AdminController {
 
 	@GetMapping("/users/edit/{userId}")
 	@PreAuthorize("hasRole('ADMIN') or #userId == principal.user.userId")
-	public String getUserById(@PathVariable Long userId, Model model) {
+	public String getUserById(@PathVariable Long userId, Model model, Authentication authentication) {
+		boolean isAdmin = authentication.getAuthorities().stream()
+		.anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
 		UserDTO userDto = userService.getUserDtoById(userId);
 
 		model.addAttribute("user", userDto);
+		model.addAttribute("isAdmin", isAdmin);
 		model.addAttribute("location", "Edit User");
 		model.addAttribute("title", "User Information");
 
@@ -62,7 +67,8 @@ public class AdminController {
 	public String updateUser(@Valid @ModelAttribute("userDto") UserDTO userDto, 
 							BindingResult result, 
 							Model model,
-							RedirectAttributes ra) {
+							RedirectAttributes ra,
+							Authentication authentication) {
 		String newPassword = userDto.passwordData().newPassword();
 		String confirmPassword = userDto.passwordData().confirmPassword();
 		if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals(confirmPassword)) {
@@ -72,7 +78,8 @@ public class AdminController {
 		}
 
 		if (model.containsAttribute("saveError")) {
-			return getUserById(userDto.userId(), model); 
+			return getUserById(userDto.userId(), model, authentication
+		); 
 		}	
 
 		userService.updateUser(userDto);
