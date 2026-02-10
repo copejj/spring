@@ -13,40 +13,29 @@ public class GlobalAdvice {
     private GitProperties gitProperties;
 
     @ModelAttribute
-    public void addGitInfo2(Model model) {
-        if (gitProperties != null) {
-            // 1. Try to get the tag first (best for Production)
-            String version = gitProperties.get("closest.tag.name");
-            
-            // 2. If no tag exists or it's empty, use the branch (best for Dev)
-            if (version == null || version.isEmpty() || version.equals(gitProperties.getShortCommitId())) {
-                version = gitProperties.getBranch();
-            }
-
-            model.addAttribute("gitBranch", version);
-            model.addAttribute("gitHash", gitProperties.getShortCommitId());
-        } else {
-            model.addAttribute("gitBranch", "unknown");
-            model.addAttribute("gitHash", "0000");
-        }
-    }
-
-    @ModelAttribute
     public void addGitInfo(Model model) {
         if (gitProperties != null) {
-            // 1. Get the tag (Populated when on a tag/detached HEAD in prod)
             String tag = gitProperties.get("closest.tag.name");
-            // 2. Get the branch (Returns hash in detached HEAD, or "main" in dev)
             String branch = gitProperties.getBranch();
+            String fullHash = gitProperties.get("commit.id");
+            String shortHash = gitProperties.getShortCommitId();
 
-            // If we have a valid tag, use it; otherwise use the branch name
-            String displayVersion = (tag != null && !tag.isEmpty()) ? tag : branch;
+            String displayVersion;
+
+            // 1. If we are in 'Detached HEAD' (common in Prod), branch will be the full hash
+            if (branch != null && branch.equals(fullHash)) {
+                // Use tag if available, otherwise use short hash
+                displayVersion = (tag != null && !tag.isEmpty()) ? tag : shortHash;
+            } else {
+                // 2. We are on a real branch (Local Dev)
+                displayVersion = (branch != null) ? branch : "unknown";
+            }
 
             model.addAttribute("gitBranch", displayVersion);
-            model.addAttribute("gitHash", gitProperties.getShortCommitId());
+            model.addAttribute("gitHash", shortHash);
+            model.addAttribute("showGitInfo", true);
         } else {
-            model.addAttribute("gitBranch", "unknown");
-            model.addAttribute("gitHash", "0000");
+            model.addAttribute("showGitInfo", false);
         }
     }
 }

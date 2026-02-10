@@ -9,7 +9,7 @@
                         Brain Dribbler. All rights reserved.
                     </small>
                 </div>
-                <div class="version-info">
+                <div class="version-info" th:if="${showGitInfo}">
                     <small class="text-muted">
                         <span th:text="${gitBranch}">main</span> 
                         (<span th:text="${gitHash}">abcd123</span>)
