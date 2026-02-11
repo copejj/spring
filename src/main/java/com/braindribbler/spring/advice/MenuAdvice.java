@@ -1,4 +1,4 @@
-package com.braindribbler.spring.controllers;
+package com.braindribbler.spring.advice;
 
 import java.util.ArrayList;
 import java.util.List;

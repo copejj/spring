@@ -22,7 +22,7 @@ public class LogServiceImpl implements LogService {
 
     @Override
     @Transactional(readOnly = true)
-    public LogDTO getLogsDtoById(Long logId) {
+    public LogDTO getLogDtoById(Long logId) {
         if (logId == null) {
             throw new IllegalArgumentException("User ID must not be null");
         }

@@ -119,8 +119,8 @@ dialog.page-modal .date-input {
     padding-left: 2rem;
 } 
 .text-area-input {
-    width: 50%;
-	height: auto;
+    width: 20rem;
+    height: 10rem;
 }
 .table-details .text-area-input {
     width: 100%;

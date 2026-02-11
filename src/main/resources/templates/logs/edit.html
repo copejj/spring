@@ -7,23 +7,34 @@
             <div th:if="${saveError}" style="color: red;" th:text="'Error: ' + ${saveError}"> Error go here. </div>
             <div th:if="${saveSuccess}" style="color: green;" th:text="${saveSuccess}"> Success go here.  </div>
 
-            <form th:action="@{/admin/users}" th:object="${user}" th:method="put">
+            <form th:action="@{/update/logs}" th:object="${log}" th:method="put">
                 <div class="input-cont -input-cont">
-                    <input th:field="*{userId}" type="hidden" />
-                    <label for="firstName" class="input-label">First Name</label>
-                    <input th:field="*{firstName}" type="text" class="input text-input" />
-                    <label for="lastName" class="input-label">Last Name</label>
-                    <input th:field="*{lastName}" type="text" class="input text-input" />
-                    <label for="email" class="input-label">User Email</label>
-                    <input th:field="*{email}" type="text" class="input text-input" />
-                    <label for="userName" class="input-label">User Name</label>
-                    <input th:field="*{userName}" type="text" class="input text-input" readonly />
-                </div>
-                <div class="input-cont -input-cont line-separator">
-                    <label for="password" class="input-label">Change Password</label>
-                    <input th:field="*{passwordData.newPassword}" type="password" class="input password-input" placeholder="   [ Passwords are not changed by default on save ] " />
-                    <label for="confirmPassword" class="input-label">Confirm Change</label>
-                    <input th:field="*{passwordData.confirmPassword}" type="password" class="input password-input" placeholder="   [ Passwords are not changed by default on save ] " />
+                    <input th:field="*{logId}" type="hidden" />
+                    <label for="actionDate" class="input-label">Action Date</label>
+                    <input type="date" th:field="*{actionDate}" 
+                        th:value="${#temporals.format(log.actionDate, 'yyyy-MM-dd')}" 
+                        class="input text-input" />
+                    <label for="title" class="input-label">Title</label>
+                    <input th:field="*{title}" type="text" class="input text-input" />
+                    <label for="companyId" class="input-label">Company</label>
+                    <select th:field="*{companyId}" class="input text-input">
+                        <option value="" disabled selected>-- Select a Company --</option>
+                        <option th:each="comp : ${companies}" 
+                                th:value="${comp.companyId}" 
+                                th:text="${comp.companyName}">Company Name</option>
+                    </select>
+                    <label for="jobNumber" class="input-label">Job Number</label>
+                    <input th:field="*{jobNumber}" type="text" class="input text-input" />
+                    <label for="nextStep" class="input-label">Next Step</label>
+                    <input th:field="*{nextStep}" type="text" class="input text-input" />
+                    <label for="confirmation" class="input-label">Confirmation</label>
+                    <input th:field="*{confirmation}" type="text" class="input text-input" />
+                    <label for="contact" class="input-label">Contact</label>
+                    <input th:field="*{contact}" type="text" class="input text-input" />
+                    <label for="contactNumber" class="input-label">Contact Number</label>
+                    <input th:field="*{contactNumber}" type="text" class="input text-input" />
+                    <label for="notes" class="input-label">Notes</label>
+                    <textarea th:field="*{notes}" class="input text-area-input" placeholder="Enter additional notes here..."></textarea>
                 </div>
                 <input type="submit" value="Save" class="input submit-input" id="submit-save_user" />
                 <input th:if="${isAdmin}" type="button" value="Cancel" class="input submit-input" onclick="location.href='/admin/users'" />

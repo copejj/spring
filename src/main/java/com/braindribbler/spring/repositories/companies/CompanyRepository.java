@@ -12,6 +12,7 @@ import com.braindribbler.spring.models.companies.Company;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 	Optional<Company> findByCompanyId(Long companyId);
 
+	List<Company> findAllByUserIdOrderByCompanyNameAsc(Long userId);
 	List<Company> findByUserId(Long userId);
 
 	@Query("SELECT c FROM Company c " +

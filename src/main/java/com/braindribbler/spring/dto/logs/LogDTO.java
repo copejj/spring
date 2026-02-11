@@ -3,6 +3,8 @@ package com.braindribbler.spring.dto.logs;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -25,6 +27,7 @@ public record LogDTO (
 	Long companyId,
 	String companyName,
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotBlank(message = "Action date is required")
 	LocalDate actionDate,
 	Long weekId,
