@@ -5,13 +5,13 @@
 	<body>
 		<h2>/logs/list.html</h2>
         <div layout:fragment="content"> 
-            <table id="logTable" class="datatables table table-striped table-hover stripe" style="width:100%">
+            <table id="logsTable" class="datatables table table-striped table-hover stripe" style="width:100%">
                 <thead class="table-dark">
                     <tr>
                         <th></th>
-                        <th>Action Date</th>
-                        <th>Title</th>
+                        <th>Date</th>
                         <th>Company Name</th>
+                        <th>Title</th>
                         <th>Job Number</th>
                     </tr>
                 </thead>
@@ -23,8 +23,8 @@
                             </a>
                         </td>
                         <td th:text="${log.actionDate}"></td>
+                        <td th:text="${log.companyName}"></td>
                         <td th:text="${log.title}"></td>
-                        <td th:text="${log.company.companyName}"></td>
                         <td th:text="${log.jobNumber}"></td>
                     </tr>
                 </tbody>
@@ -40,9 +40,11 @@
                         "ordering": true,
                         "info": true,
                         "autoWidth": false,
-                        "order": { "idx": 2, "dir": 'asc' }, 
+                        "order": [{ "idx": 1, "dir": 'desc' }, { "idx": 2, "dir": 'asc' }], 
                         "columnDefs": [
-                            { width: '70px', targets: [0, 1] }, 
+                            { width: '3%', targets: [0] }, 
+                            { width: '8%', targets: [1] }, 
+                            { width: '20%', targets: [2] }, 
                             { orderable: false, targets: [0] }
                         ],
                         "responsive": true

@@ -13,7 +13,9 @@ public class GlobalAdvice {
     private GitProperties gitProperties;
 
     @ModelAttribute
-    public void addGitInfo(Model model) {
+    public void addSiteInfo(Model model) {
+        model.addAttribute("siteName", "The Brain Dribbler");
+
         if (gitProperties != null) {
             String tag = gitProperties.get("closest.tag.name");
             String branch = gitProperties.getBranch();

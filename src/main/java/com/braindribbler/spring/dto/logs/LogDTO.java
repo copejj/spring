@@ -1,17 +1,17 @@
-package com.braindribbler.spring.dto.jobs;
+package com.braindribbler.spring.dto.logs;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record LogDTO (
 	Long logId,
 	LocalDateTime createdDate,
-	Long weekId,
 
-	@NotBlank(message = "Action date is required")
-	LocalDate actionDate,
+	@NotNull
+	Long userId,
 
 	@NotBlank(message = "Job title is required")
 	String title,
@@ -21,6 +21,13 @@ public record LogDTO (
 	String confirmation,
 	String contact,
 	String contactNumber,
-	Integer userId,
-	Long companyId
+
+	Long companyId,
+	String companyName,
+
+	@NotBlank(message = "Action date is required")
+	LocalDate actionDate,
+	Long weekId,
+	LocalDate startDate,
+	LocalDate endDate
 ) { }

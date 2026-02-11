@@ -31,10 +31,15 @@ div#pageContent .sub-header-cont {
 }
 .header-cont {
     height: 5vh;
-    font-size: 2.5rem;
-    font-style: italic;
     border-bottom: .5rem solid transparent;
     border-image: linear-gradient(to right, #2d5375, #364352) 1;
+}
+.header-cont .site-name {
+    font-size: 2.5rem;
+}
+.header-cont .site-location {
+    font-size: 2rem;
+    font-style: italic;
 }
 .sub-header-cont {
     height: 4vh;
@@ -420,12 +425,17 @@ select.select-input {
 
 li.link.nav-item:has(.link-selected),
 li.link.nav-item.link-selected {
-    border-radius: .5rem 1rem 0 0;
+    border-radius: 0 1rem 0 0;
+}
+
+li.align-right.link.nav-item:has(.link-selected),
+li.align-right.link.nav-item.link-selected {
+    border-radius: 1rem 0 0 0;
 }
 
 li.link:has(.link-selected),
 li.link.link-selected {
-    background-color: #2e5070;
+    background-color: #2f506f;
 }
 
 .dropdown-menu,

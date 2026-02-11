@@ -1,4 +1,4 @@
-package com.braindribbler.spring.models.jobs;
+package com.braindribbler.spring.models.logs;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,9 +28,6 @@ public class Log{
 	@Column(name="created_date")
 	private LocalDateTime createdDate;
 
-	@Column(name="week_id")
-	private Long weekId;
-
 	@Column(name="action_date")
 	private LocalDate actionDate;
 
@@ -56,12 +53,20 @@ public class Log{
 	private String contactNumber;
 
 	@Column(name="user_id")
-	private Integer userId;
+	private Long userId;
 
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id", insertable=false, updatable=false)
 	@JsonBackReference
 	private User user;
+
+	@Column(name="week_id")
+	private Long weekId;
+
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="week_id", insertable=false, updatable=false)
+	@JsonBackReference
+	private Week week;
 
 	@Column(name="company_id")
 	private Long companyId;
@@ -75,8 +80,6 @@ public class Log{
 	public void setLogId(Long logId) { this.logId = logId; }
 	public LocalDateTime getCreatedDate() { return createdDate; }
 	public void setCreatedDate(LocalDateTime createdDate) { this.createdDate = createdDate; }
-	public Long getWeekId() { return weekId; }
-	public void setWeekId(Long weekId) { this.weekId = weekId; }
 	public LocalDate getActionDate() { return actionDate; }
 	public void setActionDate(LocalDate actionDate) { this.actionDate = actionDate; }
 	public String getTitle() { return title; }
@@ -93,10 +96,16 @@ public class Log{
 	public void setContact(String contact) { this.contact = contact; }
 	public String getContactNumber() { return contactNumber; }
 	public void setContactNumber(String contactNumber) { this.contactNumber = contactNumber; }
-	public Integer getUserId() { return userId; }
-	public void setUserId(Integer userId) { this.userId = userId; }
+	public Long getUserId() { return userId; }
+	public void setUserId(Long userId) { this.userId = userId; }
 	public User getUser() { return user; }
 	public void setUser(User user) { this.user = user; }
+
+	public Long getWeekId() { return weekId; }
+	public void setWeekId(Long weekId) { this.weekId = weekId; }
+	public Week getWeek() { return week; } 
+	public void setWeek(Week weeks) { this.week = week; }
+
 	public Long getCompanyId() { return companyId; }
 	public void setCompanyId(Long companyId) { this.companyId = companyId; }
 	public Company getCompany() { return company; }

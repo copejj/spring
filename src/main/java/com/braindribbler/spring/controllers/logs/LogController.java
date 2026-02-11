@@ -1,4 +1,4 @@
-package com.braindribbler.spring.controllers.jobs;
+package com.braindribbler.spring.controllers.logs;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.braindribbler.spring.dto.jobs.LogDTO;
+import com.braindribbler.spring.dto.logs.LogDTO;
 import com.braindribbler.spring.security.UserDetailsImpl;
-import com.braindribbler.spring.service.jobs.LogService;
+import com.braindribbler.spring.service.logs.LogService;
 
 @Controller
 @RequestMapping("/logs")
@@ -30,7 +30,7 @@ public class LogController {
             Model model) { // Model for passing data to the template
 
         // 1. Fetch filtered logs using internal userId
-        List<LogDTO> logs = logService.findLogs(userDetails.getUserId(), weekId, companyId);
+        List<LogDTO> logs = logService.findLogs(userDetails.getUserId());
 
         // 2. Add data to the model
         model.addAttribute("logs", logs);

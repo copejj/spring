@@ -100,6 +100,6 @@ public class AdminController {
 		model.addAttribute("title", "Schema Migrations");
 
 		model.addAttribute("migrations", migrations);
-		return "admin/migrations";
+		return "server/migrations";
 	}
 }
