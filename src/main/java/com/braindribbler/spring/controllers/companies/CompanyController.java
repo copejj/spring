@@ -34,12 +34,6 @@ public class CompanyController {
 		this.addressTypeRepository = addressTypeRepository;
 	}
 	
-	/**
-	 * Looks up the companies for the currently authenticated user.
-	 * @param userDetails The authenticated user details.
-	 * @param model
-	 * @return
-	 */
 	@GetMapping
 	public String getCompaniesByCurrentUser(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
 		if (userDetails == null) {
