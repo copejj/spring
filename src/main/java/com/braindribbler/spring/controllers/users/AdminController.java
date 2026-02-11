@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.braindribbler.spring.dto.users.UserDTO;
 import com.braindribbler.spring.models.admin.SchemaMigrations;
 import com.braindribbler.spring.models.users.User;
-import com.braindribbler.spring.security.UserDetailsImpl;
 import com.braindribbler.spring.service.admin.SchemaMigrationService;
 import com.braindribbler.spring.service.users.UserService;
 
@@ -35,15 +33,6 @@ public class AdminController {
 	public AdminController(UserService userService, SchemaMigrationService migrationService) {
 		this.userService = userService;
 		this.migrationService = migrationService;
-	}
-
-	@GetMapping("/users/current")
-	public String getUser(@AuthenticationPrincipal UserDetailsImpl userDetails, Model model) {
-		if (userDetails == null) {
-			return "redirect:/login";
-		} 
-
-		return "redirect:/admin/users/edit/" + userDetails.getUser().getUserId();
 	}
 
 	@GetMapping("/users/edit/{userId}")
@@ -94,14 +83,16 @@ public class AdminController {
 
 		List<User> users = userService.getAllUsers();
 
-		model.addAttribute("location", "Users");
+		model.addAttribute("location", "Admin: Users");
 		model.addAttribute("title", "User List");
+
 		model.addAttribute("users", users);
 
 		return "users/list";
 	}
 
 	@GetMapping("/migrations")
+	@Secured("ROLE_ADMIN")
 	public String getAllMigrations(Model model) {
 		List<SchemaMigrations> migrations = migrationService.getAll();
 

@@ -34,7 +34,7 @@ public class MenuAdvice {
                 adminMenu.addChild(new MenuItem("/admin/migrations", "Migrations"));// (new MenuItem("/users", "Users"));
                 list.add(adminMenu);
             }
-            list.add(new MenuItem("/admin/users/current", "Profile", "align-right"));
+            list.add(new MenuItem("/admin/users/edit/" + user.getUserId(), "Profile", "align-right"));
             list.add(new MenuItem("/logout", "Logout", "align-right"));
         } else {
             list.add(new MenuItem("/about", "About", "align-right"));

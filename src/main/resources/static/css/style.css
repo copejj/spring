@@ -47,7 +47,7 @@ div#pageContent .sub-header-cont {
 	font-size: .75rem;
 	font-style: italic;
     border-top: .5rem solid transparent;
-    border-image: linear-gradient(to right, #2d5375, #282d90) 1;
+    border-image: linear-gradient(to right, #2d5375, #364352) 1;
 }
 .content-cont {
     flex: 1 0 auto;
@@ -401,7 +401,6 @@ select.select-input {
     border: none !important;
     min-width: 10rem;
     background: #65829b;
-    border-radius: 0 0 1rem 1rem;
 }
 
 .nav-item:hover > .dropdown-menu {
@@ -419,9 +418,19 @@ select.select-input {
     text-decoration: none;
 }
 
-.dropdown-item:hover {
-    background: #496b89;
-    border-radius: 0 0 1rem 1rem;
+li.link.nav-item:has(.link-selected),
+li.link.nav-item.link-selected {
+    border-radius: .5rem 1rem 0 0;
+}
+
+li.link:has(.link-selected),
+li.link.link-selected {
+    background-color: #2e5070;
+}
+
+.dropdown-menu,
+li.link.link-selected:has(.dropdown-item) {
+    border-radius: 0 0 .5rem 1rem;
 }
 
 .navbar-nav > li.link:nth-child(1 of .link.align-right){
