@@ -29,15 +29,14 @@ public class LogController {
             @RequestParam(required = false) Long companyId,
             Model model) { // Model for passing data to the template
 
-        // 1. Fetch filtered logs using internal userId
         List<LogDTO> logs = logService.findLogs(userDetails.getUserId());
 
-        // 2. Add data to the model
+        model.addAttribute("location", "Logs");
+        model.addAttribute("title", "Applied Job Logs");
         model.addAttribute("logs", logs);
         model.addAttribute("selectedWeek", weekId);
         model.addAttribute("selectedCompany", companyId);
 
-        // 3. Return the name of the .html file (e.g., src/main/resources/templates/logs.html)
         return "logs/list"; 
     }
 }
