@@ -8,7 +8,6 @@
                 <thead class="table-dark">
                     <tr>
                         <th></th>
-                        <th>ID</th>
                         <th>Name</th>
                         <th>Website</th>
                         <th>Email</th>
@@ -17,7 +16,6 @@
                 <tbody>
                     <tr th:each="company : ${companies}">
                         <td><a class="btn btn-primary" th:href="'/companies/edit/' + ${company.companyId} ">Edit</a></td>
-                        <td th:text="${company.companyId}"></td>
                         <td th:text="${company.companyName}"></td>
                         <td><a th:href="${company.companyWebsite}" th:text="${company.companyUrl}" target="_blank">  </a></td>
                         <td th:text="${company.companyEmail}"></td>
@@ -35,9 +33,9 @@
                         "ordering": true,
                         "info": true,
                         "autoWidth": false,
-                        "order": { "idx": 2, "dir": 'asc' }, 
+                        "order": { "idx": 1, "dir": 'asc' }, 
                         "columnDefs": [
-                            { width: '70px', targets: [0, 1] }, 
+                            { width: '2px', targets: [0] }, 
                             { orderable: false, targets: [0] }
                         ],
                         "responsive": true

@@ -1,4 +1,4 @@
-package com.braindribbler.spring.controllers;
+package com.braindribbler.spring.advice;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +27,7 @@ public class MenuAdvice {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
             
             list.add(new MenuItem("/companies", "Companies"));
+            list.add(new MenuItem("/logs/list", "Logs"));
 
             if (isAdmin) {
                 MenuItem adminMenu = new MenuItem("/admin", "Admin");
@@ -34,7 +35,7 @@ public class MenuAdvice {
                 adminMenu.addChild(new MenuItem("/admin/migrations", "Migrations"));// (new MenuItem("/users", "Users"));
                 list.add(adminMenu);
             }
-            list.add(new MenuItem("/admin/users/current", "Profile", "align-right"));
+            list.add(new MenuItem("/admin/users/edit/" + user.getUserId(), "Profile", "align-right"));
             list.add(new MenuItem("/logout", "Logout", "align-right"));
         } else {
             list.add(new MenuItem("/about", "About", "align-right"));

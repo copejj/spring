@@ -26,21 +26,28 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserDTO getUserDtoById(Long userId) {
-        User user = userRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("User not found"));
-        return new UserDTO(user.getUserId(), 
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID must not be null");
+        }
+        return userRepository.findById(userId)
+            .map(user -> new UserDTO(user.getUserId(), 
 			user.getUserName(), 
 			user.getEmail(),
 			user.getFirstName(),
 			user.getLastName(), 
             PasswordDTO.empty()
-        );
+        ))
+            .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override
     @Transactional
     public void updateUser(UserDTO dto) {
-        User user = userRepository.findById(dto.userId())
+        Long userId = dto.userId();
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID must not be null");
+        }
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
         
         user.setUserName(dto.userName());

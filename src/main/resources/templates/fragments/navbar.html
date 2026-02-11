@@ -14,13 +14,11 @@
 		<li th:with="hasChildren=${not #lists.isEmpty(item.children)}, isTop=${depth == 0}"
 			th:class="'link' + ${isTop ? ' nav-item' : ''} + ${hasChildren ? (isTop ? ' dropdown' : ' dropdown-submenu') : ''} + ${currentUri == item.href ? ' link-selected' : ''} + ' ' + ${item.cssClass}">
 			
-			<!-- Link Logic -->
 			<a th:class="${isTop ? 'nav-link' : 'dropdown-item'} + ${hasChildren ? ' dropdown-toggle' : ''} "
 				th:href="${hasChildren ? '#' : item.href}" 
 				th:text="${item.text}"
 				th:data-bs-toggle="${hasChildren ? 'dropdown' : ''}"></a>
 
-			<!-- Recursive Step -->
 			<ul th:if="${hasChildren}" class="dropdown-menu">
 				<th:block th:each="child : ${item.children}">
 					<th:block th:replace="~{::menu-item(item=${child}, depth=${depth + 1})}"></th:block>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<div th:fragment="header-fragment">
-		<div>
-			<div class='header-cont' th:text="'The Brain Dribbler' + (${location} ? ' - ' + ${location} : '')"></div>
+		<div class='header-cont'>
+			<span class="site-name" th:text="${siteName}"> </span>
+			<span class="site-location" th:if="${not #strings.isEmpty(location)}" th:text="' - ' + ${location}"></span>
 		</div>
 	</div>
 

@@ -62,37 +62,9 @@ public class CompanyServiceImpl implements CompanyService {
 		);
 	}
 
-	/*
-	@Override
-	@Transactional
-	public void updateCompany(CompanyDTO dto) {
-		Company company = companyRepository.findByIdWithAddresses(dto.companyId())
-			.orElseThrow(() -> new RuntimeException("Company not found"));
-
-		company.setCompanyName(dto.companyName());
-		company.setCompanyEmail(dto.companyEmail());
-		company.setCompanyWebsite(dto.companyWebsite());
-		company.setCompanyPhone(dto.companyPhone());
-		company.setCompanyFax(dto.companyFax());
-
-		// 3. Update the address list (Clear and Re-add for simplicity, or match by ID)
-		// Note: Use 'orphanRemoval = true' in your @OneToMany for this to work well
-		company.getCompanyAddresses().clear();
-		
-		dto.addresses().forEach(addrDto -> {
-			// You would typically find or create the Address and AddressType here
-			// then add it to the company using your helper method:
-			// company.addAddress(newAddress);
-		});
-
-		companyRepository.save(company);
-	}
-	*/
-
 	@Override
 	@Transactional
 	public void updateCompany(CompanyForm form) {
-		// 1. Fetch the existing entity
 		Company company = companyRepository.findByIdWithAddresses(form.getCompanyId())
 			.orElseThrow(() -> new RuntimeException("Company not found"));
 
@@ -103,11 +75,8 @@ public class CompanyServiceImpl implements CompanyService {
 		company.setCompanyPhone(form.getCompanyPhone());
 		company.setCompanyFax(form.getCompanyFax());
 
-		// 3. Clear existing addresses 
-		// (JPA will delete these from DB because of orphanRemoval = true)
 		company.getCompanyAddresses().clear();
 		
-		// 4. Map from Form POJOs back to Entities
 		form.getAddresses().forEach(formItem -> {
 			if (formItem.getStreet() == null || formItem.getStreet().isBlank()) {
 				return; // Skip this iteration
@@ -132,11 +101,9 @@ public class CompanyServiceImpl implements CompanyService {
                 .orElseThrow(() -> new RuntimeException("Type not found: " + formItem.getType()));
             join.setAddressType(type);
 			
-			// Link them using your helper method
 			company.addCompanyAddress(join);
 		});
 
-		// 5. Save everything in one transaction
 		companyRepository.save(company);
 	}
 
@@ -172,6 +139,6 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<Company> getAll(Long userId) {
-		return companyRepository.findByUserId(userId);
+		return companyRepository.findAllByUserIdOrderByCompanyNameAsc(userId);
 	}
 }
