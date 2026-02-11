@@ -27,6 +27,7 @@ public class MenuAdvice {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
             
             list.add(new MenuItem("/companies", "Companies"));
+            list.add(new MenuItem("/logs/list", "Logs"));
 
             if (isAdmin) {
                 MenuItem adminMenu = new MenuItem("/admin", "Admin");
