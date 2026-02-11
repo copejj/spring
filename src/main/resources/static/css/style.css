@@ -423,11 +423,19 @@ select.select-input {
     text-decoration: none;
 }
 
+li.link:hover {
+    background-color: #2f506f7d;
+}
+
+li.link.nav-item:hover,
+li.link.nav-item.link-selected:hover,
 li.link.nav-item:has(.link-selected),
 li.link.nav-item.link-selected {
     border-radius: 0 1rem 0 0;
 }
 
+li.align-right.link.nav-item:hover,
+li.align-right.link.nav-item.link-select:hover,
 li.align-right.link.nav-item:has(.link-selected),
 li.align-right.link.nav-item.link-selected {
     border-radius: 1rem 0 0 0;
@@ -439,7 +447,9 @@ li.link.link-selected {
 }
 
 .dropdown-menu,
-li.link.link-selected:has(.dropdown-item) {
+.dropdown-menu>li.link:has(.dropdown-item):hover,
+.dropdown-menu>li.link.link-selected:has(.dropdown-item):hover,
+.dropdown-menu>li.link.link-selected:has(.dropdown-item) {
     border-radius: 0 0 .5rem 1rem;
 }
 
