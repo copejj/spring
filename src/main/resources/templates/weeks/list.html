@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz"
+	layout:decorate="~{layout/default}">
+	<body>
+        <div layout:fragment="content"> 
+            <table id="weeksTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
+                <thead class="table-dark">
+                    <tr>
+                        <th># Logs</th>
+                        <th>Week</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="week : ${weeks}">
+                        <td th:data-order="${week.logCounts ?: 0}">
+                            <div th:if="${week.logCounts > 0}">
+                                <a th:href="@{/logs/list(weekId=${week.weekId})}" 
+                                    style="text-decoration: none;"
+                                    title="Filter by this company">
+                                    <i class="fa-solid fa-filter"></i>
+                                </a>
+                                <span th:text="${week.logCounts}">0</span> Logs
+                            </div>
+                            <div th:unless="${week.logCounts > 0}">
+                                <span class="text-muted">0</span> Logs
+                            </div>
+                        </td>
+                        <td th:text="${week.startDate} + ' - ' + ${week.endDate}"></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+            <script>
+                $(document).ready(function () {
+                    $('#weeksTable').DataTable({
+                        "pageLength": 25,
+                        "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                        "paging": true,
+                        "lengthChange": true,
+                        "searching": true,
+                        "ordering": true,
+                        "info": true,
+                        "autoWidth": false,
+                        "order": [{ "idx": 1, "dir": 'desc' }], 
+                        "columnDefs": [
+                            { width: '10%', targets: [0] }, 
+                            { width: '20%', targets: [1] }, 
+                            { orderable: false, targets: [2] }
+                        ],
+                        "responsive": true,
+                        initComplete: function() {
+                            $(this).addClass('d-some');
+                        }
+                    });
+                });
+            </script>
+        </div>
+		</div>
+	</body>
+</html>
