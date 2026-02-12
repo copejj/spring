@@ -45,9 +45,13 @@
                             </a>
                         </td>
                         <td>
-                            <a th:href="@{/logs/list(companyId=${selectedCompany}, weekId=${log.weekId})}" 
+                            <a th:href="@{/logs/list(
+                                    companyId=${selectedCompany}, 
+                                    weekId=${selectedWeek == log.weekId ? '' : log.weekId}
+                                )}" 
+                                th:classappend="${selectedWeek == log.weekId? 'active-filter' : ''}"
                                 style="text-decoration: none;"
-                                title="Filter by this week">
+                                title="Click to filter or click again to clear">
                                 <i class="fa-solid fa-filter"></i>
                             </a>
                             <span th:text="${log.startDate} + ' - ' + ${log.endDate}"></span>
@@ -59,9 +63,13 @@
                                 title="Edit this company">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
-                            <a th:href="@{/logs/list(companyId=${log.companyId}, weekId=${selectedWeek})}" 
+                            <a th:href="@{/logs/list(
+                                    companyId=${selectedCompany == log.companyId ? '' : log.companyId}, 
+                                    weekId=${selectedWeek}
+                                )}" 
+                                th:classappend="${selectedCompany == log.companyId ? 'active-filter' : ''}"
                                 style="text-decoration: none;"
-                                title="Filter by this company">
+                                title="Click to filter or click again to clear">
                                 <i class="fa-solid fa-filter"></i>
                             </a>
                             <span th:text="${log.companyName}"></span>
