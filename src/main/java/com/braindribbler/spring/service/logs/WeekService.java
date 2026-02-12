@@ -7,5 +7,6 @@ import com.braindribbler.spring.models.logs.Week;
 
 public interface WeekService {
 	WeekDTO getWeekDtoById(Long weekId);
+    List<WeekDTO> getWeeksByUserId(Long userId);
 	List<Week> getAll();
 }

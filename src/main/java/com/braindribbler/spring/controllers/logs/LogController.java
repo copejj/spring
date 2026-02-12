@@ -41,7 +41,7 @@ public class LogController {
         List<LogDTO> logs = logService.findLogs(userDetails.getUserId(), weekId, companyId);
 
         model.addAttribute("location", "Logs");
-        model.addAttribute("title", "Applied Job Logs");
+        model.addAttribute("title", "Applications List");
         model.addAttribute("logs", logs);
         model.addAttribute("selectedWeek", weekId);
         model.addAttribute("selectedCompany", companyId);
@@ -62,7 +62,7 @@ public class LogController {
         List<Week> weeks = weekService.getAll();
 
 		model.addAttribute("location", "Edit Log");
-		model.addAttribute("title", "Log Information");
+		model.addAttribute("title", "Application Information");
 
 		model.addAttribute("log", logDto);
         model.addAttribute("companies", companies);

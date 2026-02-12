@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name="weeks")
@@ -26,6 +27,12 @@ public class Week {
 
 	@Column(name="end_date")
 	private LocalDate endDate;
+
+	@Transient
+	private Integer logCounts;
+	public Integer getLogCount() {
+		return logCounts;
+	}
 
 	public Long getWeekId() { return weekId; }
 	public void setWeekId(Long weekId) { this.weekId = weekId; }

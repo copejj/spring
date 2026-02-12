@@ -3,7 +3,8 @@ package com.braindribbler.spring.dto.logs;
 import java.time.LocalDate;
 
 public record WeekDTO(
-	long weekId,
+	Long weekId,
 	LocalDate startDate,
-	LocalDate endDate
+	LocalDate endDate,
+	Integer logCounts
 ) { }

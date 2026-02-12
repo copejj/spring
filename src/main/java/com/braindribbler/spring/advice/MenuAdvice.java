@@ -27,7 +27,11 @@ public class MenuAdvice {
                 .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
             
             list.add(new MenuItem("/companies", "Companies"));
-            list.add(new MenuItem("/logs/list", "Logs"));
+
+            MenuItem logMenu = new MenuItem("/logs/list", "Jobs");
+            logMenu.addChild(new MenuItem("/logs/list", "Applied"));
+            logMenu.addChild(new MenuItem("/weeks/list", "Weeks"));
+            list.add(logMenu);
 
             if (isAdmin) {
                 MenuItem adminMenu = new MenuItem("/admin", "Admin");

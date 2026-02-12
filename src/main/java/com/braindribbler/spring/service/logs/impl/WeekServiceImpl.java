@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.braindribbler.spring.dto.logs.WeekDTO;
 import com.braindribbler.spring.models.logs.Week;
+import com.braindribbler.spring.repositories.logs.WeekProjection;
 import com.braindribbler.spring.repositories.logs.WeekRepository;
 import com.braindribbler.spring.service.logs.WeekService;
 
@@ -28,5 +29,17 @@ public class WeekServiceImpl implements WeekService {
     public List<Week> getAll() {
         return weekRepository.findAll();
     }
-	
+
+    public List<WeekDTO> getWeeksByUserId(Long userId) {
+        List<WeekProjection> results = weekRepository.findActiveWeeks(userId);
+
+        return results.stream()
+            .map(row -> new WeekDTO(
+                row.getWeekId(),
+                row.getStartDate(),
+                row.getEndDate(),
+                row.getLogCounts()
+            ))
+            .toList();
+    }
 }
