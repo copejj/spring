@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/default}">
 	<body>
 		<main layout:fragment="content"> 
-			<table id="userTable" class="datatables table table-striped table-hover stripe" style="width:100%">
+			<table id="userTable" class="datatables table table-striped table-hover stripe" style="width:100%;display:none;">
 				<thead class="table-dark">
 					<tr>
 						<th>Started Date</th>
@@ -39,7 +39,10 @@
 						"columnDefs": [
 							{ width: '200px', targets: [0, 1] }
 						],
-						"responsive": true
+						"responsive": true,
+                        initComplete: function() {
+                            $(this).addClass('d-some');
+                        }
 					});
 				});
 			</script>
