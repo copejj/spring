@@ -8,20 +8,25 @@
             <div class='filter-box' th:if="${selectedWeek != null or selectedCompany != null}">
                 <span class="title">Active Filters:</span>
                 <span class="clear-button" th:if="${selectedCompany != null}">
-                    <span>Company: </span>
-                    <a th:href="@{/logs/list(weekId=${selectedWeek})}" style="text-decoration: none; font-size: 1.2rem; line-height: 1;">&times;</a>
+                    <a th:href="@{/logs/list(weekId=${selectedWeek})}" style="text-decoration: none;"> 
+                        <span>Company</span>
+                        <i class="fa-solid fa-x"></i> 
+                    </a>
                 </span>
                 <span class="clear-button" th:if="${selectedWeek != null}">
-                    <span>Week: </span>
-                    <a th:href="@{/logs/list(companyId=${selectedCompany})}" style="text-decoration: none; font-size: 1.2rem; line-height: 1;">&times;</a>
+                    <a th:href="@{/logs/list(companyId=${selectedCompany})}" style="text-decoration: none;">
+                        <span>Week</span>
+                        <i class="fa-solid fa-x"></i>
+                    </a>
                 </span>
                 <span class="clear-button" >
-                    <a th:href="@{/logs/list}" style="text-decoration: none; line-height: 1;">
-                        Clear All
+                    <a th:href="@{/logs/list}" style="text-decoration: none;"> 
+                        <span>Clear ALL</span>
+                        <i class="fa-solid fa-x"></i> 
                     </a>
                 </span>
             </div>
-            <table id="logsTable" class="datatables table table-striped table-hover stripe" style="width:100%">
+            <table id="logsTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
                 <thead class="table-dark">
                     <tr>
                         <th></th>
@@ -36,17 +41,30 @@
                     <tr th:each="log : ${logs}">
                         <td style="text-align: center;">
                             <a th:href="@{/logs/edit/{id}(id=${log.logId})}">
-                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                                <i class="fa-solid fa-pen-to-square"></i>
                             </a>
                         </td>
-                        <td th:text="${log.startDate} + ' - ' + ${log.endDate}"></td>
+                        <td>
+                            <a th:href="@{/logs/list(companyId=${selectedCompany}, weekId=${log.weekId})}" 
+                                style="text-decoration: none;"
+                                title="Filter by this week">
+                                <i class="fa-solid fa-filter"></i>
+                            </a>
+                            <span th:text="${log.startDate} + ' - ' + ${log.endDate}"></span>
+                        </td>
                         <td th:text="${log.actionDate}"></td>
                         <td>
-                            <a th:href="@{/logs/list(companyId=${log.companyId}, weekId=${selectedWeek})}" 
-                            th:text="${log.companyName}"
-                            class="text-decoration-none font-weight-bold"
-                            title="Filter by this company">
+                            <a th:href="@{/companies/edit/{id}(id=${log.companyId})}"
+                                style="text-decoration: none;"
+                                title="Edit this company">
+                                <i class="fa-solid fa-pen-to-square"></i>
                             </a>
+                            <a th:href="@{/logs/list(companyId=${log.companyId}, weekId=${selectedWeek})}" 
+                                style="text-decoration: none;"
+                                title="Filter by this company">
+                                <i class="fa-solid fa-filter"></i>
+                            </a>
+                            <span th:text="${log.companyName}"></span>
                         </td>
                         <td th:text="${log.title}"></td>
                         <td th:text="${log.jobNumber}"></td>
@@ -64,15 +82,18 @@
                         "ordering": true,
                         "info": true,
                         "autoWidth": false,
-                        "order": [{ "idx": 1, "dir": 'desc' }, { "idx": 2, "dir": 'asc' }], 
+                        "order": [{ "idx": 2, "dir": 'desc' }, { "idx": 3, "dir": 'asc' }], 
                         "columnDefs": [
                             { width: '3%', targets: [0] }, 
-                            { width: '12%', targets: [1] }, 
+                            { width: '13%', targets: [1] }, 
                             { width: '8%', targets: [2] }, 
                             { width: '20%', targets: [3] }, 
                             { orderable: false, targets: [0] }
                         ],
-                        "responsive": true
+                        "responsive": true,
+                        initComplete: function() {
+                            $(this).addClass('d-some');
+                        }
                     });
                 });
             </script>

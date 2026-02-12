@@ -150,6 +150,60 @@ div#methods_group div.check-div {
     width: 10%;
 }
 
+span.clear-button {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #496b89;
+    border-radius: .35rem;
+    text-align: center;
+    padding: .2rem;
+    margin: 1px;
+    width: 6rem;
+    height: 1rem;
+    display: inline-block;
+    vertical-align:middle;
+    font-size: .80rem;
+}
+
+span.clear-button a, 
+span.clear-button a:focus, 
+span.clear-button a:active {
+    outline: none;
+    box-shadow: none;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+}
+
+span.clear-button .fa-solid, 
+span.clear-button a, 
+span.clear-button {
+    color: #496b89;
+}
+
+span.clear-button a {
+    width: 100%;
+}
+
+span.clear-button:hover .fa-solid, 
+span.clear-button:hover a, 
+span.clear-button:hover {
+    color: white;
+    background-color: #496b89;
+}
+
+.fa-solid, .fas {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 600;
+    color: #2f5170;
+    margin-right: .5rem;
+    background-color: inherit;
+}
+
+div.table table.dataTable.d-some{
+    display: table !important;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
 div.table table.dataTable>tbody>tr:nth-child(even),
 div.table table.dataTable tbody tr:nth-child(even) { 
     background-color: #9c9da740;
@@ -158,6 +212,12 @@ div.table table.dataTable tbody tr:nth-child(even) {
 div.table table.dataTable>tbody>tr:nth-child(odd),
 div.table table.dataTable tbody tr:nth-child(odd) {
     background-color: #586e8a00;
+}
+
+div.table table.dataTable>tbody>tr:hover .fa-solid,
+div.table table.dataTable tbody tr:hover .fas {
+    color: #ffffff;
+    background-color: inherit;
 }
 
 div.table table.dataTable>tbody>tr:hover,
@@ -190,12 +250,6 @@ div.table table.dataTable td.dt-type-numeric div.dt-column-footer,
 div.table table.dataTable td.dt-type-date div.dt-column-header,
 div.table table.dataTable td.dt-type-date div.dt-column-footer {
 	flex-direction: row;
-}
-div.table table.dataTable th.dt-type-numeric,
-div.table table.dataTable th.dt-type-date,
-div.table table.dataTable td.dt-type-numeric,
-div.table table.dataTable td.dt-type-date {
-	text-align: left;
 }
 td.fit-width {
     width: 1%;
@@ -455,4 +509,16 @@ li.link.link-selected {
 
 .navbar-nav > li.link:nth-child(1 of .link.align-right){
     margin-left: auto;
+}
+
+td.company-cell {
+    display: flex;
+    align-items: center;
+}
+
+/* Optional: Ensure the icon has a consistent width so text stays aligned */
+td.company-cell .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
