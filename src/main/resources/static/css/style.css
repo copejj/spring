@@ -488,7 +488,7 @@ select.select-input {
 }
 
 li.link:hover {
-    background-color: #2f506f7d;
+    background-color:#3f6283; 
 }
 
 li.link.nav-item:hover,
