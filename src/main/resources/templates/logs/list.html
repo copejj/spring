@@ -5,10 +5,27 @@
 	<body>
 		<h2>/logs/list.html</h2>
         <div layout:fragment="content"> 
+            <div class='filter-box' th:if="${selectedWeek != null or selectedCompany != null}">
+                <span class="title">Active Filters:</span>
+                <span class="clear-button" th:if="${selectedCompany != null}">
+                    <span>Company: </span>
+                    <a th:href="@{/logs/list(weekId=${selectedWeek})}" style="text-decoration: none; font-size: 1.2rem; line-height: 1;">&times;</a>
+                </span>
+                <span class="clear-button" th:if="${selectedWeek != null}">
+                    <span>Week: </span>
+                    <a th:href="@{/logs/list(companyId=${selectedCompany})}" style="text-decoration: none; font-size: 1.2rem; line-height: 1;">&times;</a>
+                </span>
+                <span class="clear-button" >
+                    <a th:href="@{/logs/list}" style="text-decoration: none; line-height: 1;">
+                        Clear All
+                    </a>
+                </span>
+            </div>
             <table id="logsTable" class="datatables table table-striped table-hover stripe" style="width:100%">
                 <thead class="table-dark">
                     <tr>
                         <th></th>
+                        <th>Week</th>
                         <th>Action Date</th>
                         <th>Company Name</th>
                         <th>Title</th>
@@ -22,8 +39,15 @@
                                 <i class="fa-solid fa-pen-to-square"></i> Edit
                             </a>
                         </td>
+                        <td th:text="${log.startDate} + ' - ' + ${log.endDate}"></td>
                         <td th:text="${log.actionDate}"></td>
-                        <td th:text="${log.companyName}"></td>
+                        <td>
+                            <a th:href="@{/logs/list(companyId=${log.companyId}, weekId=${selectedWeek})}" 
+                            th:text="${log.companyName}"
+                            class="text-decoration-none font-weight-bold"
+                            title="Filter by this company">
+                            </a>
+                        </td>
                         <td th:text="${log.title}"></td>
                         <td th:text="${log.jobNumber}"></td>
                     </tr>
@@ -43,8 +67,9 @@
                         "order": [{ "idx": 1, "dir": 'desc' }, { "idx": 2, "dir": 'asc' }], 
                         "columnDefs": [
                             { width: '3%', targets: [0] }, 
-                            { width: '8%', targets: [1] }, 
-                            { width: '20%', targets: [2] }, 
+                            { width: '12%', targets: [1] }, 
+                            { width: '8%', targets: [2] }, 
+                            { width: '20%', targets: [3] }, 
                             { orderable: false, targets: [0] }
                         ],
                         "responsive": true

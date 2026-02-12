@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Formula;
+
+import com.braindribbler.spring.models.logs.Log;
 import com.braindribbler.spring.models.users.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -63,12 +66,17 @@ public class Company {
 	@JsonBackReference
 	private User user;
 
-	@OneToMany(
-		mappedBy = "company", 
-		cascade = CascadeType.ALL, 
-		orphanRemoval = true
-	)
+	@OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CompanyAddress> companyAddresses = new ArrayList<>();
+
+	@OneToMany(mappedBy = "company", fetch=FetchType.LAZY)
+	private List<Log> logs = new ArrayList<>();
+
+	@Formula("(SELECT COUNT(*) FROM job_logs l WHERE l.company_id = company_id)")
+	private int logCount;
+	public int getLogCount() {
+		return logCount;
+	}
 
 	public void addCompanyAddress(CompanyAddress companyAddress) {
 		companyAddresses.add(companyAddress);

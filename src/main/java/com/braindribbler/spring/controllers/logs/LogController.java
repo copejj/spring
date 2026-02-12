@@ -38,7 +38,7 @@ public class LogController {
             @RequestParam(required = false) Long companyId,
             Model model) { // Model for passing data to the template
 
-        List<LogDTO> logs = logService.findLogs(userDetails.getUserId());
+        List<LogDTO> logs = logService.findLogs(userDetails.getUserId(), weekId, companyId);
 
         model.addAttribute("location", "Logs");
         model.addAttribute("title", "Applied Job Logs");
