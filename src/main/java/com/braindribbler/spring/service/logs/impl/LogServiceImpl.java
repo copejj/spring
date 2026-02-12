@@ -56,9 +56,15 @@ public class LogServiceImpl implements LogService {
     @Override
     @Transactional(readOnly = true)
     public List<LogDTO> findLogs(Long userId, Long weekId, Long companyId) {
-        return logRepository.findByUserIdAndWeekIdAndCompanyId(userId, weekId, companyId).stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        // If all optional filters are null, you can default to the simple findByUserId
+        if (weekId == null && companyId == null) {
+            return findLogs(userId); 
+        }
+
+        // Call a repository method designed to handle nulls
+        return logRepository.findFilteredLogs(userId, weekId, companyId).stream()
+            .map(this::convertToDto)
+            .collect(Collectors.toList());
     }
 
     // --- Helper Methods for Mapping ---

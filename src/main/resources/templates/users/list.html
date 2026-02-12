@@ -5,7 +5,7 @@
 	<body>
 		<h2>/user/list.html</h2>
         <div layout:fragment="content"> 
-            <table id="userTable" class="datatables table table-striped table-hover stripe" style="width:100%">
+            <table id="userTable" class="datatables table table-striped table-hover stripe" style="width:100%;display:none;">
                 <thead class="table-dark">
                     <tr>
                         <th></th>
@@ -18,8 +18,10 @@
                 <tbody>
                     <tr th:each="user : ${users}">
                         <td style="text-align: center;">
-                            <a th:href="@{/admin/users/edit/{id}(id=${user.userId})}">
-                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                            <a th:href="@{/admin/users/edit/{id}(id=${user.userId})}"
+                                style="text-decoration: none;"
+                                title="Edit this user">
+                                <i class="fa-solid fa-pen-to-square"></i>
                             </a>
                         </td>
                         <td th:text="${user.userName}"></td>
@@ -45,7 +47,11 @@
                             { width: '2%', targets: [0, 1] }, 
                             { orderable: false, targets: [0] }
                         ],
-                        "responsive": true
+                        "responsive": true,
+                        initComplete: function() {
+                            $(this).addClass('d-some');
+                        }
+
                     });
                 });
             </script>

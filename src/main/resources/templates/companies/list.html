@@ -4,10 +4,23 @@
 	layout:decorate="~{layout/default}">
 	<body>
         <div layout:fragment="content"> 
-            <table id="companyTable" class="datatables table table-striped table-hover stripe" style="width:100%">
+            <div>
+                <strong>Active Filters:</strong>
+                <!-- Show Week Filter -->
+                <span th:if="${selectedWeek != null}" class="badge badge-light mx-2">
+                    Week: <span th:text="${selectedWeek}"></span>
+                </span>
+
+                <!-- Show Company Filter -->
+                <span th:if="${selectedCompany != null}" class="badge badge-light mx-2">
+                    Company ID: <span th:text="${selectedCompany}"></span>
+                </span>
+            </div>
+            <table id="companyTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
                 <thead class="table-dark">
                     <tr>
                         <th></th>
+                        <th># Logs</th>
                         <th>Name</th>
                         <th>Website</th>
                         <th>Email</th>
@@ -15,7 +28,26 @@
                 </thead>
                 <tbody>
                     <tr th:each="company : ${companies}">
-                        <td><a class="btn btn-primary" th:href="'/companies/edit/' + ${company.companyId} ">Edit</a></td>
+                        <td>
+                            <a th:href="@{/companies/edit/{id}(id=${company.companyId})}"
+                                style="text-decoration: none;"
+                                title="Edit this company">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <div th:if="${company.logCount > 0}">
+                                <a th:href="@{/logs/list(companyId=${company.companyId})}" 
+                                    style="text-decoration: none;"
+                                    title="Filter by this company">
+                                    <i class="fa-solid fa-filter"></i>
+                                </a>
+                                <span th:text="${company.logCount}">0</span> Logs
+                            </div>
+                            <div th:unless="${company.logCount > 0}">
+                                <span class="text-muted">0</span> Logs
+                            </div>
+                        </td>
                         <td th:text="${company.companyName}"></td>
                         <td><a th:href="${company.companyWebsite}" th:text="${company.companyUrl}" target="_blank">  </a></td>
                         <td th:text="${company.companyEmail}"></td>
@@ -33,12 +65,15 @@
                         "ordering": true,
                         "info": true,
                         "autoWidth": false,
-                        "order": { "idx": 1, "dir": 'asc' }, 
+                        "order": { "idx": 2, "dir": 'asc' }, 
                         "columnDefs": [
                             { width: '2px', targets: [0] }, 
                             { orderable: false, targets: [0] }
                         ],
-                        "responsive": true
+                        "responsive": true,
+                        initComplete: function() {
+                            $(this).addClass('d-some');
+                        }
                     });
                 });
             </script>

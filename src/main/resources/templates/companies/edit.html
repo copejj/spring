@@ -22,7 +22,13 @@
                     <label th:for="companyWebsite" class="input-label">Company Website</label>
 					<div class="input-group">
 						<input th:field="*{companyWebsite}" type="text" class="input text-input" />
-						<a th:href="*{companyWebsite}" target="_blank"> view </a>
+                        <a th:href="*{companyWebsite}" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            class="external-link" 
+                            title="View company website">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
 					</div>
 
                     <label th:for="companyPhone" class="input-label">Company Phone</label>
