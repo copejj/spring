@@ -20,7 +20,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th></th>
-                        <th># Logs</th>
+                        <th># Apps</th>
                         <th>Name</th>
                         <th>Website</th>
                         <th>Email</th>
@@ -42,10 +42,10 @@
                                     title="Filter by this company">
                                     <i class="fa-solid fa-filter"></i>
                                 </a>
-                                <span th:text="${company.logCount}">0</span> Logs
+                                <span th:text="${company.logCount}">0</span> Apps.
                             </div>
                             <div th:unless="${company.logCount > 0}">
-                                <span class="text-muted">0</span> Logs
+                                <span class="text-muted">0</span> Apps.
                             </div>
                         </td>
                         <td th:text="${company.companyName}"></td>
