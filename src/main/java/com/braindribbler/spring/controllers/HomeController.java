@@ -11,15 +11,13 @@ public class HomeController {
 	public String index(Model model) {
 		model.addAttribute("location", "Home");
 		model.addAttribute("title", "Welcome to the Brain Dribbler!");
-		model.addAttribute("content", "This is the home page...");
-		return "index"; // Name of the view to render
+		return "index";
 	}
 
 	@GetMapping("/about")
 	public String about(Model model) {
 		model.addAttribute("location", "About");
 		model.addAttribute("title", "About Brain Dribbler");
-		model.addAttribute("content", "Brain Dribbler is a sample Spring Boot application demonstrating basic web functionalities.");
-		return "index"; // Name of the view to render
+		return "about";
 	}
 }

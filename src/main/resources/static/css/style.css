@@ -526,9 +526,40 @@ td.company-cell {
     align-items: center;
 }
 
-/* Optional: Ensure the icon has a consistent width so text stays aligned */
 td.company-cell .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+.about-cont {
+    display: flex;
+    align-items: stretch; /* Make both sides equal height */
+    gap: 40px;              
+    height: 69vh;        /* Set the limit here so both sides respect it */
+    overflow: hidden;    /* No scrolling on the outer container */
+}
+
+.about-text {
+    flex: 1.5;               
+    padding: 20px;
+    overflow-y: auto;    /* Only the text side scrolls if it gets too long */
+}
+
+.about-text p {
+    width: 90%;
+}
+
+.about-image {
+    display: flex;       /* Added this to make centering work */
+    justify-content: center;
+    align-items: center;
+    flex: 3;       
+    overflow: hidden;
+    height: 95%;        /* Match the 70vh of the parent */
+}
+
+.about-image img {
+    height: 100%;
+    border-radius: 1rem;
 }
