@@ -20,7 +20,7 @@ jobs:
                     username: ${{ secrets.SSH_PRIVATE_USERNAME }}
                     key: ${{ secrets.SSH_PRIVATE_KEY }}
                     # IMPORTANT: All variables used in the script must be listed here
-                    envs: DB_NAME,DB_USER,DB_PASS,DB_HOST,DB_URL,API_BASE_URL,SERVER_CONTEXT_PATH,TAG_NAME
+                    envs: DB_NAME,DB_USER,DB_PASS,DB_HOST,DB_URL,API_BASE_URL,SERVER_CONTEXT_PATH,TAG_NAME,APP_EXTERNAL_URL
                     script: |
                         CURRENT_STEP="INITIALIZATION"
                         # 1. Initialization and Output
@@ -146,3 +146,4 @@ jobs:
                     API_BASE_URL: ${{ vars.API_BASE_URL }}
                     SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}
                     TAG_NAME: ${{ github.event.inputs.test_tag || github.event.release.tag_name }}
+                    APP_EXTERNAL_URL: ${{ vars.APP_EXTERNAL_URL }}
