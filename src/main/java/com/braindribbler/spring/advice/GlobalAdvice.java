@@ -1,6 +1,7 @@
 package com.braindribbler.spring.advice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.GitProperties;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -14,6 +15,9 @@ public class GlobalAdvice {
 
 	@Autowired(required = false)
     private GitProperties gitProperties;
+
+    @Value("${app.external-url}")
+    private String externalUrl;
 
     @ModelAttribute
     public void addSiteInfo(Model model) {
@@ -36,6 +40,7 @@ public class GlobalAdvice {
                 displayVersion = (branch != null) ? branch : "unknown";
             }
 
+            model.addAttribute("externalUrl", externalUrl);
             model.addAttribute("gitBranch", displayVersion);
             model.addAttribute("gitHash", shortHash);
             model.addAttribute("showGitInfo", true);
