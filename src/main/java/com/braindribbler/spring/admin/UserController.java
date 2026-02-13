@@ -1,4 +1,4 @@
-package com.braindribbler.spring.controllers.users;
+package com.braindribbler.spring.admin;
 
 import java.util.List;
 
@@ -16,26 +16,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.braindribbler.spring.dto.users.UserDTO;
-import com.braindribbler.spring.models.admin.SchemaMigrations;
 import com.braindribbler.spring.models.users.User;
-import com.braindribbler.spring.service.admin.SchemaMigrationService;
 import com.braindribbler.spring.service.users.UserService;
 
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
-
-	private final SchemaMigrationService migrationService;
+@RequestMapping("/admin/users")
+public class UserController {
 	private final UserService userService;
 
-	public AdminController(UserService userService, SchemaMigrationService migrationService) {
+	public UserController(UserService userService) {
 		this.userService = userService;
-		this.migrationService = migrationService;
 	}
 
-	@GetMapping("/users/edit/{userId}")
+	@GetMapping("/edit/{userId}")
 	@PreAuthorize("hasRole('ADMIN') or #userId == principal.user.userId")
 	public String getUserById(@PathVariable Long userId, Model model, Authentication authentication) {
 		boolean isAdmin = authentication.getAuthorities().stream()
@@ -51,7 +46,7 @@ public class AdminController {
 		return "users/edit";
 	}
 
-	@PutMapping("/users")
+	@PutMapping
 	@PreAuthorize("hasRole('ADMIN') or #userDto.userId == principal.user.userId")
 	public String updateUser(@Valid @ModelAttribute("userDto") UserDTO userDto, 
 							BindingResult result, 
@@ -77,7 +72,7 @@ public class AdminController {
 		return "redirect:/admin/users/edit/" + userDto.userId();
 	}
 
-	@GetMapping("/users")
+	@GetMapping
 	@Secured("ROLE_ADMIN")
 	public String getAll(Model model) {
 
@@ -89,17 +84,5 @@ public class AdminController {
 		model.addAttribute("users", users);
 
 		return "users/list";
-	}
-
-	@GetMapping("/migrations")
-	@Secured("ROLE_ADMIN")
-	public String getAllMigrations(Model model) {
-		List<SchemaMigrations> migrations = migrationService.getAll();
-
-		model.addAttribute("location", "Admin: Migrations");
-		model.addAttribute("title", "Schema Migrations");
-
-		model.addAttribute("migrations", migrations);
-		return "server/migrations";
 	}
 }
