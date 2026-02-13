@@ -98,6 +98,7 @@ jobs:
                         sed -i "s|<db_pass>|$DB_PASS|g" src/main/resources/application.properties
                         sed -i "s|<api_base_url>|$API_BASE_URL|g" src/main/resources/application.properties
                         sed -i "s|<server_context_path>|$SERVER_CONTEXT_PATH|g" src/main/resources/application.properties
+                        sed -i "s|<php_external_url>|$PHP_EXTERNAL_URL|g" src/main/resources/application.properties
                         mvn clean package -DskipTests
 
                         CURRENT_STEP="DEPLOYMENT"
@@ -146,4 +147,4 @@ jobs:
                     API_BASE_URL: ${{ vars.API_BASE_URL }}
                     SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}
                     TAG_NAME: ${{ github.event.inputs.test_tag || github.event.release.tag_name }}
-                    APP_EXTERNAL_URL: ${{ vars.APP_EXTERNAL_URL }}
+                    PHP_EXTERNAL_URL: ${{ vars.PHP_EXTERNAL_URL }}
