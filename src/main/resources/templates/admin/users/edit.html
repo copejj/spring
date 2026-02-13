@@ -14,13 +14,13 @@
         <!-- Row 1: User Info -->
         <div class="row g-3 mb-3">
             <div class="col-md-6">
-                <label for="email" class="form-label">User Email</label>
-                <input th:field="*{email}" type="text" class="form-control" />
+                <label for="userName" class="form-label">User Name</label>
+                <input th:field="*{userName}" type="text" class="form-control bg-light" readonly />
             </div>
 
             <div class="col-md-6">
-                <label for="userName" class="form-label">User Name</label>
-                <input th:field="*{userName}" type="text" class="form-control bg-light" readonly />
+                <label for="email" class="form-label">User Email</label>
+                <input th:field="*{email}" type="text" class="form-control" />
             </div>
 
             <input th:field="*{userId}" type="hidden" />

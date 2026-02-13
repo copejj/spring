@@ -399,6 +399,7 @@ select.select-input {
 }
 .nav-item.link {
     text-align: center;
+    min-width: 7rem;
 }
 .link {
     padding: 0.2rem;
