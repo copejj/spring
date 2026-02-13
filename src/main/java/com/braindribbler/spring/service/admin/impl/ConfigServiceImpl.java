@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 import com.braindribbler.spring.enums.admin.ConfigEnvironment;
 import com.braindribbler.spring.models.admin.Config;
 import com.braindribbler.spring.repositories.admin.ConfigRepository;
+import com.braindribbler.spring.service.admin.ConfigService;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class ConfigServiceImpl {
+public class ConfigServiceImpl implements ConfigService {
 
     private final ConfigRepository repository;
 
@@ -21,8 +22,13 @@ public class ConfigServiceImpl {
         this.repository = repository;
     }
 
-    public List<Config> getActiveConfigs(ConfigEnvironment env) {
-        // Fetches both the specific environment and the global 'ANY' configs
+    @Override
+    public List<Config> getAllConfigs() {
+        return repository.findAll(); 
+    }
+
+    @Override
+    public List<Config> getAllActiveConfigs(ConfigEnvironment env) {
         return repository.findByEnvironmentInAndInactiveDateIsNull(
             List.of(ConfigEnvironment.ANY, env)
         );
@@ -30,6 +36,7 @@ public class ConfigServiceImpl {
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
+    @Override
     public Config saveConfig(Config config) {
         if (config == null) {
             throw new IllegalArgumentException("Config cannot be null");
@@ -39,6 +46,7 @@ public class ConfigServiceImpl {
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
+    @Override
     public void deactivateConfig(Long configId) {
         if (configId == null) {
             throw new IllegalArgumentException("Config ID is required");

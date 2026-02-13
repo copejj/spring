@@ -1,4 +1,4 @@
-package com.braindribbler.spring.admin;
+package com.braindribbler.spring.controllers.admin;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class UserController {
 		model.addAttribute("location", "Edit User");
 		model.addAttribute("title", "User Information");
 
-		return "users/edit";
+		return "admin/users/edit";
 	}
 
 	@PutMapping
@@ -83,6 +83,6 @@ public class UserController {
 
 		model.addAttribute("users", users);
 
-		return "users/list";
+		return "admin/users/list";
 	}
 }

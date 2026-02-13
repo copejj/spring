@@ -1,4 +1,4 @@
-package com.braindribbler.spring.admin;
+package com.braindribbler.spring.controllers.admin;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class MigrationController {
 		model.addAttribute("title", " Migrations");
 
 		model.addAttribute("migrations", migrations);
-		return "server/migrations";
+		return "admin/migrations/list";
 	}
 	
 }

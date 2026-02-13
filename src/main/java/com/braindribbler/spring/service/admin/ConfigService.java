@@ -6,7 +6,8 @@ import com.braindribbler.spring.enums.admin.ConfigEnvironment;
 import com.braindribbler.spring.models.admin.Config;
 
 public interface ConfigService {
-    List<Config> getActiveConfigs(ConfigEnvironment env);
+    List<Config> getAllConfigs();
+    List<Config> getAllActiveConfigs(ConfigEnvironment env);
     Config saveConfig(Config config);
 	void deactivateConfig(Long configId);
 }

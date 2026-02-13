@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz"
+	xmlns:sec="http://www.thymeleaf.org"
+	layout:decorate="~{layout/default}">
+<body>
+    <main layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>System Configurations</h2>
+            <button sec:authorize="hasRole('ADMIN')" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#addConfigForm">
+                + Add New Config
+            </button>
+        </div>
+
+        <div sec:authorize="hasRole('ADMIN')" id="addConfigForm" class="collapse mb-4">
+            <div class="card card-body shadow-sm">
+                <form th:action="@{/admin/configs/save}" th:object="${newConfig}" method="post" class="row g-3">
+                    <div class="col-md-3">
+                        <input type="text" th:field="*{name}" class="form-control" placeholder="Name" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" th:field="*{value}" class="form-control" placeholder="Value">
+                    </div>
+                    <div class="col-md-3">
+                        <select th:field="*{environment}" class="form-select">
+                            <option th:each="env : ${environments}" th:value="${env}" th:text="${env}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-success w-100">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <table id="configTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
+            <thead class="table-dark">
+                <tr>
+                    <th>Created Date</th>
+                    <th>Name</th>
+                    <th>Value</th>
+                    <th>Environment</th>
+                    <th sec:authorize="hasRole('ADMIN')">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="c : ${configs}">
+                    <td th:text="${#temporals.format(c.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                    <td th:text="${c.name}" class="fw-bold"></td>
+                    <td th:text="${c.value}"></td>
+                    <td>
+                        <span th:text="${c.environment}" 
+							th:classappend="${c.environment.name() == 'PROD' ? 'bg-danger' : 'bg-primary'}" 
+							class="badge"></span>
+                    </td>
+                    <td sec:authorize="hasRole('ADMIN')">
+                        <form th:action="@{/admin/configs/deactivate/{id}(id=${c.configId})}" method="post" 
+							onsubmit="return confirm('Deactivate this config?');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Deactivate</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script>
+            $(document).ready(function () {
+                $('#configTable').DataTable({
+                    "pageLength": 25,
+                    "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                    "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false,
+                    "responsive": true,
+                    initComplete: function() {
+                        $(this).show(); // Show table after DataTables is ready
+                    }
+                });
+            });
+        </script>
+    </main>
+</body>
+</html>
