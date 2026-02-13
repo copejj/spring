@@ -3,101 +3,116 @@
 	xmlns:layout="http://www.ultraq.net.nz"
 	layout:decorate="~{layout/default}">
 	<body>
-        <div layout:fragment="content"> 
-            <div th:if="${saveError}" style="color: red;" th:text="'Error: ' + ${saveError}"> Error go here. </div>
-            <div th:if="${saveSuccess}" style="color: green;" th:text="${saveSuccess}"> Success go here.  </div>
+        <div layout:fragment="content" class="container mt-4"> 
+            <!-- Alerts -->
+            <div th:if="${saveError}" class="alert alert-danger" th:text="${saveError}"></div>
+            <div th:if="${saveSuccess}" class="alert alert-success" th:text="${saveSuccess}"></div>
 
             <form th:action="@{/companies/update}" th:object="${company}" th:method="post">
-                <div class="input-cont -input-cont">
-                    <input th:field="*{companyId}" type="hidden" />
+                <input th:field="*{companyId}" type="hidden" />
 
-                    <label th:for="companyName" class="input-label">Company Name</label>
-                    <input th:field="*{companyName}" type="text" class="input text-input" 
-                        th:classappend="${#fields.hasErrors('companyName')} ? 'input-error' : ''" />
-                    <p th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}" class="error-text"></p>
+                <!-- Row 1: Primary Info (3 Columns) -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <label th:for="companyName" class="form-label">Company Name</label>
+                        <input th:field="*{companyName}" type="text" 
+                            class="form-control" th:classappend="${#fields.hasErrors('companyName')} ? 'is-invalid' : ''" />
+                        <div th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}" class="invalid-feedback"></div>
+                    </div>
 
-                    <label th:for="companyEmail" class="input-label">Company Email</label>
-                    <input th:field="*{companyEmail}" type="text" class="input text-input" />
+                    <div class="col-md-4">
+                        <label th:for="companyEmail" class="form-label">Company Email</label>
+                        <input th:field="*{companyEmail}" type="email" class="form-control" />
+                    </div>
 
-                    <label th:for="companyWebsite" class="input-label">Company Website</label>
-					<div class="input-group">
-						<input th:field="*{companyWebsite}" type="text" class="input text-input" />
-                        <a th:href="*{companyWebsite}" 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            class="external-link" 
-                            title="View company website">
+                    <div class="col-md-4">
+                        <label th:for="companyWebsite" class="form-label">Company Website</label>
+                        <div class="input-group">
+                            <input th:field="*{companyWebsite}" type="text" class="form-control" placeholder="https://..." />
+                            <a th:href="*{companyWebsite}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary" title="Visit Site">
                                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-					</div>
-
-                    <label th:for="companyPhone" class="input-label">Company Phone</label>
-                    <input th:field="*{companyPhone}" type="text" class="input text-input" />
-
-                    <label th:for="companyFax" class="input-label">Company Fax</label>
-                    <input th:field="*{companyFax}" type="text" class="input text-input" />
-
-                    <div class="input-cont addresses-input-cont" id="address-container">
-                        <h3 class="input-label">Addresses</h3>
-                        <div th:each="addr, iter : *{addresses}" class="input-cont address-group-input-cont inputs-address-group address-row">
-                            <p th:if="${#fields.hasErrors('addresses[' + iter.index + '].street')}" 
-                                th:errors="*{addresses[__${iter.index}__].street}"></p>
-                            <input type="hidden" th:field="*{addresses[__${iter.index}__].addressId}" />
-
-                            <label th:for="|addresses${iter.index}.type|" class="input-label">Type</label>
-                            <select th:id="|addresses${iter.index}.type|" 
-                                th:field="*{addresses[__${iter.index}__].type}" class="input text-input">
-                                <option value=""> [ Select Type ] </option>
-                                <option th:each="t : ${allAddressTypes}" 
-                                        th:value="${t.name}" 
-                                        th:text="${t.name}">
-                                </option>
-                            </select>
-
-                            <label th:for="|addresses${iter.index}.street|" class="input-label">Street</label>
-                            <input th:id="|addresses${iter.index}.street|"  oninput="parse_address(this)"
-                                th:field="*{addresses[__${iter.index}__].street}" 
-                                th:attr="autocomplete='section-' + ${iter.index} + ' address-line1'" type="text" class="input text-input" />
-
-                            <label th:for="|addresses${iter.index}.streetExt|" class="input-label">Suite/Apt</label>
-                            <input th:id="|addresses${iter.index}.streetExt|" 
-                                th:field="*{addresses[__${iter.index}__].streetExt}" 
-                                th:attr="autocomplete='section-' + ${iter.index} + ' address-line2'" type="text" class="input text-input" />
-
-                            <label th:for="|addresses${iter.index}.city|" class="input-label">City</label>
-                            <input th:id="|addresses${iter.index}.city|" 
-                                th:field="*{addresses[__${iter.index}__].city}" 
-                                th:attr="autocomplete='section-' + ${iter.index} + ' address-level2'" type="text" class="input text-input" />
-
-                            <label th:for="|addresses${iter.index}.stateAbbr|" class="input-label">State</label>
-                            <select th:id="|addresses${iter.index}.stateAbbr|" 
-                                th:attr="autocomplete='section-' + ${iter.index} + ' address-level1 region'" 
-                                th:field="*{addresses[__${iter.index}__].stateAbbr}" 
-                                class="input select-input">
-                                <option value=""> [ Select State ] </option>
-                                <option th:each="st : ${allStates}" 
-                                    th:value="${st.abbr}" 
-                                    th:data-full-name="${st.name}"
-                                    th:text="${st.name}">Idaho</option>
-                                </option>
-                            </select>
-
-                            <label th:for="|addresses${iter.index}.zip|" class="input-label">Zip</label>
-                            <input th:id="|addresses${iter.index}.zip|" 
-                                th:field="*{addresses[__${iter.index}__].zip}" 
-                                th:attr="autocomplete='section-' + ${iter.index} + ' postal-code'" type="text" class="input text-input" />
-
-                            <button type="button" class="btn-danger input submit-input" onclick="removeAndReindex(this)"> Remove This Address </button>
+                            </a>
                         </div>
                     </div>
-                    <button type="button" class="input submit-input" onclick="addAddress()">+ Add Another Address</button>
-				</div>
-                <input type="submit" name="save_company" value="Save" class="input submit-input" id="submit-save_company" />
-                <input type="button" value="Cancel" class="input submit-input" onclick="location.href='/companies'" />
-                <template id="address-template">
-                    <div class="address-row-template" th:insert="~{fragments/address-row :: addressForm(index='__INDEX__')}"></div>
-                </template>
+                </div>
+
+                <!-- Row 2: Communication (1/3 width each) -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-4">
+                        <label th:for="companyPhone" class="form-label">Company Phone</label>
+                        <input th:field="*{companyPhone}" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <label th:for="companyFax" class="form-label">Company Fax</label>
+                        <input th:field="*{companyFax}" type="text" class="form-control" />
+                    </div>
+                </div>
+
+                <!-- ADDRESSES SECTION -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Addresses</h5>
+                        <button type="button" class="btn btn-sm btn-success" onclick="addAddress()">+ Add Address</button>
+                    </div>
+                    <div class="card-body" id="address-container">
+                        <div th:each="addr, iter : *{addresses}" class="address-row border-bottom pb-4 mb-4">
+                            <input type="hidden" th:field="*{addresses[__${iter.index}__].addressId}" />
+                            
+                            <!-- Error handling for row -->
+                            <div th:if="${#fields.hasErrors('addresses[' + iter.index + '].street')}" class="alert alert-sm alert-danger py-1 mb-2">
+                                <small th:errors="*{addresses[__${iter.index}__].street}"></small>
+                            </div>
+
+                            <!-- Address Row 1 -->
+                            <div class="row g-3 mb-2">
+                                <div class="col-md-3">
+                                    <label class="form-label">Type</label>
+                                    <select th:field="*{addresses[__${iter.index}__].type}" class="form-select">
+                                        <option value="">[ Type ]</option>
+                                        <option th:each="t : ${allAddressTypes}" th:value="${t.name}" th:text="${t.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Street</label>
+                                    <input th:field="*{addresses[__${iter.index}__].street}" oninput="parse_address(this)" type="text" class="form-control" />
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Suite/Apt</label>
+                                    <input th:field="*{addresses[__${iter.index}__].streetExt}" type="text" class="form-control" />
+                                </div>
+                            </div>
+
+                            <!-- Address Row 2 -->
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-4">
+                                    <label class="form-label">City</label>
+                                    <input th:field="*{addresses[__${iter.index}__].city}" type="text" class="form-control" />
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">State</label>
+                                    <select th:field="*{addresses[__${iter.index}__].stateAbbr}" class="form-select">
+                                        <option value="">[ State ]</option>
+                                        <option th:each="st : ${allStates}" th:value="${st.abbr}" th:text="${st.name}"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Zip</label>
+                                    <input th:field="*{addresses[__${iter.index}__].zip}" type="text" class="form-control" />
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button type="button" class="btn btn-outline-danger w-100" onclick="removeAndReindex(this)">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="mt-4 pb-5">
+                    <button type="submit" class="btn btn-primary px-5">Save Company</button>
+                    <a href="/companies" class="btn btn-secondary px-4 ms-2">Cancel</a>
+                </div>
             </form>		
-		</div>
+        </div>
 	</body>
 </html>

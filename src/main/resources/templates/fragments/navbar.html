@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 	<nav th:fragment="nav-fragment" class="links-cont menubar navbar-expand">
 		<div class="menu-container">
-			<ul class="navbar-nav">
+			<ul class="menubar-nav">
 				<th:block th:each="item : ${menuItems}">
 					<th:block th:replace="~{::menu-item(item=${item}, depth=0)}"></th:block>
 				</th:block>
