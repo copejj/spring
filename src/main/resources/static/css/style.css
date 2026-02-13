@@ -545,7 +545,7 @@ td.company-cell .btn {
     display: flex;
     align-items: stretch; /* Make both sides equal height */
     gap: 40px;              
-    height: 69vh;        /* Set the limit here so both sides respect it */
+    height: 100%;        /* Set the limit here so both sides respect it */
     overflow: hidden;    /* No scrolling on the outer container */
 }
 
