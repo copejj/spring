@@ -1,0 +1,59 @@
+package com.braindribbler.spring.service.admin.impl;
+
+import java.util.List;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Service;
+
+import com.braindribbler.spring.enums.admin.ConfigEnvironment;
+import com.braindribbler.spring.models.admin.Config;
+import com.braindribbler.spring.repositories.admin.ConfigRepository;
+import com.braindribbler.spring.service.admin.ConfigService;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class ConfigServiceImpl implements ConfigService {
+
+    private final ConfigRepository repository;
+
+    public ConfigServiceImpl(ConfigRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public List<Config> getAllConfigs() {
+        return repository.findAll(); 
+    }
+
+    @Override
+    @Cacheable(value = "configCache", key = "#env")
+    public List<Config> getAllActiveConfigs(ConfigEnvironment env) {
+        return repository.findByEnvironmentIn(
+            List.of(ConfigEnvironment.ANY, env)
+        );
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(value = "configCache", allEntries = true)
+    public Config saveConfig(Config config) {
+        if (config == null) {
+            throw new IllegalArgumentException("Config cannot be null");
+        }
+        return repository.save(config);
+    }
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+    @CacheEvict(value = "configCache", allEntries = true)
+    public void deleteConfig(Long configId) {
+        if (configId != null) {
+            repository.deleteById(configId);
+        }
+    }
+}

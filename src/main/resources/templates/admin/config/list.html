@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz"
+	xmlns:sec="http://www.thymeleaf.org"
+	layout:decorate="~{layout/default}">
+<body>
+    <main layout:fragment="content">
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<button sec:authorize="hasRole('ADMIN')" class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#addConfigForm">
+				+ Add New Config
+			</button>
+		</div>
+
+		<div sec:authorize="hasRole('ADMIN')" id="addConfigForm" class="collapse mb-4">
+			<div class="card card-body shadow-sm">
+				<form th:action="@{/admin/config/save}" th:object="${newConfig}" method="post" class="row g-3">
+					<div class="col-md-3">
+						<input type="text" th:field="*{name}" class="form-control" placeholder="Name" required>
+					</div>
+					<div class="col-md-4">
+						<input type="text" th:field="*{value}" class="form-control" placeholder="Value">
+					</div>
+					<div class="col-md-3">
+						<select th:field="*{environment}" class="form-select">
+							<option th:each="env : ${environments}" th:value="${env}" th:text="${env}"></option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button type="submit" class="btn btn-success w-100">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<table id="configTable" class="datatables table table-striped table-hover stripe" style="display:none;">
+			<thead>
+				<tr>
+					<th sec:authorize="hasRole('ADMIN')"></th>
+					<th>Env.</th>
+					<th>Name</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="c : ${configs}">
+					<td sec:authorize="hasRole('ADMIN')">
+						<form th:action="@{/admin/config/delete/{id}(id=${c.configId})}" method="post" class="d-inline">
+							<button type="button"
+									style="background: none; border: none; padding: 0; cursor: pointer; color: #dc3545;"
+									onclick="submitForm(this, 'Are you sure? This will permanently delete this configuration.')">
+								<i class="fa-solid fa-x"></i>
+							</button>
+						</form>
+					</td>
+					<td> <span th:text="${c.environment}" th:classappend="${c.environment.name() == 'PROD' ? 'bg-danger' : 'bg-primary'}" class="badge"></span> </td>
+					<td th:text="${c.name}"></td>
+					<td th:text="${c.value}"></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<script>
+			$(document).ready(function () {
+				$('#configTable').DataTable({
+					"pageLength": 25,
+					"lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+					"paging": true,
+					"lengthChange": true,
+					"searching": true,
+					"ordering": true,
+					"info": true,
+					"autoWidth": false,
+					"responsive": true,
+					"order": [{ "idx": 2, "dir": 'asc' }, { "idx": 1, "dir": 'asc' }],  
+					"columnDefs": [
+						{ width: '2%', targets: [0] }, 
+						{ width: '5%', targets: [1] }, 
+						{ orderable: false, targets: [0] }
+					],
+					initComplete: function() {
+						$(this).show(); // Show table after DataTables is ready
+					}
+				});
+			});
+		</script>
+    </main>
+</body>
+</html>

@@ -4,23 +4,11 @@
 	layout:decorate="~{layout/default}">
 	<body>
         <div layout:fragment="content"> 
-            <div>
-                <strong>Active Filters:</strong>
-                <!-- Show Week Filter -->
-                <span th:if="${selectedWeek != null}" class="badge badge-light mx-2">
-                    Week: <span th:text="${selectedWeek}"></span>
-                </span>
-
-                <!-- Show Company Filter -->
-                <span th:if="${selectedCompany != null}" class="badge badge-light mx-2">
-                    Company ID: <span th:text="${selectedCompany}"></span>
-                </span>
-            </div>
             <table id="companyTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
-                <thead class="table-dark">
+                <thead>
                     <tr>
                         <th></th>
-                        <th># Logs</th>
+                        <th># App.</th>
                         <th>Name</th>
                         <th>Website</th>
                         <th>Email</th>
@@ -42,10 +30,10 @@
                                     title="Filter by this company">
                                     <i class="fa-solid fa-filter"></i>
                                 </a>
-                                <span th:text="${company.logCount}">0</span> Logs
+                                <span th:text="${company.logCount}">0</span> Apps
                             </div>
                             <div th:unless="${company.logCount > 0}">
-                                <span class="text-muted">0</span> Logs
+                                <span class="text-muted">0</span> Apps 
                             </div>
                         </td>
                         <td th:text="${company.companyName}"></td>

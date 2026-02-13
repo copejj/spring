@@ -20,7 +20,8 @@ jobs:
                     username: ${{ secrets.SSH_PRIVATE_USERNAME }}
                     key: ${{ secrets.SSH_PRIVATE_KEY }}
                     # IMPORTANT: All variables used in the script must be listed here
-                    envs: DB_NAME,DB_USER,DB_PASS,DB_HOST,DB_URL,API_BASE_URL,SERVER_CONTEXT_PATH,TAG_NAME,APP_EXTERNAL_URL
+                    envs: DB_NAME,DB_USER,DB_PASS,DB_HOST,DB_URL,API_BASE_URL,SERVER_CONTEXT_PATH,TAG_NAME,APP_EXTERNAL_URL,ENVIRONMENT
+
                     script: |
                         CURRENT_STEP="INITIALIZATION"
                         # 1. Initialization and Output
@@ -97,8 +98,8 @@ jobs:
                         sed -i "s|<db_user>|$DB_USER|g" src/main/resources/application.properties
                         sed -i "s|<db_pass>|$DB_PASS|g" src/main/resources/application.properties
                         sed -i "s|<api_base_url>|$API_BASE_URL|g" src/main/resources/application.properties
+                        sed -i "s|<environment>|${ENVIRONMENT:-DEV}|g" src/main/resources/application.properties
                         sed -i "s|<server_context_path>|$SERVER_CONTEXT_PATH|g" src/main/resources/application.properties
-                        sed -i "s|<php_external_url>|$PHP_EXTERNAL_URL|g" src/main/resources/application.properties
                         mvn clean package -DskipTests
 
                         CURRENT_STEP="DEPLOYMENT"
@@ -144,7 +145,7 @@ jobs:
                     DB_PASS: ${{ secrets.DB_PASS }}
                     DB_HOST: ${{ secrets.DB_HOST }}
                     DB_URL: ${{ secrets.DB_URL }}
+                    ENVIRONMENT: ${{ vars.ENVIRONMENT }}
                     API_BASE_URL: ${{ vars.API_BASE_URL }}
                     SERVER_CONTEXT_PATH: ${{ vars.SERVER_CONTEXT_PATH }}
                     TAG_NAME: ${{ github.event.inputs.test_tag || github.event.release.tag_name }}
-                    PHP_EXTERNAL_URL: ${{ vars.PHP_EXTERNAL_URL }}
