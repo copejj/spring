@@ -12,3 +12,5 @@ INSERT INTO public.config (name, value, environment) VALUES
 ('PHP_EXTERNAL_URL', 'http://localhost:8080', 'DEV'),
 ('JAVA_EXTERNAL_URL', 'https://spring.braindribbler.com', 'PROD'),
 ('PHP_EXTERNAL_URL', 'http://braindribbler.com', 'PROD');
+
+ALTER TABLE public.config DROP COLUMN inactive_date;

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<nav th:fragment="nav-fragment" class="links-cont navbar navbar-expand-lg navbar-dark bg-dark">
+	<nav th:fragment="nav-fragment" class="links-cont menubar navbar-expand">
 		<div class="menu-container">
 			<ul class="navbar-nav">
 				<th:block th:each="item : ${menuItems}">
@@ -14,7 +14,7 @@
 		<li th:with="hasChildren=${not #lists.isEmpty(item.children)}, isTop=${depth == 0}"
 			th:class="'link' + ${isTop ? ' nav-item' : ''} + ${hasChildren ? (isTop ? ' dropdown' : ' dropdown-submenu') : ''} + ${currentUri == item.href ? ' link-selected' : ''} + ' ' + ${item.cssClass}">
 			
-			<a th:class="${isTop ? 'nav-link' : 'dropdown-item'} + ${hasChildren ? ' dropdown-toggle' : ''} "
+			<a th:class="${isTop ? 'nav-link' : 'dropdown-link'} + ${hasChildren ? ' dropdown-toggle' : ''} "
 				th:href="${hasChildren ? '#' : item.href}" 
 				th:text="${item.text}"
 				th:data-bs-toggle="${hasChildren ? 'dropdown' : ''}"></a>

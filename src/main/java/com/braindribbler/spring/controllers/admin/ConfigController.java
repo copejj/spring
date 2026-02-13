@@ -36,9 +36,9 @@ public class ConfigController {
         return "redirect:/admin/config";
     }
 
-    @PostMapping("/deactivate/{id}")
-    public String deactivate(@PathVariable Long id) {
-        configService.deactivateConfig(id);
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        configService.deleteConfig(id);
         return "redirect:/admin/config";
     }
 }

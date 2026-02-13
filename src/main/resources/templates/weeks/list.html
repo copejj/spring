@@ -5,10 +5,11 @@
 	<body>
         <div layout:fragment="content"> 
             <table id="weeksTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
-                <thead class="table-dark">
+                <thead>
                     <tr>
                         <th># Logs</th>
-                        <th>Week</th>
+                        <th>Week Start</th>
+                        <th>Week End</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -27,7 +28,8 @@
                                 <span class="text-muted">0</span> Logs
                             </div>
                         </td>
-                        <td th:text="${week.startDate} + ' - ' + ${week.endDate}"></td>
+                        <td th:text="${week.startDate}" ></td>
+                        <td th:text="${week.endDate}"></td>
                         <td></td>
                     </tr>
                 </tbody>
@@ -35,7 +37,7 @@
             <script>
                 $(document).ready(function () {
                     $('#weeksTable').DataTable({
-                        "pageLength": 25,
+                        "pageLength": 5,
                         "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
                         "paging": true,
                         "lengthChange": true,
@@ -46,7 +48,7 @@
                         "order": [{ "idx": 1, "dir": 'desc' }], 
                         "columnDefs": [
                             { width: '10%', targets: [0] }, 
-                            { width: '20%', targets: [1] }, 
+                            { width: '20%', targets: [1, 2] }, 
                             { orderable: false, targets: [2] }
                         ],
                         "responsive": true,

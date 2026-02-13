@@ -1,8 +1,9 @@
 package com.braindribbler.spring.service.admin.impl;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -28,15 +29,17 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     @Override
+    @Cacheable(value = "configCache", key = "#env")
     public List<Config> getAllActiveConfigs(ConfigEnvironment env) {
-        return repository.findByEnvironmentInAndInactiveDateIsNull(
+        return repository.findByEnvironmentIn(
             List.of(ConfigEnvironment.ANY, env)
         );
     }
 
+    @Override
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-    @Override
+    @CacheEvict(value = "configCache", allEntries = true)
     public Config saveConfig(Config config) {
         if (config == null) {
             throw new IllegalArgumentException("Config cannot be null");
@@ -44,16 +47,13 @@ public class ConfigServiceImpl implements ConfigService {
         return repository.save(config);
     }
 
+    @Override
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
-    @Override
-    public void deactivateConfig(Long configId) {
-        if (configId == null) {
-            throw new IllegalArgumentException("Config ID is required");
+    @CacheEvict(value = "configCache", allEntries = true)
+    public void deleteConfig(Long configId) {
+        if (configId != null) {
+            repository.deleteById(configId);
         }
-        repository.findById(configId).ifPresent(config -> {
-            config.setInactiveDate(OffsetDateTime.now());
-            repository.save(config);
-        });
     }
 }

@@ -30,7 +30,7 @@ div#pageContent .sub-header-cont {
 	padding: 1rem;
 }
 .header-cont {
-    height: 5vh;
+    height: 10vh;
     border-bottom: .5rem solid transparent;
     border-image: linear-gradient(to right, #2d5375, #364352) 1;
 }
@@ -56,7 +56,6 @@ div#pageContent .sub-header-cont {
 }
 .content-cont {
     flex: 1 0 auto;
-    margin: 1rem;
 }
 .select-input {
     min-width: 20rem;
@@ -174,10 +173,16 @@ span.clear-button a:active {
     text-decoration: none;
 }
 
+span.clear-button,
+span.clear-button i, 
 span.clear-button .fa-solid, 
-span.clear-button a, 
-span.clear-button {
+span.clear-button a {
     color: #496b89;
+    height: 1rem;
+}
+
+span.clear-button {
+    height: 1.6rem;
 }
 
 span.clear-button a {
@@ -404,6 +409,9 @@ select.select-input {
     text-decoration: none;
     color: #e3e4e5;
 }
+.nav-link:focus, .nav-link:hover {
+    color: #f0f0f0;
+}
 .nav-link.link.link-selected {
     background-image: linear-gradient(to right, #2d5375, #31517d, #2d5375);
     color: white;
@@ -481,7 +489,7 @@ select.select-input {
     right: 0 !important;
 }
 
-.dropdown-item {
+.dropdown-link {
     padding: 0.75rem 1rem !important;
     display: block !important;
     text-decoration: none;
@@ -511,13 +519,13 @@ li.link.link-selected {
 }
 
 .dropdown-menu,
-.dropdown-menu>li.link:has(.dropdown-item):hover,
-.dropdown-menu>li.link.link-selected:has(.dropdown-item):hover,
-.dropdown-menu>li.link.link-selected:has(.dropdown-item) {
+.dropdown-menu>li.link:has(.dropdown-link):hover,
+.dropdown-menu>li.link.link-selected:has(.dropdown-link):hover,
+.dropdown-menu>li.link.link-selected:has(.dropdown-link) {
     border-radius: 0 0 .5rem 1rem;
 }
 
-.navbar-nav > li.link:nth-child(1 of .link.align-right){
+.menubar-nav > li.link:nth-child(1 of .link.align-right){
     margin-left: auto;
 }
 
@@ -562,4 +570,7 @@ td.company-cell .btn {
 .about-image img {
     height: 100%;
     border-radius: 1rem;
+}
+span.badge {
+    min-width: 4rem;
 }

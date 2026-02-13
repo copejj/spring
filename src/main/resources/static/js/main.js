@@ -13,6 +13,22 @@ pageModal.addEventListener('click', (event) => {
 	}
 });
 
+function submitForm(btn, configMsg) {
+    const form = btn.closest('form');
+    if (!form) return;
+
+    // If there is a message, we must confirm. 
+    // If the user clicks 'Cancel', we exit the function.
+    if (configMsg && configMsg.trim() !== "") {
+        if (!confirm(configMsg)) {
+            return; // Stop here if they hit Cancel
+        }
+    }
+
+    // If no message was provided OR they confirmed the message, submit.
+    form.submit();
+}
+
 function openModal(url) {
 	fetch(url)
 	.then(response => {

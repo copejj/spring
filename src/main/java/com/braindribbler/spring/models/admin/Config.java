@@ -27,8 +27,6 @@ public class Config {
     @Column(nullable = false, updatable = false)
     private OffsetDateTime createdDate = OffsetDateTime.now();
 
-    private OffsetDateTime inactiveDate;
-
     @Column(nullable = false)
     private String name;
 
@@ -43,32 +41,10 @@ public class Config {
 	public void setConfigId(Long configId) { this.configId = configId; }
 	public OffsetDateTime getCreatedDate() { return createdDate; }
 	public void setCreatedDate(OffsetDateTime createdDate) { this.createdDate = createdDate; }
-	public OffsetDateTime getInactiveDate() { return inactiveDate; }
-	public void setInactiveDate(OffsetDateTime inactiveDate) { this.inactiveDate = inactiveDate; }
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public ConfigEnvironment getEnvironment() {
-		return environment;
-	}
-
-	public void setEnvironment(ConfigEnvironment environment) {
-		this.environment = environment;
-	}
-
-    // Getters and Setters
+	public String getName() { return name; }
+	public void setName(String name) { this.name = name; }
+	public String getValue() { return value; }
+	public void setValue(String value) { this.value = value; }
+	public ConfigEnvironment getEnvironment() { return environment; }
+	public void setEnvironment(ConfigEnvironment environment) { this.environment = environment; }
 }

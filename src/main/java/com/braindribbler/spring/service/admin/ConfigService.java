@@ -9,5 +9,5 @@ public interface ConfigService {
     List<Config> getAllConfigs();
     List<Config> getAllActiveConfigs(ConfigEnvironment env);
     Config saveConfig(Config config);
-	void deactivateConfig(Long configId);
+	void deleteConfig(Long configId);
 }
