@@ -1,5 +1,6 @@
 package com.braindribbler.spring.controllers.admin;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,8 @@ import com.braindribbler.spring.service.admin.ConfigService;
 @Controller
 @RequestMapping("/admin/config") // All routes now start with /admin/configs
 public class ConfigController {
+    @Value("${app.config.environment:production}")
+    private String environment;
 
     private final ConfigService configService;
 
@@ -24,6 +27,7 @@ public class ConfigController {
 
     @GetMapping
     public String listConfigs(Model model) {
+		model.addAttribute("title", "Config Settings: " + environment);
         model.addAttribute("configs", configService.getAllConfigs());
         model.addAttribute("environments", ConfigEnvironment.values());
         model.addAttribute("newConfig", new Config());

@@ -543,10 +543,11 @@ td.company-cell .btn {
 
 .about-cont {
     display: flex;
-    align-items: stretch; /* Make both sides equal height */
-    gap: 40px;              
-    height: 100%;        /* Set the limit here so both sides respect it */
-    overflow: hidden;    /* No scrolling on the outer container */
+    align-items: stretch;
+    gap: 40px;
+    max-height: 35rem;
+    overflow: hidden;
+    height: 100%;
 }
 
 .about-text {
@@ -571,7 +572,19 @@ td.company-cell .btn {
 .about-image img {
     height: 100%;
     border-radius: 1rem;
+    max-height: 35rem;
 }
+
 span.badge {
     min-width: 4rem;
+}
+
+.card-header.bg-primary.text-white.text-center {
+    background-color: #496b89 !important;
+}
+
+button.btn.btn-primary.btn-lg {
+    color: #fff;
+    background-color: #596172;
+    border-color: #496b89;
 }
