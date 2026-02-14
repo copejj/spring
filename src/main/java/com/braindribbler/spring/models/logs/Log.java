@@ -104,7 +104,7 @@ public class Log{
 	public Long getWeekId() { return weekId; }
 	public void setWeekId(Long weekId) { this.weekId = weekId; }
 	public Week getWeek() { return week; } 
-	public void setWeek(Week weeks) { this.week = week; }
+	public void setWeek(Week week) { this.week = week; }
 
 	public Long getCompanyId() { return companyId; }
 	public void setCompanyId(Long companyId) { this.companyId = companyId; }
