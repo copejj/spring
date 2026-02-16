@@ -17,21 +17,21 @@ import jakarta.transaction.Transactional;
 @Service
 public class ConfigServiceImpl implements ConfigService {
 
-    private final ConfigRepository repository;
+    private final ConfigRepository configRepository;
 
-    public ConfigServiceImpl(ConfigRepository repository) {
-        this.repository = repository;
+    public ConfigServiceImpl(ConfigRepository configRepository) {
+        this.configRepository = configRepository;
     }
 
     @Override
     public List<Config> getAllConfigs() {
-        return repository.findAll(); 
+        return configRepository.findAll(); 
     }
 
     @Override
     @Cacheable(value = "configCache", key = "#env")
     public List<Config> getAllActiveConfigs(ConfigEnvironment env) {
-        return repository.findByEnvironmentIn(
+        return configRepository.findByEnvironmentIn(
             List.of(ConfigEnvironment.ANY, env)
         );
     }
@@ -44,7 +44,7 @@ public class ConfigServiceImpl implements ConfigService {
         if (config == null) {
             throw new IllegalArgumentException("Config cannot be null");
         }
-        return repository.save(config);
+        return configRepository.save(config);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ConfigServiceImpl implements ConfigService {
     @CacheEvict(value = "configCache", allEntries = true)
     public void deleteConfig(Long configId) {
         if (configId != null) {
-            repository.deleteById(configId);
+            configRepository.deleteById(configId);
         }
     }
 }
