@@ -33,6 +33,9 @@ public class User {
 	@Column(name="created_date", nullable=false, updatable=false)
 	private LocalDateTime createdDate;
 
+	@Column(name="inactive_date")
+	private LocalDateTime inactiveDate;
+
 	@Column(name="first_name")
 	private String firstName;
 
@@ -80,6 +83,8 @@ public class User {
 	public void setUserId(Long userId) { this.userId = userId; }
 	public LocalDateTime getCreatedDate() { return createdDate; }
 	public void setCreatedDate(LocalDateTime createdDate) { this.createdDate = createdDate;	}
+    public LocalDateTime getInactiveDate() { return inactiveDate; }
+    public void setInactiveDate(LocalDateTime inactiveDate) { this.inactiveDate = inactiveDate; }
 	public String getFirstName() { return firstName; }
 	public void setFirstName(String firstName) { this.firstName = firstName; }
 	public String getLastName() { return lastName; }
