@@ -21,11 +21,22 @@
 						<input type="text" th:field="*{lastName}" class="form-control" placeholder="Last Name" required>
 					</div>
 					<div class="col-md-3">
-						<input type="text" th:field="*{email}" class="form-control" placeholder="Email" required>
+						<input type="text" th:field="*{email}" 
+							class="form-control" 
+							th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''" 
+							placeholder="Email" required>
+						<div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+							Email Error Message
+						</div>
 					</div>
 					<div class="col-md-2">
 						<button type="submit" class="btn btn-success w-100">Save</button>
 					</div>
+					<script th:if="${#fields.hasAnyErrors()}">
+						$(document).ready(function() {
+							$('#addInviteForm').addClass('show');
+						});
+					</script>
 				</form>
 			</div>
 		</div>

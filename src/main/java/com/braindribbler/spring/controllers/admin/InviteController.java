@@ -2,6 +2,7 @@ package com.braindribbler.spring.controllers.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,17 @@ public class InviteController {
 	}
 
 	@PostMapping("/save")
-	public String saveInvite(@ModelAttribute Invite invite) {
+	public String saveInvite(@ModelAttribute("newInvite") Invite invite, BindingResult result, Model model) {
+
+		if (inviteService.isEmailTaken(invite.getEmail())) {
+			result.rejectValue("email", "error.invite", "This email is already in use by a user or pending invite.");
+		}
+
+		if (result.hasErrors()) {
+			model.addAttribute("invites", inviteService.getAllInvites());
+			return "admin/invites/list";
+		}
+
         inviteService.saveInvite(invite);
         return "redirect:/admin/invite";
 	}
