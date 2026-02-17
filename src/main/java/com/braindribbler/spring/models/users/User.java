@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.braindribbler.spring.models.companies.Company;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -27,7 +29,8 @@ public class User {
 	@Column(name="user_id")
 	private Long userId;
 
-	@Column(name="created_date")
+	@CreationTimestamp
+	@Column(name="created_date", nullable=false, updatable=false)
 	private LocalDateTime createdDate;
 
 	@Column(name="first_name")
@@ -39,7 +42,7 @@ public class User {
 	@Column(name="email")
 	private String email;
 
-	@Column(name="username")
+	@Column(name="username", unique = true, nullable = false)
 	private String userName;
 
 	@Column(name="password_hash")

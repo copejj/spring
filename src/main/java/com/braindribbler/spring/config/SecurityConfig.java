@@ -30,8 +30,7 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests(auth -> auth
-                // 1. Explicitly permit the login page and static assets
-                .requestMatchers("/", "/error", "/login", "/about", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll() 
+                .requestMatchers("/", "/error", "/login", "/about", "/join/**", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll() 
 
                 .requestMatchers("/actuator/health").access(hasIpAddresses("127.0.0.1", "::1"))
                 // 2. Ensure the "error" and "logout" parameters aren't blocked

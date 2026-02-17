@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.braindribbler.spring.dto.users.PasswordDTO;
 import com.braindribbler.spring.dto.users.UserDTO;
+import com.braindribbler.spring.forms.users.RegistrationForm;
 import com.braindribbler.spring.models.users.User;
 import com.braindribbler.spring.repositories.users.UserRepository;
 import com.braindribbler.spring.service.users.UserService;
@@ -69,4 +70,31 @@ public class UserServiceImpl implements UserService {
 	public List<User> getAllUsers() {
 		return userRepository.findAll();
 	}
+
+    @Override
+    public boolean isUserNameAvailable(String userName) {
+        return !userRepository.existsByUserName(userName);
+    }
+
+    @Override
+    public User registerNewUser(RegistrationForm form) {
+                // Double check here just in case
+        if (!isUserNameAvailable(form.getUserName())) {
+            throw new RuntimeException("User name already taken");
+        }
+        
+        User user = new User();
+        user.setUserName(form.getUserName());
+        user.setFirstName(form.getFirstName());
+        user.setLastName(form.getLastName());
+        user.setEmail(form.getEmail());
+
+        String newPass = form.getPassword();
+        if (newPass != null && !newPass.isEmpty()) {
+            // Hashing happens here in the Service Layer
+            user.setPassword(passwordEncoder.encode(newPass));
+        }
+
+        return userRepository.save(user);
+    }
 }
