@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz"
+	layout:decorate="~{layout/default}">
+    <body>
+        <div layout:fragment="content"> 
+			<div class="error-container">
+				<h1>Something went wrong</h1>
+				<p>We've logged the issue. If you're a developer, see the details below:</p>
+
+				<!-- The "details" tag stays open once clicked -->
+				<details>
+					<summary>Click to view Stack Trace</summary>
+					<div class="scrollable-trace">
+						<strong th:text="${status} + ' ' + ${error}">500 Internal Server Error</strong><br/>
+						<span th:text="${message}">Error message here</span>
+						<hr/>
+						<!-- This only renders if trace is included -->
+						<code th:if="${trace}" th:text="${trace}"></code>
+					</div>
+				</details>
+				<br>
+				<a href="/">Return Home</a>
+			</div>
+        </div>
+    </body>
+</html>
