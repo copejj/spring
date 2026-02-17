@@ -579,10 +579,12 @@ span.badge {
     min-width: 4rem;
 }
 
+.card-header.bg-primary.text-white,
 .card-header.bg-primary.text-white.text-center {
     background-color: #496b89 !important;
 }
 
+button.btn.btn-primary.w-100,
 button.btn.btn-primary.btn-lg {
     color: #fff;
     background-color: #596172;

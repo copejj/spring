@@ -2,11 +2,14 @@ package com.braindribbler.spring.service.admin.impl;
 
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.braindribbler.spring.models.admin.Invite;
 import com.braindribbler.spring.repositories.admin.InviteRepository;
 import com.braindribbler.spring.service.admin.InviteService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class InviteServiceImpl implements InviteService
@@ -23,11 +26,22 @@ public class InviteServiceImpl implements InviteService
 	}
 
 	@Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
 	public Invite saveInvite(Invite invite) {
         if (invite == null) {
             throw new IllegalArgumentException("Invite cannot be null");
         }
 		return inviteRepository.save(invite);
+	}
+
+	@Override
+    @Transactional
+    @PreAuthorize("hasRole('ADMIN')")
+	public void deleteInvite(Long inviteId) {
+		if (inviteId != null) {
+			inviteRepository.deleteById(inviteId);
+		}
 	}
 
 	@Override
