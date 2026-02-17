@@ -3,60 +3,64 @@
 	xmlns:layout="http://www.ultraq.net.nz"
 	layout:decorate="~{layout/default}">
 	<body>
+        <div layout:fragment="content" class="container mt-4"> 
+            <!-- Alerts -->
+            <div th:if="${saveError}" class="alert alert-danger" th:text="${saveError}"></div>
+            <div th:if="${saveSuccess}" class="alert alert-success" th:text="${saveSuccess}"></div>
 
-<div layout:fragment="content" class="container mt-4"> 
-    <!-- Alerts -->
-    <div th:if="${saveError}" class="alert alert-danger" th:text="${saveError}"></div>
-    <div th:if="${saveSuccess}" class="alert alert-success" th:text="${saveSuccess}"></div>
+            <form th:action="@{/admin/users}" th:object="${user}" th:method="put" class="needs-validation">
+                
+                <!-- Row 1: User Info -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="userName" class="form-label">User Name</label>
+                        <input th:field="*{userName}" type="text" class="form-control bg-light" readonly />
+                    </div>
 
-    <form th:action="@{/admin/users}" th:object="${user}" th:method="put" class="needs-validation">
-        
-        <!-- Row 1: User Info -->
-        <div class="row g-3 mb-3">
-            <div class="col-md-6">
-                <label for="userName" class="form-label">User Name</label>
-                <input th:field="*{userName}" type="text" class="form-control bg-light" readonly />
-            </div>
+                    <div class="col-md-6">
+                        <label for="email" class="form-label">User Email</label>
+                        <input th:field="*{email}" type="text" class="form-control" />
+                    </div>
 
-            <div class="col-md-6">
-                <label for="email" class="form-label">User Email</label>
-                <input th:field="*{email}" type="text" class="form-control" />
-            </div>
+                    <input th:field="*{userId}" type="hidden" />
+                    
+                    <div class="col-md-6">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input th:field="*{firstName}" type="text" class="form-control" />
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input th:field="*{lastName}" type="text" class="form-control" />
+                    </div>
+                </div>
 
-            <input th:field="*{userId}" type="hidden" />
-            
-            <div class="col-md-6">
-                <label for="firstName" class="form-label">First Name</label>
-                <input th:field="*{firstName}" type="text" class="form-control" />
-            </div>
-            
-            <div class="col-md-6">
-                <label for="lastName" class="form-label">Last Name</label>
-                <input th:field="*{lastName}" type="text" class="form-control" />
-            </div>
+                <!-- Row 2: Password Section -->
+                <hr class="my-4">
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="password" class="form-label">Change Password</label>
+                        <input th:field="*{passwordData.newPassword}" type="password" class="form-control" placeholder="Leave blank to keep current" />
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label for="confirmPassword" class="form-label">Confirm Change</label>
+                        <input th:field="*{passwordData.confirmPassword}" type="password" class="form-control" placeholder="Confirm new password" />
+                    </div>
+                </div>
+
+                <div th:replace="~{fragments/user/admin-edit :: adminFields(userDto=${user})}"></div>
+
+                <input type="hidden" name="_isAdmin" value="on"/>
+                <input type="hidden" name="_canEdit" value="on"/>
+
+                <!-- Buttons -->
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-primary px-4">Save</button>
+                    <a th:if="${isAdmin}" href="/admin/users" class="btn btn-secondary px-4 ms-2">Cancel</a>
+                </div>
+            </form>		
         </div>
-
-        <!-- Row 2: Password Section -->
-        <hr class="my-4">
-        <div class="row g-3 mb-3">
-            <div class="col-md-6">
-                <label for="password" class="form-label">Change Password</label>
-                <input th:field="*{passwordData.newPassword}" type="password" class="form-control" placeholder="Leave blank to keep current" />
-            </div>
-            
-            <div class="col-md-6">
-                <label for="confirmPassword" class="form-label">Confirm Change</label>
-                <input th:field="*{passwordData.confirmPassword}" type="password" class="form-control" placeholder="Confirm new password" />
-            </div>
-        </div>
-
-        <!-- Buttons -->
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary px-4">Save</button>
-            <a th:if="${isAdmin}" href="/admin/users" class="btn btn-secondary px-4 ms-2">Cancel</a>
-        </div>
-    </form>		
-</div>
 
 	</body>
 </html>

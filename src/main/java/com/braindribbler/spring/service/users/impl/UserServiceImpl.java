@@ -36,14 +36,17 @@ public class UserServiceImpl implements UserService {
 			user.getEmail(),
 			user.getFirstName(),
 			user.getLastName(), 
-            PasswordDTO.empty()
+            PasswordDTO.empty(),
+            user.isAdmin(),
+            user.isCanEdit(),
+            user.getInactiveDate()
         ))
             .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override
     @Transactional
-    public void updateUser(UserDTO dto) {
+    public void updateUser(UserDTO dto, boolean isActualAdmin) {
         Long userId = dto.userId();
         if (userId == null) {
             throw new IllegalArgumentException("User ID must not be null");
@@ -55,6 +58,13 @@ public class UserServiceImpl implements UserService {
         user.setEmail(dto.email());
 		user.setFirstName(dto.firstName());
 		user.setLastName(dto.lastName());
+
+        // Only update these if the person performing the action is an Admin
+        if (isActualAdmin) {
+            user.setAdmin(dto.isAdmin());
+            user.setCanEdit(dto.canEdit());
+            user.setInactiveDate(dto.inactiveDate());
+        }
 
         String newPass = dto.passwordData().newPassword();
         if (newPass != null && !newPass.isEmpty()) {

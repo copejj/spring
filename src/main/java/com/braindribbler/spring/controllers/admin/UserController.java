@@ -53,6 +53,7 @@ public class UserController {
 							Model model,
 							RedirectAttributes ra,
 							Authentication authentication) {
+
 		String newPassword = userDto.passwordData().newPassword();
 		String confirmPassword = userDto.passwordData().confirmPassword();
 		if (newPassword != null && !newPassword.isEmpty() && !newPassword.equals(confirmPassword)) {
@@ -66,7 +67,13 @@ public class UserController {
 		); 
 		}	
 
-		userService.updateUser(userDto);
+		boolean isActualAdmin = authentication.getAuthorities().stream()
+            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+		// Pass the 'isActualAdmin' flag to the service so it knows whether 
+		// to ignore or apply the sensitive fields
+		userService.updateUser(userDto, isActualAdmin);
+    
 		ra.addFlashAttribute("saveSuccess", "User information updated successfully.");
 
 		return "redirect:/admin/users/edit/" + userDto.userId();
