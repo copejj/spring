@@ -9,17 +9,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.braindribbler.spring.models.admin.Invite;
 import com.braindribbler.spring.service.admin.InviteService;
-import com.braindribbler.spring.service.users.UserService;
 
 @Controller
 @RequestMapping("/admin/invite")
 public class InviteController {
 	private final InviteService inviteService;
-	private final UserService userService;
 
-	public InviteController(InviteService inviteService, UserService userService) {
+	public InviteController(InviteService inviteService) {
 		this.inviteService = inviteService;
-		this.userService = userService;
 	}
 
 	@GetMapping

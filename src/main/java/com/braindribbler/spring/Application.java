@@ -21,7 +21,6 @@ public class Application {
     public void addBouncyCastleProvider() {
         if (Security.getProvider(BouncyCastleProvider.PROVIDER_NAME) == null) {
             Security.addProvider(new BouncyCastleProvider());
-            System.out.println("Bouncy Castle Security Provider registered.");
         }
     }
 }

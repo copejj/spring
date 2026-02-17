@@ -29,7 +29,7 @@ public class GlobalAdvice {
 
     private final ConfigRepository configRepository;
 
-    @Value("${app.config.envronment:DEV}")
+    @Value("${app.config.environment}")
     private ConfigEnvironment currentEnv;
 
     public GlobalAdvice(ConfigRepository configRepository)
