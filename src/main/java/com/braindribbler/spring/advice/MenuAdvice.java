@@ -35,9 +35,10 @@ public class MenuAdvice {
 
             if (isAdmin) {
                 MenuItem adminMenu = new MenuItem("/admin", "Admin");
-                adminMenu.addChild(new MenuItem("/admin/users", "Users"));
-                adminMenu.addChild(new MenuItem("/admin/migrations", "Migrations"));
                 adminMenu.addChild(new MenuItem("/admin/config", "Config"));
+                adminMenu.addChild(new MenuItem("/admin/invite", "Invites"));
+                adminMenu.addChild(new MenuItem("/admin/migrations", "Migrations"));
+                adminMenu.addChild(new MenuItem("/admin/users", "Users"));
                 list.add(adminMenu);
             }
             list.add(new MenuItem("/admin/users/edit/" + user.getUserId(), "Profile", "align-right"));

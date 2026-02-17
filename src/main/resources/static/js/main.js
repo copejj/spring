@@ -195,3 +195,22 @@ function parse_address(element) {
         console.log("Address format not recognized; skipping auto-parse.");
     }
 }
+
+function copyInvite(btn) {
+    const name = btn.getAttribute('data-name');
+    const key = btn.getAttribute('data-key');
+    const url = window.location.origin + '/join/verify?key=' + key;
+    
+    const emailBody = `Hi ${name},\n\nYou have been invited! Please click the link below to verify your account:\n\n${url}\n\nBest regards,\nAdmin Team`;
+
+    navigator.clipboard.writeText(emailBody).then(() => {
+        const originalText = btn.innerHTML;
+        btn.classList.replace('btn-outline-primary', 'btn-success');
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        
+        setTimeout(() => {
+            btn.classList.replace('btn-success', 'btn-outline-primary');
+            btn.innerHTML = originalText;
+        }, 2000);
+    });
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout/default}">
+	<body>
+		<main layout:fragment="content" class="container mt-5">
+			<div class="row justify-content-center">
+				<div class="col-md-6">
+					<div class="card shadow">
+						<div class="card-header bg-primary text-white">
+							<h4 class="mb-0">Complete Your Registration</h4>
+						</div>
+						<div class="card-body" th:object="${registrationForm}">
+							<p>Welcome, <strong th:text="*{firstName + ' ' + lastName}">User</strong>!</p>
+							<p class="text-muted">Please set a password for your account (<strong>[[*{email}]]</strong>).</p>
+
+							<form th:action="@{/join/complete}" th:object="${registrationForm}" method="post">
+								<input type="hidden" th:field="*{key}">
+								<input type="hidden" th:field="*{email}">
+
+								<div class="row mb-3">
+									<div class="col">
+										<label class="form-label">First Name</label>
+										<input type="text" th:field="*{firstName}" class="form-control" readonly>
+									</div>
+									<div class="col">
+										<label class="form-label">Last Name</label>
+										<input type="text" th:field="*{lastName}" class="form-control" readonly>
+									</div>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label">User Name</label>
+									<input type="text" th:field="*{userName}" 
+										th:classappend="${#fields.hasErrors('userName')} ? 'is-invalid' : ''" class="form-control">
+									<div class="invalid-feedback" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></div>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label">Password</label>
+									<input type="password" th:field="*{password}" 
+										th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''" class="form-control">
+									<div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+								</div>
+
+								<div class="mb-3">
+									<label class="form-label">Confirm Password</label>
+									<input type="password" th:field="*{confirmPassword}" 
+										th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid' : ''" class="form-control">
+									<div class="invalid-feedback" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+								</div>
+
+								<button type="submit" class="btn btn-primary w-100">Create Account</button>
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				// Basic client-side password match validation
+				$('#pw, #pw_confirm').on('keyup', function () {
+					if ($('#pw').val() == $('#pw_confirm').val()) {
+						$('#msg').html('Passwords match').css('color', 'green');
+						$('#submitBtn').prop('disabled', false);
+					} else {
+						$('#msg').html('Passwords do not match').css('color', 'red');
+						$('#submitBtn').prop('disabled', true);
+					}
+				});
+			</script>
+		</main>
+	</body>
+</html>
