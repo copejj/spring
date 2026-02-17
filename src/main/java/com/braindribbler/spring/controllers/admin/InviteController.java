@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,9 +29,14 @@ public class InviteController {
 	}
 
 	@PostMapping("/save")
-	public String saveConfig(@ModelAttribute Invite invite) {
+	public String saveInvite(@ModelAttribute Invite invite) {
         inviteService.saveInvite(invite);
         return "redirect:/admin/invite";
 	}
 
+    @PostMapping("/delete/{id}")
+    public String deleteInvite(@PathVariable Long id) {
+        inviteService.deleteInvite(id);
+        return "redirect:/admin/invite";
+    }
 }

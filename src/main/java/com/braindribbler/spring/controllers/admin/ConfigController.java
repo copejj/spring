@@ -42,7 +42,7 @@ public class ConfigController {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String deleteConfig(@PathVariable Long id) {
         configService.deleteConfig(id);
         return "redirect:/admin/config";
     }

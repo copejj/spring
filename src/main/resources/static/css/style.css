@@ -588,3 +588,12 @@ button.btn.btn-primary.btn-lg {
     background-color: #596172;
     border-color: #496b89;
 }
+
+.card-header.bg-primary.text-white {
+    background-color: #496b89 !important;
+}
+
+button.btn.btn-primary.w-100 {
+    background-color: #354455;
+    border-color: #33475b;
+}
