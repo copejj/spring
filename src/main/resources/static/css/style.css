@@ -590,3 +590,35 @@ button.btn.btn-primary.btn-lg {
     background-color: #596172;
     border-color: #496b89;
 }
+
+.error-container {
+    max-width: 80rem;
+    margin: 2rem auto;
+    font-family: sans-serif;
+}
+
+.scrollable-trace {
+    background: #b7b8d5;
+    color: #000000;
+    padding: 15px;
+    border-radius: 1rem;
+    max-height: 29rem; 
+    overflow-y: auto;
+    overflow-x: auto;
+    white-space: pre-line;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+summary { 
+    cursor: pointer; 
+    color: #007bff; 
+    font-weight: bold; 
+    margin-bottom: 10px; 
+}
+
+code {
+    font-size: .875em;
+    color: #000000;
+    word-wrap: break-word;
+}
