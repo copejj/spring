@@ -10,4 +10,5 @@ public interface InviteService {
 	Invite getValidInvite(String key);
 	void completeInvite(Invite invite, Long newUserId);
 	void deleteInvite(Long id);
+	boolean isEmailTaken(String email);
 }

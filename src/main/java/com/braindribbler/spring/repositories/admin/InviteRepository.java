@@ -9,4 +9,5 @@ import com.braindribbler.spring.models.admin.Invite;
 public interface InviteRepository extends JpaRepository<Invite, Long>{
 	Optional<Invite> findByInviteId(Long inviteId);
 	Invite findByKey(String key);
+	boolean existsByEmail(String email);
 }
