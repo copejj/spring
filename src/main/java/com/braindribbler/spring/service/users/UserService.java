@@ -8,7 +8,7 @@ import com.braindribbler.spring.models.users.User;
 
 public interface UserService {
     UserDTO getUserDtoById(Long userId);
-    void updateUser(UserDTO dto);
+    void updateUser(UserDTO dto, boolean isActualAdmin);
 	List<User> getAllUsers();
     User registerNewUser(RegistrationForm form);
     boolean isUserNameAvailable(String userName);

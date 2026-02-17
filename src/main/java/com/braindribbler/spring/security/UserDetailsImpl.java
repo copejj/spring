@@ -41,9 +41,13 @@ public class UserDetailsImpl implements UserDetails {
 				.collect(Collectors.toList());
 	}
 
+    @Override 
+	public boolean isEnabled() { 
+		return user.getInactiveDate() == null;
+	}
+
 	// Usually return true for these unless you have specific logic
     @Override public boolean isAccountNonExpired() { return true; }
     @Override public boolean isAccountNonLocked() { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
-    @Override public boolean isEnabled() { return true; }
 }

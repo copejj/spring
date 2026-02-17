@@ -13,6 +13,9 @@
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Email</th>
+                        <th>Is Admin?</th>
+                        <th>Can Edit?</th>
+                        <th>Inactive Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +31,11 @@
                         <td th:text="${user.firstName}"></td>
                         <td th:text="${user.lastName}"></td>
                         <td th:text="${user.email}"></td>
+                        <td th:text="${user.isAdmin}"></td>
+                        <td th:text="${user.canEdit}"></td>
+                        <td>
+                            <span th:text="${#temporals.format(user.inactiveDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
