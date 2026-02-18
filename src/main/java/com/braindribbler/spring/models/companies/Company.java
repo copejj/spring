@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
 
 import com.braindribbler.spring.models.logs.Log;
@@ -37,7 +38,8 @@ public class Company {
 	@Column(name="company_id")
 	private Long companyId;	
 
-	@Column(name="created_date")
+	@CreationTimestamp
+	@Column(name="created_date", nullable=false, updatable=false)
 	private LocalDateTime createdDate;
 
 	@Column(name="name")

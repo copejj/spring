@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.braindribbler.spring.dto.companies.CompanyDTO;
+import com.braindribbler.spring.forms.common.AddressFormItem;
 import com.braindribbler.spring.forms.companies.CompanyForm;
 import com.braindribbler.spring.repositories.common.AddressTypeRepository;
 import com.braindribbler.spring.repositories.common.StateRepository;
@@ -47,6 +49,66 @@ public class CompanyController {
 
 		model.addAttribute("view", "companies/list :: companyTable(companies=${companies})");
         return "companies/list";
+    }
+
+	@GetMapping("/new")
+    public String showCreateForm(Model model) {
+        CompanyForm form = new CompanyForm();
+        // Initialize with at least one empty address so the form shows an address row
+        form.getAddresses().add(new AddressFormItem());
+
+        model.addAttribute("location", "New Company");
+        model.addAttribute("title", "Add Company");
+        
+        populateReferenceData(model); // Helper to keep code clean
+        model.addAttribute("company", form);
+        return "companies/edit"; // Reuse the same template
+    }
+
+    @PostMapping("/save")
+    public String saveCompany(@Valid @ModelAttribute("company") CompanyForm companyForm,
+							BindingResult result,
+							@AuthenticationPrincipal UserDetailsImpl userDetails,
+                            RedirectAttributes redirectAttributes,
+							Model model) {
+        
+        cleanAddressList(companyForm); // Move your address cleanup to a private helper
+
+        if (result.hasErrors()) {
+            model.addAttribute("location", "Add Company");
+            model.addAttribute("title", "Fix Errors");
+            populateReferenceData(model);
+            return "companies/edit";
+        }
+
+        // 1. Check if we are updating or creating
+        if (companyForm.getCompanyId() == null) {
+            // CREATE: Returns the new ID from the service
+            Long newId = companyService.createCompany(companyForm, userDetails.getUserId());
+            redirectAttributes.addFlashAttribute("saveSuccess", "Company created successfully!");
+            return "redirect:/companies/edit/" + newId + "?success=created";
+        } else {
+            // UPDATE
+            companyService.updateCompany(companyForm);
+            redirectAttributes.addFlashAttribute("saveSuccess", "Company updated successfully!");
+            return "redirect:/companies/edit/" + companyForm.getCompanyId() + "?success=updated";
+        }
+    }
+
+    // Helper to avoid duplicating the dropdown logic
+    private void populateReferenceData(Model model) {
+        model.addAttribute("allStates", stateRepository.findAll());
+        model.addAttribute("allAddressTypes", addressTypeRepository.findAll(Sort.by(Sort.Direction.ASC, "name")));
+    }
+
+    // Helper for cleaning up empty rows
+    private void cleanAddressList(CompanyForm form) {
+        if (form.getAddresses() != null) {
+            form.getAddresses().removeIf(addr -> 
+                (addr.getStreet() == null || addr.getStreet().isBlank()) &&
+                (addr.getCity() == null || addr.getCity().isBlank())
+            );
+        }
     }
 
 	@GetMapping("/edit/{companyId}")

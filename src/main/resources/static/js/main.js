@@ -102,17 +102,27 @@ async function copy_detail_data(btn)
 
 function addAddress() {
     const container = document.getElementById('address-container');
-    const template = document.getElementById('address-template').innerHTML;
+    const templateElement = document.getElementById('address-template');
     
-    // Calculate the next index based on current rows
+    if (!templateElement) {
+        console.error("Address template not found!");
+        return;
+    }
+
+    // Use .innerHTML to get the raw string
+    let templateHtml = templateElement.innerHTML;
+    
     const nextIndex = container.querySelectorAll('.address-row').length;
     
-    // Replace all instances of __INDEX__ with the actual number
-    let newRowHtml = template.replace(/__INDEX__/g, nextIndex);
-    newRowHtml = newRowHtml.replace(/__INDEX_DISPLAY__/g, nextIndex + 1);
+    // 1. Replace __INDEX__ (handles both literal and encoded brackets)
+    // We use a global regex to find every instance
+    templateHtml = templateHtml.replace(/INDEX_VAR/g, nextIndex);
     
-    // Append to the container
-    container.insertAdjacentHTML('beforeend', newRowHtml);
+    // 2. Replace the display number
+    templateHtml = templateHtml.replace(/INDEX_DISPLAY_VAR/g, nextIndex + 1);
+    
+    // 3. Append to the container
+    container.insertAdjacentHTML('beforeend', templateHtml);
 }
 
 function removeAndReindex(btn) {
@@ -122,16 +132,23 @@ function removeAndReindex(btn) {
     // Loop through all remaining rows to fix indices (0, 1, 2...)
     container.querySelectorAll('.address-row').forEach((row, index) => {
         row.querySelectorAll('input, select, label').forEach(el => {
-            // Fix 1Password sections
-            if (el.hasAttribute('autocomplete')) {
-                el.setAttribute('autocomplete', el.getAttribute('autocomplete').replace(/section-\d+/, `section-${index}`));
-            }
-            // Fix Spring indices in name, id, and for
+            // 1. Fix Spring indices in [name] and [id] attributes
+            // This specifically targets 'addresses[0]' and changes the number
             ['name', 'id', 'for'].forEach(attr => {
                 if (el.hasAttribute(attr)) {
-                    el.setAttribute(attr, el.getAttribute(attr).replace(/\[\d+\]|\d+/, index));
+                    const oldVal = el.getAttribute(attr);
+                    // Regex looks for '[digits]' and replaces with '[newIndex]'
+                    const newVal = oldVal.replace(/\[\d+\]/g, `[${index}]`)
+                                         .replace(/_\d+_/g, `_${index}_`); // Fixes ID underscores
+                    el.setAttribute(attr, newVal);
                 }
             });
+
+            // 2. Fix 1Password / Autocomplete sections
+            if (el.hasAttribute('autocomplete')) {
+                const auto = el.getAttribute('autocomplete');
+                el.setAttribute('autocomplete', auto.replace(/section-\d+/, `section-${index}`));
+            }
         });
     });
 }

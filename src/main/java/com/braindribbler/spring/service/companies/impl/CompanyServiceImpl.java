@@ -64,25 +64,40 @@ public class CompanyServiceImpl implements CompanyService {
 
 	@Override
 	@Transactional
+	public Long createCompany(CompanyForm form, Long userId) {
+		Company company = new Company();
+		company.setUserId(userId); // Assuming new companies need an owner
+		
+		mapFormToEntity(form, company);
+		Company saved = companyRepository.save(company);
+		return saved.getCompanyId();
+	}
+
+	@Override
+	@Transactional
 	public void updateCompany(CompanyForm form) {
 		Company company = companyRepository.findByIdWithAddresses(form.getCompanyId())
 			.orElseThrow(() -> new RuntimeException("Company not found"));
 
-		// 2. Update basic company fields from the form
+		// Crucial for updates: clear old relations before re-adding
+		company.getCompanyAddresses().clear();
+		
+		mapFormToEntity(form, company);
+		companyRepository.save(company);
+	}
+
+	private void mapFormToEntity(CompanyForm form, Company company) {
 		company.setCompanyName(form.getCompanyName());
 		company.setCompanyEmail(form.getCompanyEmail());
 		company.setCompanyWebsite(form.getCompanyWebsite());
 		company.setCompanyPhone(form.getCompanyPhone());
 		company.setCompanyFax(form.getCompanyFax());
 
-		company.getCompanyAddresses().clear();
-		
 		form.getAddresses().forEach(formItem -> {
 			if (formItem.getStreet() == null || formItem.getStreet().isBlank()) {
-				return; // Skip this iteration
+				return;
 			}
 
-			// Create the physical Address entity
 			Address address = new Address();
 			address.setStreet(formItem.getStreet());
 			address.setStreetExt(formItem.getStreetExt());
@@ -90,21 +105,18 @@ public class CompanyServiceImpl implements CompanyService {
 			address.setZip(formItem.getZip());
 			
 			State state = stateRepository.findByAbbr(formItem.getStateAbbr())
-                .orElseThrow(() -> new RuntimeException("State not found: " + formItem.getStateAbbr()));
-			
-            address.setState(state);
+				.orElseThrow(() -> new RuntimeException("State not found"));
+			address.setState(state);
 
-            CompanyAddress join = new CompanyAddress();
-            join.setAddress(address);
+			CompanyAddress join = new CompanyAddress();
+			join.setAddress(address);
 
-            AddressType type = addressTypeRepository.findByName(formItem.getType())
-                .orElseThrow(() -> new RuntimeException("Type not found: " + formItem.getType()));
-            join.setAddressType(type);
+			AddressType type = addressTypeRepository.findByName(formItem.getType())
+				.orElseThrow(() -> new RuntimeException("Type not found"));
+			join.setAddressType(type);
 			
 			company.addCompanyAddress(join);
 		});
-
-		companyRepository.save(company);
 	}
 
 	@Override

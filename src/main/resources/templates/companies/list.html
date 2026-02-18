@@ -4,6 +4,11 @@
 	layout:decorate="~{layout/default}">
 	<body>
         <div layout:fragment="content"> 
+            <div class="mb-3 text-end">
+                <a th:href="@{/companies/new}" class="btn btn-primary">
+                    <i class="fa-solid fa-plus mr-1"></i> Add New Company
+                </a>
+            </div>
             <table id="companyTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
                 <thead>
                     <tr>
@@ -44,6 +49,7 @@
             </table>
             <script>
                 $(document).ready(function () {
+                    $('#companyTable').show();
                     $('#companyTable').DataTable({
                         "pageLength": 25,
                         "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],

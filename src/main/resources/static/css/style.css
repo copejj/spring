@@ -117,6 +117,9 @@ dialog.page-modal .date-input {
 .input-cont.address-group-input-cont.inputs-address-group {
     padding-left: 2rem;
 } 
+.address-row.border-bottom.pb-4.mb-4 {
+    padding: 1rem;
+}
 .text-area-input {
     width: 20rem;
     height: 10rem;
