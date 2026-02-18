@@ -25,13 +25,15 @@
 						<label class="form-check-label" for="canEdit">Can Edit Content</label>
 					</div>
 				</div>
-
-				<!-- inactiveDate -->
+				
+				<!-- isInactive -->
 				<div class="col-md-4">
-					<label for="inactiveDate" class="form-label">Deactivation Date</label>
-					<input type="datetime-local" class="form-control" 
-						id="inactiveDate" name="inactiveDate"
-						th:value="${userDto.inactiveDate}" />
+					<div class="form-check form-switch mt-2">
+						<input class="form-check-input" type="checkbox" 
+							id="isActive" name="isActive" 
+							th:checked="${userDto.isActive}" />
+						<label class="form-check-label" for="canEdit">Active Account</label>
+					</div>
 				</div>
 			</div>
 		</div>
