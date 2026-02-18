@@ -1,5 +1,6 @@
 package com.braindribbler.spring.service.users.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService {
             PasswordDTO.empty(),
             user.isAdmin(),
             user.isCanEdit(),
+            (user.getInactiveDate() == null),
             user.getInactiveDate()
         ))
             .orElseThrow(() -> new RuntimeException("User not found"));
@@ -63,7 +65,8 @@ public class UserServiceImpl implements UserService {
         if (isActualAdmin) {
             user.setAdmin(dto.isAdmin());
             user.setCanEdit(dto.canEdit());
-            user.setInactiveDate(dto.inactiveDate());
+            // if isActive is true, make sure the inactive date is null, otherwise set the set date or the now date
+            user.setInactiveDate((dto.isActive() ? null : (dto.inactiveDate() != null ? dto.inactiveDate() : LocalDateTime.now())));
         }
 
         String newPass = dto.passwordData().newPassword();

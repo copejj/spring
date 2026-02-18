@@ -18,5 +18,7 @@ public record UserDTO (
     
     boolean isAdmin,
     boolean canEdit,
+    boolean isActive,
+
     LocalDateTime inactiveDate 
 ) {}
