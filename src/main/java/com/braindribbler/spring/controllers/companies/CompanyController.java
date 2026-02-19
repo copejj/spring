@@ -58,7 +58,7 @@ public class CompanyController {
         form.getAddresses().add(new AddressFormItem());
 
         model.addAttribute("location", "New Company");
-        model.addAttribute("title", "Add Company");
+        model.addAttribute("title", "Company Information");
         
         populateReferenceData(model); // Helper to keep code clean
         model.addAttribute("company", form);
@@ -75,8 +75,8 @@ public class CompanyController {
         cleanAddressList(companyForm); // Move your address cleanup to a private helper
 
         if (result.hasErrors()) {
-            model.addAttribute("location", "Add Company");
-            model.addAttribute("title", "Fix Errors");
+            model.addAttribute("title", "Company Information");
+            model.addAttribute("location", companyForm.getCompanyId() == null ? "New Company" : "Edit Company");
             populateReferenceData(model);
             return "companies/edit";
         }
@@ -117,7 +117,7 @@ public class CompanyController {
 		// Convert to writable form
 		CompanyForm form = companyService.convertToForm(dto);
 		
-		model.addAttribute("location", "Company Details");
+		model.addAttribute("location", "Edit Company");
 		model.addAttribute("title", "Company Information");	
 		
 		model.addAttribute("allStates", stateRepository.findAll());

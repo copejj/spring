@@ -108,6 +108,7 @@ public class LogController {
             Model model) {
 
         if (result.hasErrors()) {
+            model.addAttribute("title", "Application Information");
             model.addAttribute("location", logForm.getLogId() == null ? "New Log" : "Edit Log");
             model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
             return "logs/edit";
