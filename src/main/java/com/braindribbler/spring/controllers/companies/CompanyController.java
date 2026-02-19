@@ -51,7 +51,7 @@ public class CompanyController {
         return "companies/list";
     }
 
-	@GetMapping("/new")
+	@GetMapping("/create")
     public String showCreateForm(Model model) {
         CompanyForm form = new CompanyForm();
         // Initialize with at least one empty address so the form shows an address row
@@ -81,14 +81,11 @@ public class CompanyController {
             return "companies/edit";
         }
 
-        // 1. Check if we are updating or creating
         if (companyForm.getCompanyId() == null) {
-            // CREATE: Returns the new ID from the service
             Long newId = companyService.createCompany(companyForm, userDetails.getUserId());
             redirectAttributes.addFlashAttribute("saveSuccess", "Company created successfully!");
             return "redirect:/companies/edit/" + newId + "?success=created";
         } else {
-            // UPDATE
             companyService.updateCompany(companyForm);
             redirectAttributes.addFlashAttribute("saveSuccess", "Company updated successfully!");
             return "redirect:/companies/edit/" + companyForm.getCompanyId() + "?success=updated";

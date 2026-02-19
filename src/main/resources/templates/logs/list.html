@@ -5,11 +5,8 @@
 	<body>
 		<h2>/logs/list.html</h2>
         <div layout:fragment="content" class="mt-4"> 
-            <div class="mb-3">
-                <a th:href="@{/logs/create}" class="btn">
-                    <i class="fa-solid fa-plus"></i> Add New Application
-                </a>
-            </div>
+            <div th:replace="~{fragments/forms :: direct-button(url='/logs/create', text='Add New Application')}"></div>
+
             <div class='filter-box' th:if="${selectedWeek != null or selectedCompany != null}">
                 <span class="title">Active Filters:</span>
                 <span class="clear-button" th:if="${selectedCompany != null}">

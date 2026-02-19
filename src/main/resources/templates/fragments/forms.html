@@ -8,4 +8,25 @@
 			<a th:href="${cancelUrl}" class="btn btn-outline-secondary px-4 ms-2">Cancel</a>
 		</div>
 	</div>
+
+	<div th:fragment="open-button(targetId, text)">
+		<div class="mb-3">
+			<button class="btn" type="button" data-bs-toggle="collapse" 
+                aria-expanded="false" 
+                th:data-bs-target="|#${targetId}|"
+                th:aria-controls="${targetId}">
+				<i class="fa-solid fa-plus"></i>
+				<span th:text="${text}">Button Text</span>
+			</button>
+		</div>
+	</div>
+
+	<div th:fragment="direct-button(url, text)">
+		<div class="mb-3">
+			<a th:href="${url}" class="btn">
+				<i class="fa-solid fa-plus"></i>
+				<span th:text="${text}">Button Text</span>
+			</a>
+		</div>
+	</div>
 </html>
