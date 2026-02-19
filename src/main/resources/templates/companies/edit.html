@@ -10,6 +10,11 @@
 
             <form th:action="@{/companies/save}" th:object="${company}" th:method="post">
                 <input th:field="*{companyId}" type="hidden" />
+                <div th:if="${company.companyId != null}" class="mb-3">
+                    <a th:href="@{/logs/create(companyId=${company.companyId})}" class="btn">
+                        <i class="fa-solid fa-plus"></i> Add New Application
+                    </a>
+                </div>
 
                 <!-- Row 1: Primary Info (3 Columns) -->
                 <div class="row g-3 mb-3">
