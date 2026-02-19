@@ -64,6 +64,8 @@ public class LogController {
         form.setTitle(dto.title());
         form.setJobNumber(dto.jobNumber());
         form.setNextStep(dto.nextStep());
+        form.setJobLink(dto.jobLink());
+        form.setDescription(dto.description());
         form.setNotes(dto.notes());
         form.setConfirmation(dto.confirmation());
         form.setContact(dto.contact());

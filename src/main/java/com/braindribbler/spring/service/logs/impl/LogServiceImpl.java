@@ -91,12 +91,13 @@ public class LogServiceImpl implements LogService {
         log.setTitle(form.getTitle());
         log.setJobNumber(form.getJobNumber());
         log.setNextStep(form.getNextStep());
+        log.setJobLink(form.getJobLink());
+        log.setDescription(form.getDescription());
         log.setNotes(form.getNotes());
         log.setConfirmation(form.getConfirmation());
         log.setContact(form.getContact());
         log.setContactNumber(form.getContactNumber());
         log.setActionDate(form.getActionDate());
-
         log.setCompanyId(form.getCompanyId());
 
         Week week = weekRepository.findWeekByDate(form.getActionDate())
@@ -115,11 +116,9 @@ public class LogServiceImpl implements LogService {
         newWeek.setStartDate(start);
         newWeek.setEndDate(end);
         
-        // Save to the database to generate an ID
         return weekRepository.save(newWeek);
     }
 
-    // --- Helper Methods for Mapping ---
     private LogDTO convertToDto(Log log) {
         return new LogDTO(
             log.getLogId(),
@@ -128,6 +127,8 @@ public class LogServiceImpl implements LogService {
             log.getTitle(),
             log.getJobNumber(),
             log.getNextStep(),
+            log.getJobLink(),
+            log.getDescription(),
             log.getNotes(),
             log.getConfirmation(),
             log.getContact(),
@@ -145,6 +146,8 @@ public class LogServiceImpl implements LogService {
         log.setTitle(dto.title());
         log.setJobNumber(dto.jobNumber());
         log.setNextStep(dto.nextStep());
+        log.setJobLink(dto.jobLink());
+        log.setDescription(dto.description());
         log.setNotes(dto.notes());
         log.setConfirmation(dto.confirmation());
         log.setContact(dto.contact());
@@ -153,5 +156,4 @@ public class LogServiceImpl implements LogService {
         log.setCompanyId(dto.companyId());
         log.setWeekId(dto.weekId());
     }
-
 }

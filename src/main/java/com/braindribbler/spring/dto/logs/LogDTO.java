@@ -19,6 +19,8 @@ public record LogDTO (
 	String title,
 	String jobNumber,
 	String nextStep,
+	String jobLink,
+	String description,
 	String notes,
 	String confirmation,
 	String contact,

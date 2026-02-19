@@ -15,6 +15,8 @@ public class LogForm {
 
     private String jobNumber;
     private String nextStep;
+	private String jobLink;
+    private String description;
     private String notes;
     private String confirmation;
     private String contact;
@@ -35,6 +37,10 @@ public class LogForm {
 	public void setJobNumber(String jobNumber) { this.jobNumber = jobNumber; }
 	public String getNextStep() { return nextStep; }
 	public void setNextStep(String nextStep) { this.nextStep = nextStep; }
+    public String getJobLink() { return jobLink; }
+    public void setJobLink(String jobLink) { this.jobLink = jobLink; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 	public String getNotes() { return notes; }
 	public void setNotes(String notes) { this.notes = notes; }
 	public String getConfirmation() { return confirmation; }
