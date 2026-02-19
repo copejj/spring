@@ -47,10 +47,10 @@ public class Log{
 	@Column(name="job_link")
 	private String jobLink;
 	
-	@Column(name="description")
+	@Column(name="description", columnDefinition="TEXT")
 	private String description;
 
-	@Column(name="notes")
+	@Column(name="notes", columnDefinition="TEXT")
 	private String notes;
 
 	@Column(name="confirmation")
