@@ -3,37 +3,46 @@
 	xmlns:layout="http://www.ultraq.net.nz"
 	layout:decorate="~{layout/default}">
 	<body>
-        <div layout:fragment="content" class="container mt-4"> 
-            <!-- Alerts -->
+        <div layout:fragment="content" class="container mt-4">
             <div th:if="${saveError}" class="alert alert-danger" th:text="${saveError}"></div>
             <div th:if="${saveSuccess}" class="alert alert-success" th:text="${saveSuccess}"></div>
+            
+            <form th:action="@{/logs/save}" th:object="${log}" method="post" class="card p-4 shadow-sm">
+                <input type="hidden" th:field="*{logId}" />
 
-            <form th:action="@{/update/logs}" th:object="${log}" th:method="put">
-                <input th:field="*{logId}" type="hidden" />
-
-                <!-- Row 1: The Basics -->
-                <div class="row g-3 mb-3">
+                <div class="row g-3">
                     <div class="col-md-4">
-                        <label for="actionDate" class="form-label">Action Date</label>
+                        <label class="form-label fw-bold">Action Date</label>
                         <input type="date" th:field="*{actionDate}" 
-                            class="form-control" />
+                            class="form-control" 
+                            th:classappend="${#fields.hasErrors('actionDate')} ? 'is-invalid' : ''" />
+                        <div class="invalid-feedback" th:errors="*{actionDate}"></div>
+                        <small class="text-muted">Week will be assigned automatically (Sun-Sat).</small>
                     </div>
+
                     <div class="col-md-4">
-                        <label for="title" class="form-label">Title</label>
-                        <input th:field="*{title}" type="text" class="form-control" placeholder="Action title..." />
+                        <label class="form-label fw-bold">Job Title</label>
+                        <input type="text" th:field="*{title}" 
+                            class="form-control" 
+                            th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''" 
+                            placeholder="e.g. Senior Developer" />
+                        <div class="invalid-feedback" th:errors="*{title}"></div>
                     </div>
+
                     <div class="col-md-4">
-                        <label for="companyId" class="form-label">Company</label>
-                        <select th:field="*{companyId}" class="form-select">
-                            <option value="" disabled selected>-- Select a Company --</option>
+                        <label class="form-label fw-bold">Company</label>
+                        <select th:field="*{companyId}" 
+                                class="form-select"
+                                th:classappend="${#fields.hasErrors('companyId')} ? 'is-invalid' : ''">
+                            <option value="" selected>-- Select Company --</option>
                             <option th:each="comp : ${companies}" 
                                     th:value="${comp.companyId}" 
-                                    th:text="${comp.companyName}">Company Name</option>
+                                    th:text="${comp.companyName}"></option>
                         </select>
+                        <div class="invalid-feedback" th:errors="*{companyId}"></div>
                     </div>
                 </div>
 
-                <!-- Row 2: Tracking & Status -->
                 <div class="row g-3 mb-3">
                     <div class="col-md-4">
                         <label for="jobNumber" class="form-label">Job Number</label>
@@ -49,7 +58,6 @@
                     </div>
                 </div>
 
-                <!-- Row 3: Contact Info -->
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <label for="contact" class="form-label">Contact Name</label>
@@ -61,7 +69,6 @@
                     </div>
                 </div>
 
-                <!-- Row 4: Notes (Full Width) -->
                 <div class="row g-3 mb-4">
                     <div class="col-12">
                         <label for="notes" class="form-label">Notes</label>
@@ -69,12 +76,13 @@
                     </div>
                 </div>
 
-                <!-- Buttons -->
-                <div class="mt-4 pb-5">
-                    <button type="submit" class="btn btn-primary px-5">Save Log</button>
-                    <a th:if="${isAdmin}" href="/admin/users" class="btn btn-outline-secondary px-4 ms-2">Cancel</a>
+                <div class="mt-4 pt-3 border-top">
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-save me-1"></i> Save
+                    </button>
+                    <a th:href="@{/logs/list}" class="btn btn-outline-secondary px-4 ms-2">Cancel</a>
                 </div>
-            </form>		
+            </form>
         </div>
 	</body>
 </html>

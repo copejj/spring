@@ -5,8 +5,8 @@
 	layout:decorate="~{layout/default}">
 <body>
     <main layout:fragment="content">
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<button sec:authorize="hasRole('ADMIN')" class="btn btn-sm" data-bs-toggle="collapse" data-bs-target="#addConfigForm">
+		<div class="mb-3">
+			<button sec:authorize="hasRole('ADMIN')" class="btn" data-bs-toggle="collapse" data-bs-target="#addConfigForm">
 				+ Add New Config
 			</button>
 		</div>

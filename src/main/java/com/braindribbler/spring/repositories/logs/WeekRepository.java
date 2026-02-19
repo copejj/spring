@@ -1,5 +1,6 @@
 package com.braindribbler.spring.repositories.logs;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +29,7 @@ public interface WeekRepository extends JpaRepository<Week, Long> {
     """, nativeQuery = true)
     List<WeekProjection> findActiveWeeks(@Param("userId") Long userId);	
 	Optional<Week> findByWeekId(Long weekId);
+
+    @Query("SELECT w FROM Week w WHERE w.startDate <= :date AND :date <= w.endDate")
+    Optional<Week> findWeekByDate(@Param("date") LocalDate date);
 }

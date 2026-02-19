@@ -5,6 +5,11 @@
 	<body>
 		<h2>/logs/list.html</h2>
         <div layout:fragment="content"> 
+            <div class="mb-3">
+                <a th:href="@{/logs/create}" class="btn">
+                    <i class="fa-solid fa-plus"></i> Add New App
+                </a>
+            </div>
             <div class='filter-box' th:if="${selectedWeek != null or selectedCompany != null}">
                 <span class="title">Active Filters:</span>
                 <span class="clear-button" th:if="${selectedCompany != null}">
@@ -25,6 +30,18 @@
                         <i class="fa-solid fa-x"></i> 
                     </a>
                 </span>
+            </div>
+            <div class="container mt-3">
+                <div th:if="${saveSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <span th:text="${saveSuccess}">Success!</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <div th:if="${saveError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <span th:text="${saveError}">Error!</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
             </div>
             <table id="logsTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
                 <thead>
@@ -104,6 +121,8 @@
                         }
                     });
                 });
+
+                $('#logsTable').show();
             </script>
         </div>
 		</div>

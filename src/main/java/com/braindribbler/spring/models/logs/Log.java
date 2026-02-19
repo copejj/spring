@@ -3,6 +3,8 @@ package com.braindribbler.spring.models.logs;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.braindribbler.spring.models.companies.Company;
 import com.braindribbler.spring.models.users.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -14,6 +16,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -25,7 +28,8 @@ public class Log{
 	@Column(name="job_log_id")
 	private Long logId;
 
-	@Column(name="created_date")
+	@CreationTimestamp
+	@Column(name="created_date", nullable=false, updatable=false)
 	private LocalDateTime createdDate;
 
 	@Column(name="action_date")
@@ -63,7 +67,7 @@ public class Log{
 	@Column(name="week_id")
 	private Long weekId;
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="week_id", insertable=false, updatable=false)
 	@JsonBackReference
 	private Week week;
@@ -71,7 +75,7 @@ public class Log{
 	@Column(name="company_id")
 	private Long companyId;
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="company_id", insertable=false, updatable=false)
 	@JsonBackReference
 	private Company company;

@@ -1,5 +1,8 @@
 package com.braindribbler.spring.service.logs.impl;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,17 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.braindribbler.spring.dto.logs.LogDTO;
+import com.braindribbler.spring.forms.logs.LogForm;
 import com.braindribbler.spring.models.logs.Log;
+import com.braindribbler.spring.models.logs.Week;
 import com.braindribbler.spring.repositories.logs.LogRepository;
+import com.braindribbler.spring.repositories.logs.WeekRepository;
 import com.braindribbler.spring.service.logs.LogService;
 
 @Service
 public class LogServiceImpl implements LogService {
 
     private final LogRepository logRepository;
+    private final WeekRepository weekRepository;
 
-    public LogServiceImpl(LogRepository logRepository) {
+    public LogServiceImpl(LogRepository logRepository, WeekRepository weekRepository) {
         this.logRepository = logRepository;
+        this.weekRepository = weekRepository;
     }
 
     @Override
@@ -67,8 +75,51 @@ public class LogServiceImpl implements LogService {
             .collect(Collectors.toList());
     }
 
-    // --- Helper Methods for Mapping ---
+    @Override
+    @Transactional
+    public Long saveFromForm(LogForm form, Long userId) {
+        Log log;
 
+        if (form.getLogId() != null) {
+            log = logRepository.findByLogId(form.getLogId())
+                .orElseThrow(() -> new RuntimeException("Log not found with id: " + form.getLogId()));
+        } else {
+            log = new Log();
+            log.setUserId(userId); 
+        }
+
+        log.setTitle(form.getTitle());
+        log.setJobNumber(form.getJobNumber());
+        log.setNextStep(form.getNextStep());
+        log.setNotes(form.getNotes());
+        log.setConfirmation(form.getConfirmation());
+        log.setContact(form.getContact());
+        log.setContactNumber(form.getContactNumber());
+        log.setActionDate(form.getActionDate());
+
+        log.setCompanyId(form.getCompanyId());
+
+        Week week = weekRepository.findWeekByDate(form.getActionDate())
+            .orElseGet(() -> createNewWeek(form.getActionDate()));
+        log.setWeekId(week.getWeekId());
+
+        Log saved = logRepository.save(log);
+        return saved.getLogId();
+    }
+
+    private Week createNewWeek(LocalDate date) {
+        LocalDate start = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
+        LocalDate end = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
+
+        Week newWeek = new Week();
+        newWeek.setStartDate(start);
+        newWeek.setEndDate(end);
+        
+        // Save to the database to generate an ID
+        return weekRepository.save(newWeek);
+    }
+
+    // --- Helper Methods for Mapping ---
     private LogDTO convertToDto(Log log) {
         return new LogDTO(
             log.getLogId(),
@@ -102,4 +153,5 @@ public class LogServiceImpl implements LogService {
         log.setCompanyId(dto.companyId());
         log.setWeekId(dto.weekId());
     }
+
 }
