@@ -4,7 +4,7 @@
 	layout:decorate="~{layout/default}">
 	<body>
 		<h2>/logs/list.html</h2>
-        <div layout:fragment="content"> 
+        <div layout:fragment="content" class="mt-4"> 
             <div class="mb-3">
                 <a th:href="@{/logs/create}" class="btn">
                     <i class="fa-solid fa-plus"></i> Add New Application
@@ -31,7 +31,7 @@
                     </a>
                 </span>
             </div>
-            <div class="container mt-3">
+            <div class="container mt-3" th:if="${saveSuccess != null or saveError != null}">
                 <div th:if="${saveSuccess}" class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="bi bi-check-circle-fill me-2"></i>
                     <span th:text="${saveSuccess}">Success!</span>
@@ -43,7 +43,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </div>
-            <table id="logsTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
+            <table id="logsTable" class="datatables table table-striped table-hover stripe" style="display:none;">
                 <thead>
                     <tr>
                         <th></th>
@@ -99,7 +99,7 @@
             <script>
                 $(document).ready(function () {
                     $('#logsTable').DataTable({
-                        "pageLength": 10,
+                        "pageLength": 25,
                         "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
                         "paging": true,
                         "lengthChange": true,
@@ -121,8 +121,6 @@
                         }
                     });
                 });
-
-                $('#logsTable').show();
             </script>
         </div>
 		</div>
