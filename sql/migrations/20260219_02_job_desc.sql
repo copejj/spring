@@ -1,5 +1,5 @@
 alter table job_logs
-alter column description text;
+alter column description type text;
 
 alter table job_logs
-alter column notes text;
+alter column notes type text;
