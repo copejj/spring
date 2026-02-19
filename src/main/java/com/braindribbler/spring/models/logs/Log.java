@@ -44,6 +44,12 @@ public class Log{
 	@Column(name="next_step")
 	private String nextStep;
 
+	@Column(name="job_link")
+	private String jobLink;
+	
+	@Column(name="description")
+	private String description;
+
 	@Column(name="notes")
 	private String notes;
 
@@ -92,6 +98,10 @@ public class Log{
 	public void setJobNumber(String jobNumber) { this.jobNumber = jobNumber; }
 	public String getNextStep() { return nextStep; }
 	public void setNextStep(String nextStep) { this.nextStep = nextStep; }
+    public String getJobLink() { return jobLink; }
+    public void setJobLink(String jobLink) { this.jobLink = jobLink; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 	public String getNotes() { return notes; }
 	public void setNotes(String notes) { this.notes = notes; }
 	public String getConfirmation() { return confirmation; }

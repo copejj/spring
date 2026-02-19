@@ -64,13 +64,24 @@
                 </div>
 
                 <div class="row g-3 mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label for="contact" class="form-label">Job Link</label>
+                        <input th:field="*{jobLink}" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
                         <label for="contact" class="form-label">Contact Name</label>
                         <input th:field="*{contact}" type="text" class="form-control" />
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="contactNumber" class="form-label">Contact Number</label>
                         <input th:field="*{contactNumber}" type="text" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <label for="notes" class="form-label">Job Description</label>
+                        <textarea th:field="*{description}" class="form-control" rows="4" placeholder="Enter job description here..."></textarea>
                     </div>
                 </div>
 
