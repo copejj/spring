@@ -63,13 +63,7 @@
                     </div>
                 </div>
 
-                <!-- Form Actions -->
-                <div class="mt-4 pb-5">
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-save me-1"></i> Save
-                    </button>
-                    <a href="/companies" class="btn btn-secondary px-4 ms-2">Cancel</a>
-                </div>
+                <div th:replace="~{fragments/forms :: submit-save-cancel(cancelUrl='/companies')}"></div>
             </form>		
             <template id="address-template">
                 <div th:replace="~{fragments/address-row :: addressForm(index=null)}"></div>
