@@ -3,15 +3,18 @@
 	xmlns:layout="http://www.ultraq.net.nz"
 	layout:decorate="~{layout/default}">
 	<body>
-        <div layout:fragment="content" class="container mt-4"> 
-            <!-- Alerts -->
+        <div layout:fragment="content" class="mt-4"> 
             <div th:if="${saveError}" class="alert alert-danger" th:text="${saveError}"></div>
             <div th:if="${saveSuccess}" class="alert alert-success" th:text="${saveSuccess}"></div>
 
             <form th:action="@{/companies/save}" th:object="${company}" th:method="post">
-                <input th:field="*{companyId}" type="hidden" />
+                <input type="hidden" th:field="*{companyId}" />
+                <div th:if="${company.companyId != null}" class="mb-3">
+                    <a th:href="@{/logs/create(companyId=${company.companyId})}" class="btn">
+                        <i class="fa-solid fa-plus"></i> Add New Application
+                    </a>
+                </div>
 
-                <!-- Row 1: Primary Info (3 Columns) -->
                 <div class="row g-3 mb-3">
                     <div class="col-md-4">
                         <label th:for="companyName" class="form-label">Company Name</label>
@@ -36,7 +39,6 @@
                     </div>
                 </div>
 
-                <!-- Row 2: Communication (1/3 width each) -->
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
                         <label th:for="companyPhone" class="form-label">Company Phone</label>
@@ -61,13 +63,7 @@
                     </div>
                 </div>
 
-                <!-- Form Actions -->
-                <div class="mt-4 pb-5">
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-save me-1"></i> Save
-                    </button>
-                    <a href="/companies" class="btn btn-secondary px-4 ms-2">Cancel</a>
-                </div>
+                <div th:replace="~{fragments/forms :: submit-save-cancel(cancelUrl='/companies')}"></div>
             </form>		
             <template id="address-template">
                 <div th:replace="~{fragments/address-row :: addressForm(index=null)}"></div>

@@ -3,13 +3,10 @@
 	xmlns:layout="http://www.ultraq.net.nz"
 	layout:decorate="~{layout/default}">
 	<body>
-        <div layout:fragment="content"> 
-            <div class="mb-3">
-                <a th:href="@{/companies/new}" class="btn">
-                    <i class="fa-solid fa-plus"></i> Add New Company
-                </a>
-            </div>
-            <table id="companyTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">
+        <div layout:fragment="content" class="mt-4"> 
+            <div th:replace="~{fragments/forms :: direct-button(url='/companies/create', text='Add New Company')}"></div>
+
+            <table id="companyTable" class="datatables table table-striped table-hover stripe" style="display:none;">
                 <thead>
                     <tr>
                         <th></th>

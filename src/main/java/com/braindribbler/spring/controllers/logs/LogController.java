@@ -19,7 +19,6 @@ import com.braindribbler.spring.forms.logs.LogForm;
 import com.braindribbler.spring.security.UserDetailsImpl;
 import com.braindribbler.spring.service.companies.CompanyService;
 import com.braindribbler.spring.service.logs.LogService;
-import com.braindribbler.spring.service.logs.WeekService;
 
 import jakarta.validation.Valid;
 
@@ -28,12 +27,10 @@ import jakarta.validation.Valid;
 public class LogController {
     private final LogService logService;
     private final CompanyService companyService;
-    private final WeekService weekService;
 
-    public LogController(LogService logService, CompanyService companyService, WeekService weekService) {
+    public LogController(LogService logService, CompanyService companyService) {
         this.logService = logService;
         this.companyService = companyService;
-        this.weekService = weekService;
     }
 
     @GetMapping("/list")
@@ -87,10 +84,16 @@ public class LogController {
 
         @GetMapping("/create")
         public String createLogForm(
+                @RequestParam(name = "companyId", required = false) Long companyId,
                 @AuthenticationPrincipal UserDetailsImpl userDetails,
                 Model model) {
 
-        model.addAttribute("log", new LogForm());
+        LogForm form = new LogForm();
+        if (companyId != null) {
+            form.setCompanyId(companyId);
+        }
+
+        model.addAttribute("log", form);
         model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
         
         model.addAttribute("location", "New Log");

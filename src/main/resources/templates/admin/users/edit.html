@@ -3,7 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz"
 	layout:decorate="~{layout/default}">
 	<body>
-        <div layout:fragment="content" class="container mt-4"> 
+        <div layout:fragment="content" class="mt-4"> 
             <!-- Alerts -->
             <div th:if="${saveError}" class="alert alert-danger" th:text="${saveError}"></div>
             <div th:if="${saveSuccess}" class="alert alert-success" th:text="${saveSuccess}"></div>
@@ -55,13 +55,8 @@
                 <input type="hidden" name="_canEdit" value="on"/>
                 <input type="hidden" name="_isActive" value="on"/>
 
-                <!-- Buttons -->
-                <div class="mt-4">
-                    <button type="submit" class="btn btn-primary px-4">Save</button>
-                    <a th:if="${isAdmin}" href="/admin/users" class="btn btn-secondary px-4 ms-2">Cancel</a>
-                </div>
+                <div th:replace="~{fragments/forms :: submit-save-cancel(cancelUrl=${isAdmin ? '/admin/users' : '/'})}"></div>
             </form>		
         </div>
-
 	</body>
 </html>

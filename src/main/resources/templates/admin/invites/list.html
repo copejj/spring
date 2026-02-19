@@ -5,11 +5,7 @@
 	layout:decorate="~{layout/default}">
 <body>
     <main layout:fragment="content">
-		<div class="mb-3">
-			<button sec:authorize="hasRole('ADMIN')" class="btn" data-bs-toggle="collapse" data-bs-target="#addInviteForm">
-				+ Add New Invite
-			</button>
-		</div>
+		<div th:replace="~{fragments/forms :: open-button(targetId='addInviteForm', text='Add New Invite')}"></div>
 
 		<div sec:authorize="hasRole('ADMIN')" id="addInviteForm" class="collapse mb-4">
 			<div class="card card-body shadow-sm">
