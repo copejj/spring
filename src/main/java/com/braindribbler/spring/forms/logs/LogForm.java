@@ -1,0 +1,50 @@
+package com.braindribbler.spring.forms.logs;
+
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public class LogForm {
+    private Long logId;
+
+    @NotBlank(message = "Job title is required")
+    private String title;
+
+    private String jobNumber;
+    private String nextStep;
+    private String notes;
+    private String confirmation;
+    private String contact;
+    private String contactNumber;
+
+    @NotNull(message = "Please select a company")
+    private Long companyId;
+
+    @NotNull(message = "Action date is required")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate actionDate = LocalDate.now();
+
+	public Long getLogId() { return logId; }
+	public void setLogId(Long logId) { this.logId = logId; }
+	public String getTitle() { return title; }
+	public void setTitle(String title) { this.title = title; }
+	public String getJobNumber() { return jobNumber; }
+	public void setJobNumber(String jobNumber) { this.jobNumber = jobNumber; }
+	public String getNextStep() { return nextStep; }
+	public void setNextStep(String nextStep) { this.nextStep = nextStep; }
+	public String getNotes() { return notes; }
+	public void setNotes(String notes) { this.notes = notes; }
+	public String getConfirmation() { return confirmation; }
+	public void setConfirmation(String confirmation) { this.confirmation = confirmation; }
+	public String getContact() { return contact; }
+	public void setContact(String contact) { this.contact = contact; }
+	public String getContactNumber() { return contactNumber; }
+	public void setContactNumber(String contactNumber) { this.contactNumber = contactNumber; }
+	public Long getCompanyId() { return companyId; }
+	public void setCompanyId(Long companyId) { this.companyId = companyId; }
+	public LocalDate getActionDate() { return actionDate; }
+	public void setActionDate(LocalDate actionDate) { this.actionDate = actionDate; }
+}

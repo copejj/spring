@@ -4,9 +4,9 @@
 	layout:decorate="~{layout/default}">
 	<body>
         <div layout:fragment="content"> 
-            <div class="mb-3 text-end">
-                <a th:href="@{/companies/new}" class="btn btn-primary">
-                    <i class="fa-solid fa-plus mr-1"></i> Add New Company
+            <div class="mb-3">
+                <a th:href="@{/companies/new}" class="btn">
+                    <i class="fa-solid fa-plus"></i> Add New Company
                 </a>
             </div>
             <table id="companyTable" class="datatables table table-striped table-hover stripe" style="width:100%; display:none;">

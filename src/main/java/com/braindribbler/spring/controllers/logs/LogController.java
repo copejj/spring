@@ -5,18 +5,23 @@ import java.util.List;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.braindribbler.spring.dto.logs.LogDTO;
-import com.braindribbler.spring.models.companies.Company;
-import com.braindribbler.spring.models.logs.Week;
+import com.braindribbler.spring.forms.logs.LogForm;
 import com.braindribbler.spring.security.UserDetailsImpl;
 import com.braindribbler.spring.service.companies.CompanyService;
 import com.braindribbler.spring.service.logs.LogService;
 import com.braindribbler.spring.service.logs.WeekService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/logs")
@@ -55,19 +60,68 @@ public class LogController {
         @PathVariable Long logId,
         Model model) {
 
-		LogDTO logDto = logService.getLogDtoById(logId);
-        
+		LogDTO dto = logService.getLogDtoById(logId);
+
+        LogForm form = new LogForm();
+        form.setLogId(dto.logId());
+        form.setTitle(dto.title());
+        form.setJobNumber(dto.jobNumber());
+        form.setNextStep(dto.nextStep());
+        form.setNotes(dto.notes());
+        form.setConfirmation(dto.confirmation());
+        form.setContact(dto.contact());
+        form.setContactNumber(dto.contactNumber());
+        form.setCompanyId(dto.companyId());
+        form.setActionDate(dto.actionDate());
+
         Long userId = userDetails.getUserId();
-        List<Company> companies = companyService.getAll(userId);
-        List<Week> weeks = weekService.getAll();
 
 		model.addAttribute("location", "Edit Log");
 		model.addAttribute("title", "Application Information");
 
-		model.addAttribute("log", logDto);
-        model.addAttribute("companies", companies);
-        model.addAttribute("weeks", weeks);
+		model.addAttribute("log", form);
+        model.addAttribute("companies", companyService.getAll(userId));
 
 		return "logs/edit";
 	}
+
+        @GetMapping("/create")
+        public String createLogForm(
+                @AuthenticationPrincipal UserDetailsImpl userDetails,
+                Model model) {
+
+        model.addAttribute("log", new LogForm());
+        model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
+        
+        model.addAttribute("location", "New Log");
+		model.addAttribute("title", "Application Information");
+
+        return "logs/edit";
+    }
+
+    @PostMapping("/save")
+    public String saveLog(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @Valid @ModelAttribute("log") LogForm logForm,
+            BindingResult result,
+            RedirectAttributes redirectAttributes,
+            Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("location", logForm.getLogId() == null ? "New Log" : "Edit Log");
+            model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
+            return "logs/edit";
+        }
+
+        try {
+            Long savedId = logService.saveFromForm(logForm, userDetails.getUserId());
+            
+            redirectAttributes.addFlashAttribute("saveSuccess", "Log saved successfully!");
+            return "redirect:/logs/edit/" + savedId;
+        } catch (Exception e) {
+            model.addAttribute("saveError", "Error: " + e.getMessage());
+            model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
+            return "logs/edit";
+        }
+    }
 }

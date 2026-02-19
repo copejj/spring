@@ -28,7 +28,7 @@ public record LogDTO (
 	String companyName,
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@NotBlank(message = "Action date is required")
+	@NotNull(message = "Action date is required")
 	LocalDate actionDate,
 	Long weekId,
 	LocalDate startDate,
