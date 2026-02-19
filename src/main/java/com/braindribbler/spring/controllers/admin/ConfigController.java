@@ -28,6 +28,7 @@ public class ConfigController {
     @GetMapping
     public String listConfigs(Model model) {
 		model.addAttribute("title", "Config Settings: " + environment);
+		model.addAttribute("location", "Admin: Config");
         model.addAttribute("environments", ConfigEnvironment.values());
 
         model.addAttribute("configs", configService.getAllConfigs());

@@ -23,6 +23,8 @@ public class InviteController {
 
 	@GetMapping
 	public String listInvites(Model model) {
+		model.addAttribute("title", "Invites List");
+		model.addAttribute("location", "Admin: Invites");
 		model.addAttribute("invites", inviteService.getAllInvites());
 		model.addAttribute("newInvite", new Invite());
 
