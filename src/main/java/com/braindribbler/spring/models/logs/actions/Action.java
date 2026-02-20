@@ -1,6 +1,5 @@
 package com.braindribbler.spring.models.logs.actions;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,8 +21,6 @@ public class Action {
 	public void setActionId(Long actionId) { this.actionId = actionId; }
 	public String getName() { return name; }
 	public void setName(String name) { this.name = name; }
-	public Boolean getIsDefault() { return isDefault; }
-	public void setIsDefault(Boolean isDefault) { this.isDefault = isDefault; }
 	public Integer getSequence() { return sequence; }
 	public void setSequence(Integer sequence) { this.sequence = sequence; }
 }
