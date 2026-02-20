@@ -5,5 +5,5 @@ import java.util.List;
 import com.braindribbler.spring.dto.logs.actions.ActionDTO;
 
 public interface ActionService {
-	List<ActionDTO> findAll();
+	List<ActionDTO> getAll();
 }

@@ -18,7 +18,7 @@ public class ActionServiceImpl implements ActionService {
 	}
 
 	@Override
-	public List<ActionDTO> findAll() {
+	public List<ActionDTO> getAll() {
 
 		return actionRepository.findAllByOrderBySequenceAsc().stream()
 			.map(this::convertToDto)

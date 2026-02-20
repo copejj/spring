@@ -100,6 +100,7 @@ public class LogController {
 
         model.addAttribute("log", form);
         model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
+        model.addAttribute("actions", actionService.getAll());
         
         model.addAttribute("location", "New Log");
 		model.addAttribute("title", "Application Information");
