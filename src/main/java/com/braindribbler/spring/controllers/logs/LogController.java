@@ -19,18 +19,21 @@ import com.braindribbler.spring.forms.logs.LogForm;
 import com.braindribbler.spring.security.UserDetailsImpl;
 import com.braindribbler.spring.service.companies.CompanyService;
 import com.braindribbler.spring.service.logs.LogService;
+import com.braindribbler.spring.service.logs.actions.ActionService;
 
 import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/logs")
 public class LogController {
+    private final ActionService actionService;
     private final LogService logService;
     private final CompanyService companyService;
 
-    public LogController(LogService logService, CompanyService companyService) {
+    public LogController(LogService logService, CompanyService companyService, ActionService actionService) {
         this.logService = logService;
         this.companyService = companyService;
+        this.actionService = actionService;
     }
 
     @GetMapping("/list")

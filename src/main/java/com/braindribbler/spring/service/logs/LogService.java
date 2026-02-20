@@ -10,5 +10,5 @@ public interface LogService {
 	List<LogDTO> findLogs(Long userId);
 	List<LogDTO> findLogs(Long userId, Long weekId, Long companyId);
 	LogDTO getLogDtoById(Long logId);
-    Long saveFromForm(LogForm logForm, Long userId);
+	Long saveFromForm(LogForm form, Long userId);
 }
