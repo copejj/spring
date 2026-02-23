@@ -13,19 +13,30 @@ import com.braindribbler.spring.dto.logs.LogDTO;
 import com.braindribbler.spring.forms.logs.LogForm;
 import com.braindribbler.spring.models.logs.Log;
 import com.braindribbler.spring.models.logs.Week;
+import com.braindribbler.spring.models.logs.status.LogStatus;
+import com.braindribbler.spring.models.logs.status.Status;
 import com.braindribbler.spring.repositories.logs.LogRepository;
 import com.braindribbler.spring.repositories.logs.WeekRepository;
+import com.braindribbler.spring.repositories.logs.status.LogStatusRepository;
+import com.braindribbler.spring.repositories.logs.status.StatusRepository;
 import com.braindribbler.spring.service.logs.LogService;
 
 @Service
 public class LogServiceImpl implements LogService {
 
     private final LogRepository logRepository;
+    private final LogStatusRepository logStatusRepository;
+    private final StatusRepository statusRepository;
     private final WeekRepository weekRepository;
 
-    public LogServiceImpl(LogRepository logRepository, WeekRepository weekRepository) {
+    public LogServiceImpl(LogRepository logRepository, 
+                        LogStatusRepository logStatusRepository, 
+                        StatusRepository statusRepository, 
+                        WeekRepository weekRepository) {
         this.logRepository = logRepository;
         this.weekRepository = weekRepository;
+        this.logStatusRepository = logStatusRepository;
+        this.statusRepository = statusRepository;
     }
 
     @Override
@@ -73,6 +84,22 @@ public class LogServiceImpl implements LogService {
         return logRepository.findFilteredLogs(userId, weekId, companyId).stream()
             .map(this::convertToDto)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void updateStatus(Long logId, Long statusId) {
+        if (logId == null || statusId == null) {
+            throw new IllegalArgumentException("Log and Status ID must not be null");
+        }
+        Log log = logRepository.findById(logId).get();
+        Status status = statusRepository.findById(statusId).get();
+
+        LogStatus logStatus = new LogStatus();
+        logStatus.setLog(log);
+        logStatus.setStatus(status);
+
+        logStatusRepository.save(logStatus);
     }
 
     @Override

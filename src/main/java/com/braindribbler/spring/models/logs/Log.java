@@ -6,9 +6,11 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.braindribbler.spring.models.companies.Company;
+import com.braindribbler.spring.models.logs.status.LogStatus;
 import com.braindribbler.spring.models.users.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -86,6 +88,9 @@ public class Log{
 	@JsonBackReference
 	private Company company;
 
+	@OneToOne(mappedBy="log", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private LogStatus logStatus;
+
 	public Long getLogId() { return logId; }
 	public void setLogId(Long logId) { this.logId = logId; }
 	public LocalDateTime getCreatedDate() { return createdDate; }
@@ -124,4 +129,7 @@ public class Log{
 	public void setCompanyId(Long companyId) { this.companyId = companyId; }
 	public Company getCompany() { return company; }
 	public void setCompany(Company company) { this.company = company; }
+
+    public LogStatus getLogStatus() { return logStatus; }
+    public void setLogStatus(LogStatus logStatus) { this.logStatus = logStatus; }
 }
