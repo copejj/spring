@@ -48,6 +48,7 @@
                         <th>Action Date</th>
                         <th>Company Name</th>
                         <th>Title</th>
+                        <th>Current Status</th>
                         <th>Job Number</th>
                     </tr>
                 </thead>
@@ -89,6 +90,7 @@
                             <span th:text="${log.companyName}"></span>
                         </td>
                         <td th:text="${log.title}"></td>
+                        <td th:text="${log.logStatuses != null && !log.logStatuses.isEmpty() ? log.logStatuses[0].status : ''}"></td>
                         <td th:text="${log.jobNumber}"></td>
                     </tr>
                 </tbody>
