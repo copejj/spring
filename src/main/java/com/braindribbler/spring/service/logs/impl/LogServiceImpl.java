@@ -133,6 +133,11 @@ public class LogServiceImpl implements LogService {
         log.setWeekId(week.getWeekId());
 
         Log saved = logRepository.save(log);
+
+        if (form.getStatusId() != null) {
+            updateStatus(saved.getLogId(), form.getStatusId());
+        }
+
         return saved.getLogId();
     }
 

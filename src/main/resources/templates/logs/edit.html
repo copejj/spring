@@ -81,7 +81,7 @@
                 <div class="row g-3 mb-4">
                     <div class="col-6">
                         <label for="notes" class="form-label">Job Status</label>
-                        <select class="form-select">
+                        <select th:field="*{statusId}" class="form-select">
                             <option value="" selected>-- Select Status --</option>
                             <option th:each="status : ${statuses}" 
                                     th:value="${status.statusId}" 

@@ -32,6 +32,7 @@ public class LogForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate actionDate = LocalDate.now();
 
+	private Long statusId;
 	private List<LogStatusDTO> logStatuses;
 
 	public Long getLogId() { return logId; }
@@ -58,6 +59,8 @@ public class LogForm {
 	public void setCompanyId(Long companyId) { this.companyId = companyId; }
 	public LocalDate getActionDate() { return actionDate; }
 	public void setActionDate(LocalDate actionDate) { this.actionDate = actionDate; }
+	public Long getStatusId() { return statusId; }
+	public void setStatusId(Long statusId) { this.statusId = statusId; }
 	public List<LogStatusDTO> getLogStatuses() { return logStatuses; }
 	public void setLogStatuses(List<LogStatusDTO> logStatuses) { this.logStatuses = logStatuses; }
 }
