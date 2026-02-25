@@ -1,10 +1,9 @@
-package com.braindribbler.spring.models.logs.status;
+package com.braindribbler.spring.models.logs;
 
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.braindribbler.spring.models.logs.Log;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -15,7 +14,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -30,8 +28,8 @@ public class LogStatus {
 	@Column(name="status_date", nullable=false, updatable=false)
 	private LocalDateTime statusDate;
 
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="job_log_id", unique=true)
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="job_log_id")
 	@JsonBackReference
 	private Log log;
 

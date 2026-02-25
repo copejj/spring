@@ -10,15 +10,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.braindribbler.spring.dto.logs.LogDTO;
+import com.braindribbler.spring.dto.logs.LogStatusDTO;
 import com.braindribbler.spring.forms.logs.LogForm;
 import com.braindribbler.spring.models.logs.Log;
+import com.braindribbler.spring.models.logs.LogStatus;
+import com.braindribbler.spring.models.logs.Status;
 import com.braindribbler.spring.models.logs.Week;
-import com.braindribbler.spring.models.logs.status.LogStatus;
-import com.braindribbler.spring.models.logs.status.Status;
 import com.braindribbler.spring.repositories.logs.LogRepository;
+import com.braindribbler.spring.repositories.logs.LogStatusRepository;
+import com.braindribbler.spring.repositories.logs.StatusRepository;
 import com.braindribbler.spring.repositories.logs.WeekRepository;
-import com.braindribbler.spring.repositories.logs.status.LogStatusRepository;
-import com.braindribbler.spring.repositories.logs.status.StatusRepository;
 import com.braindribbler.spring.service.logs.LogService;
 
 @Service
@@ -147,6 +148,17 @@ public class LogServiceImpl implements LogService {
     }
 
     private LogDTO convertToDto(Log log) {
+        List<LogStatusDTO> statusDtos = null;
+        if (log.getLogStatuses() != null) {
+            statusDtos = log.getLogStatuses().stream()
+                .map(status -> new LogStatusDTO(
+                    status.getLogStatusId(),
+                    status.getStatusDate(),
+                    status.getStatus() != null ? status.getStatus().getStatus() : null
+                )) 
+                .toList();
+        }
+
         return new LogDTO(
             log.getLogId(),
             log.getCreatedDate(),
@@ -165,7 +177,8 @@ public class LogServiceImpl implements LogService {
             log.getActionDate(),
             log.getWeekId(),
             log.getWeek() != null ? log.getWeek().getStartDate() : null,
-            log.getWeek() != null ? log.getWeek().getEndDate() : null
+            log.getWeek() != null ? log.getWeek().getEndDate() : null,
+            statusDtos
         );
     }
 

@@ -79,6 +79,23 @@
                 </div>
 
                 <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <label for="notes" class="form-label">Job Status</label>
+                        <select class="form-select">
+                            <option value="" selected>-- Select Status --</option>
+                            <option th:each="status : ${statuses}" 
+                                    th:value="${status.statusId}" 
+                                    th:text="${status.status}"></option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="status" class="form-label">Current Status</label>
+                        <input type="text" class="form-control" th:value="${log.status}" readonly />
+                    </div>
+                </div>
+
+
+                <div class="row g-3 mb-4">
                     <div class="col-12">
                         <label for="notes" class="form-label">Job Description</label>
                         <textarea th:field="*{description}" class="form-control" rows="4" placeholder="Enter job description here..."></textarea>

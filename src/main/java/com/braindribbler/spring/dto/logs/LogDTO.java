@@ -2,6 +2,7 @@ package com.braindribbler.spring.dto.logs;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -34,5 +35,6 @@ public record LogDTO (
 	LocalDate actionDate,
 	Long weekId,
 	LocalDate startDate,
-	LocalDate endDate
+	LocalDate endDate,
+	List<LogStatusDTO> logStatuses
 ) { }

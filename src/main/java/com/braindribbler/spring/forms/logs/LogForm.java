@@ -1,8 +1,11 @@
 package com.braindribbler.spring.forms.logs;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.braindribbler.spring.dto.logs.LogStatusDTO;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,6 +32,8 @@ public class LogForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate actionDate = LocalDate.now();
 
+	private List<LogStatusDTO> logStatuses;
+
 	public Long getLogId() { return logId; }
 	public void setLogId(Long logId) { this.logId = logId; }
 	public String getTitle() { return title; }
@@ -53,4 +58,6 @@ public class LogForm {
 	public void setCompanyId(Long companyId) { this.companyId = companyId; }
 	public LocalDate getActionDate() { return actionDate; }
 	public void setActionDate(LocalDate actionDate) { this.actionDate = actionDate; }
+	public List<LogStatusDTO> getLogStatuses() { return logStatuses; }
+	public void setLogStatuses(List<LogStatusDTO> logStatuses) { this.logStatuses = logStatuses; }
 }

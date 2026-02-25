@@ -1,10 +1,13 @@
-package com.braindribbler.spring.models.logs.status;
+package com.braindribbler.spring.models.logs;
+
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,10 +22,15 @@ public class Status {
 	
 	private Integer order;
 
+	@OneToMany(mappedBy = "status")
+	private List<LogStatus> logStatuses;
+
 	public Long getStatusId() { return statusId; }
 	public void setStatusId(Long statusId) { this.statusId = statusId; }
 	public String getStatus() { return status; }
 	public void setStatus(String status) { this.status = status; }
 	public Integer getOrder() { return order; }
 	public void setOrder(Integer order) { this.order = order; }
+    public List<LogStatus> getLogStatuses() { return logStatuses; }
+    public void setLogStatuses(List<LogStatus> logStatuses) { this.logStatuses = logStatuses; }
 }
