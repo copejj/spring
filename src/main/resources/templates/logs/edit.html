@@ -92,7 +92,7 @@
                         <label for="status" class="form-label">Current Status</label>
                             <div class="input-group">
                             <input type="text" class="form-control bg-light" 
-                                th:value="${log.logStatuses != null && !log.logStatuses.isEmpty() ? log.logStatuses[log.logStatuses.size() - 1].status : 'N/A'}" 
+                                th:value="${log.logStatuses != null && !log.logStatuses.isEmpty() ? log.logStatuses[0].status : 'N/A'}" 
                                 readonly />
                             <button class="btn btn-outline-secondary" type="button" 
                                     data-bs-toggle="modal" data-bs-target="#statusHistoryModal"
