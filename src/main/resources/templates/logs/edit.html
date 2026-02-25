@@ -79,6 +79,32 @@
                 </div>
 
                 <div class="row g-3 mb-4">
+                    <div class="col-6">
+                        <label for="notes" class="form-label">Job Status</label>
+                        <select th:field="*{statusId}" class="form-select">
+                            <option value="" selected>-- Select Status --</option>
+                            <option th:each="status : ${statuses}" 
+                                    th:value="${status.statusId}" 
+                                    th:text="${status.status}"></option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="status" class="form-label">Current Status</label>
+                            <div class="input-group">
+                            <input type="text" class="form-control bg-light" 
+                                th:value="${log.logStatuses != null && !log.logStatuses.isEmpty() ? log.logStatuses[0].status : 'N/A'}" 
+                                readonly />
+                            <button class="btn btn-outline-secondary" type="button" 
+                                    data-bs-toggle="modal" data-bs-target="#statusHistoryModal"
+                                    th:disabled="${log.logStatuses == null || log.logStatuses.isEmpty()}">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row g-3 mb-4">
                     <div class="col-12">
                         <label for="notes" class="form-label">Job Description</label>
                         <textarea th:field="*{description}" class="form-control" rows="4" placeholder="Enter job description here..."></textarea>
@@ -94,6 +120,39 @@
 
                 <div th:replace="~{fragments/forms :: submit-save-cancel(cancelUrl='/logs/list')}"></div>
             </form>
+            <div class="modal fade" id="statusHistoryModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="historyModalLabel">Status History</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="hist : ${log.logStatuses}">
+                                            <td th:text="${#temporals.format(hist.statusDate, 'yyyy-MM-dd HH:mm')}">Date</td>
+                                            <td>
+                                                <span class="badge bg-info text-dark" th:text="${hist.status}">Status</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 	</body>
 </html>

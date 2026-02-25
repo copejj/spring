@@ -10,10 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.braindribbler.spring.dto.logs.LogDTO;
+import com.braindribbler.spring.dto.logs.LogStatusDTO;
 import com.braindribbler.spring.forms.logs.LogForm;
 import com.braindribbler.spring.models.logs.Log;
+import com.braindribbler.spring.models.logs.LogStatus;
+import com.braindribbler.spring.models.logs.Status;
 import com.braindribbler.spring.models.logs.Week;
 import com.braindribbler.spring.repositories.logs.LogRepository;
+import com.braindribbler.spring.repositories.logs.LogStatusRepository;
+import com.braindribbler.spring.repositories.logs.StatusRepository;
 import com.braindribbler.spring.repositories.logs.WeekRepository;
 import com.braindribbler.spring.service.logs.LogService;
 
@@ -21,11 +26,18 @@ import com.braindribbler.spring.service.logs.LogService;
 public class LogServiceImpl implements LogService {
 
     private final LogRepository logRepository;
+    private final LogStatusRepository logStatusRepository;
+    private final StatusRepository statusRepository;
     private final WeekRepository weekRepository;
 
-    public LogServiceImpl(LogRepository logRepository, WeekRepository weekRepository) {
+    public LogServiceImpl(LogRepository logRepository, 
+                        LogStatusRepository logStatusRepository, 
+                        StatusRepository statusRepository, 
+                        WeekRepository weekRepository) {
         this.logRepository = logRepository;
         this.weekRepository = weekRepository;
+        this.logStatusRepository = logStatusRepository;
+        this.statusRepository = statusRepository;
     }
 
     @Override
@@ -77,6 +89,22 @@ public class LogServiceImpl implements LogService {
 
     @Override
     @Transactional
+    public void updateStatus(Long logId, Long statusId) {
+        if (logId == null || statusId == null) {
+            throw new IllegalArgumentException("Log and Status ID must not be null");
+        }
+        Log log = logRepository.findById(logId).get();
+        Status status = statusRepository.findById(statusId).get();
+
+        LogStatus logStatus = new LogStatus();
+        logStatus.setLog(log);
+        logStatus.setStatus(status);
+
+        logStatusRepository.save(logStatus);
+    }
+
+    @Override
+    @Transactional
     public Long saveFromForm(LogForm form, Long userId) {
         Log log;
 
@@ -105,6 +133,11 @@ public class LogServiceImpl implements LogService {
         log.setWeekId(week.getWeekId());
 
         Log saved = logRepository.save(log);
+
+        if (form.getStatusId() != null) {
+            updateStatus(saved.getLogId(), form.getStatusId());
+        }
+
         return saved.getLogId();
     }
 
@@ -120,6 +153,17 @@ public class LogServiceImpl implements LogService {
     }
 
     private LogDTO convertToDto(Log log) {
+        List<LogStatusDTO> statusDtos = null;
+        if (log.getLogStatuses() != null) {
+            statusDtos = log.getLogStatuses().stream()
+                .map(status -> new LogStatusDTO(
+                    status.getLogStatusId(),
+                    status.getStatusDate(),
+                    status.getStatus() != null ? status.getStatus().getStatus() : null
+                )) 
+                .toList();
+        }
+
         return new LogDTO(
             log.getLogId(),
             log.getCreatedDate(),
@@ -138,7 +182,8 @@ public class LogServiceImpl implements LogService {
             log.getActionDate(),
             log.getWeekId(),
             log.getWeek() != null ? log.getWeek().getStartDate() : null,
-            log.getWeek() != null ? log.getWeek().getEndDate() : null
+            log.getWeek() != null ? log.getWeek().getEndDate() : null,
+            statusDtos
         );
     }
 

@@ -11,4 +11,5 @@ public interface LogService {
 	List<LogDTO> findLogs(Long userId, Long weekId, Long companyId);
 	LogDTO getLogDtoById(Long logId);
     Long saveFromForm(LogForm logForm, Long userId);
+	void updateStatus(Long logId, Long statusId);
 }

@@ -2,13 +2,16 @@ package com.braindribbler.spring.models.logs;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.braindribbler.spring.models.companies.Company;
 import com.braindribbler.spring.models.users.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,7 +20,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity
@@ -86,6 +91,11 @@ public class Log{
 	@JsonBackReference
 	private Company company;
 
+	@OneToMany(mappedBy="log", cascade=CascadeType.ALL)	
+	@OrderBy("statusDate DESC")
+	@JsonManagedReference
+	private List<LogStatus> logStatuses;
+
 	public Long getLogId() { return logId; }
 	public void setLogId(Long logId) { this.logId = logId; }
 	public LocalDateTime getCreatedDate() { return createdDate; }
@@ -124,4 +134,7 @@ public class Log{
 	public void setCompanyId(Long companyId) { this.companyId = companyId; }
 	public Company getCompany() { return company; }
 	public void setCompany(Company company) { this.company = company; }
+
+    public List<LogStatus> getLogStatuses() { return logStatuses; }
+    public void setLogStatuses(List<LogStatus> logStatuses) { this.logStatuses = logStatuses; }
 }
