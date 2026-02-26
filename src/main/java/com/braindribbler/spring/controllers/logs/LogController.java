@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.braindribbler.spring.dto.logs.LogDTO;
 import com.braindribbler.spring.forms.logs.LogForm;
-import com.braindribbler.spring.models.logs.Status;
 import com.braindribbler.spring.security.UserDetailsImpl;
 import com.braindribbler.spring.service.companies.CompanyService;
 import com.braindribbler.spring.service.logs.LogService;
@@ -62,7 +61,6 @@ public class LogController {
         Model model) {
 
 		LogDTO dto = logService.getLogDtoById(logId);
-        List<Status> statuses = statusService.getAllStatuses();
 
         LogForm form = new LogForm();
         form.setLogId(dto.logId());
@@ -77,6 +75,8 @@ public class LogController {
         form.setContactNumber(dto.contactNumber());
         form.setCompanyId(dto.companyId());
         form.setActionDate(dto.actionDate());
+        form.setLatestStatusId(dto.latestStatusId());
+        form.setLatestStatus(dto.latestStatus());
         form.setLogStatuses(dto.logStatuses());
 
         Long userId = userDetails.getUserId();
@@ -85,7 +85,7 @@ public class LogController {
 		model.addAttribute("title", "Application Information");
 
 		model.addAttribute("log", form);
-        model.addAttribute("statuses", statuses);
+        model.addAttribute("statuses", statusService.getAllStatuses());
         model.addAttribute("companies", companyService.getAll(userId));
 
 		return "logs/edit";
