@@ -5,5 +5,6 @@ import java.time.LocalDateTime;
 public record LogStatusDTO(
 	Long logStatusId,
 	LocalDateTime statusDate,
-	String status
+	String status,
+	Long statusId
 ) { }

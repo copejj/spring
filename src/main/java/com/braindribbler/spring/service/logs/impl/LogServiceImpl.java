@@ -153,15 +153,20 @@ public class LogServiceImpl implements LogService {
     }
 
     private LogDTO convertToDto(Log log) {
+        LogStatusDTO latestStatusDto = null;
         List<LogStatusDTO> statusDtos = null;
         if (log.getLogStatuses() != null) {
             statusDtos = log.getLogStatuses().stream()
                 .map(status -> new LogStatusDTO(
                     status.getLogStatusId(),
                     status.getStatusDate(),
-                    status.getStatus() != null ? status.getStatus().getStatus() : null
+                    status.getStatus() != null ? status.getStatus().getStatus() : null,
+                    status.getStatus() != null ? status.getStatus().getStatusId() : null
                 )) 
                 .toList();
+            if (!statusDtos.isEmpty()) {
+                latestStatusDto = statusDtos.get(0); 
+            }   
         }
 
         return new LogDTO(
@@ -183,6 +188,7 @@ public class LogServiceImpl implements LogService {
             log.getWeekId(),
             log.getWeek() != null ? log.getWeek().getStartDate() : null,
             log.getWeek() != null ? log.getWeek().getEndDate() : null,
+            latestStatusDto,
             statusDtos
         );
     }

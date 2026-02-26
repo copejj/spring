@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 
 import com.braindribbler.spring.models.companies.Company;
 import com.braindribbler.spring.models.users.User;
@@ -91,10 +92,20 @@ public class Log{
 	@JsonBackReference
 	private Company company;
 
-	@OneToMany(mappedBy="log", cascade=CascadeType.ALL)	
+	@OneToMany(mappedBy="log", cascade=CascadeType.ALL, fetch=FetchType.LAZY)	
 	@OrderBy("statusDate DESC")
 	@JsonManagedReference
 	private List<LogStatus> logStatuses;
+	
+	@Formula("(select ls.status_id from job_log_statuses ls where ls.job_log_id = {alias}.job_log_id order by ls.status_date desc limit 1)")
+	private Long statusId;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "latest_status_id", referencedColumnName="status_id", insertable = false, updatable = false)
+	private LogStatus latestStatus;
+
+	public Long getStatusId() { return statusId; }
+	public LogStatus getLatestStatus() { return latestStatus; }
 
 	public Long getLogId() { return logId; }
 	public void setLogId(Long logId) { this.logId = logId; }

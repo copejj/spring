@@ -36,5 +36,6 @@ public record LogDTO (
 	Long weekId,
 	LocalDate startDate,
 	LocalDate endDate,
+	LogStatusDTO latestStatus,
 	List<LogStatusDTO> logStatuses
 ) { }

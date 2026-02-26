@@ -33,6 +33,7 @@ public class LogForm {
     private LocalDate actionDate = LocalDate.now();
 
 	private Long statusId;
+	private LogStatusDTO latestStatus;
 	private List<LogStatusDTO> logStatuses;
 
 	public Long getLogId() { return logId; }
@@ -63,4 +64,6 @@ public class LogForm {
 	public void setStatusId(Long statusId) { this.statusId = statusId; }
 	public List<LogStatusDTO> getLogStatuses() { return logStatuses; }
 	public void setLogStatuses(List<LogStatusDTO> logStatuses) { this.logStatuses = logStatuses; }
+    public LogStatusDTO getLatestStatus() { return latestStatus; }
+    public void setLatestStatus(LogStatusDTO latestStatus) { this.latestStatus = latestStatus; }
 }
