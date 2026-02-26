@@ -93,7 +93,12 @@ public class LogServiceImpl implements LogService {
         if (logId == null || statusId == null) {
             throw new IllegalArgumentException("Log and Status ID must not be null");
         }
+
         Log log = logRepository.findById(logId).get();
+        if (statusId.equals(log.getLatestStatusId())) {
+            return; // No update needed if the status is the same
+        }
+
         Status status = statusRepository.findById(statusId).get();
 
         LogStatus logStatus = new LogStatus();
@@ -134,8 +139,8 @@ public class LogServiceImpl implements LogService {
 
         Log saved = logRepository.save(log);
 
-        if (form.getStatusId() != null) {
-            updateStatus(saved.getLogId(), form.getStatusId());
+        if (form.getLatestStatusId() != null) {
+            updateStatus(saved.getLogId(), form.getLatestStatusId());
         }
 
         return saved.getLogId();
@@ -188,6 +193,7 @@ public class LogServiceImpl implements LogService {
             log.getWeekId(),
             log.getWeek() != null ? log.getWeek().getStartDate() : null,
             log.getWeek() != null ? log.getWeek().getEndDate() : null,
+            log.getLatestStatusId(),
             latestStatusDto,
             statusDtos
         );

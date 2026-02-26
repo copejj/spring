@@ -75,6 +75,7 @@ public class LogController {
         form.setContactNumber(dto.contactNumber());
         form.setCompanyId(dto.companyId());
         form.setActionDate(dto.actionDate());
+        form.setLatestStatusId(dto.latestStatusId());
         form.setLatestStatus(dto.latestStatus());
         form.setLogStatuses(dto.logStatuses());
 

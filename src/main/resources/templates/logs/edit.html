@@ -62,10 +62,18 @@
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-3">
+                        <label for="contact" class="form-label fw-bold">Job Link</label>
+                        <input th:field="*{jobLink}" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="jobNumber" class="form-label fw-bold">Job Number</label>
+                        <input th:field="*{jobNumber}" type="text" class="form-control" />
+                    </div>
+                    <div class="col-md-3">
                         <label for="notes" class="form-label fw-bold">Application Status</label>
                         <div class="input-group">
-                            <select th:field="*{statusId}" id="statusId" class="form-select">
-                                <option value="" selected>-- Select Status --</option>
+                            <select th:field="*{latestStatusId}" id="statusId" class="form-select">
+                                <option value="">-- Select Status --</option>
                                 <option th:each="status : ${statuses}" 
                                         th:value="${status.statusId}" 
                                         th:text="${status.status}"></option>
@@ -80,14 +88,6 @@
                     <div class="col-md-3">
                         <label for="nextStep" class="form-label fw-bold">Next Step</label>
                         <input th:field="*{nextStep}" type="text" class="form-control" />
-                    </div>
-                    <div class="col-md-3">
-                        <label for="contact" class="form-label fw-bold">Job Link</label>
-                        <input th:field="*{jobLink}" type="text" class="form-control" />
-                    </div>
-                    <div class="col-md-3">
-                        <label for="jobNumber" class="form-label fw-bold">Job Number</label>
-                        <input th:field="*{jobNumber}" type="text" class="form-control" />
                     </div>
                 </div>
 
