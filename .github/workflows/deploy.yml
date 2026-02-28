@@ -105,7 +105,7 @@ jobs:
                         CURRENT_STEP="DEPLOYMENT"
                         # 6. Deploy to Tomcat (Parallel Deployment)
                         echo "[Step 6/8] Deploying versioned WAR..."
-                        VERSION_NAME="ROOT##${TAG_NAME}.war"
+                        VERSION_NAME="${{ vars.PROD_DEPLOY_NAME }}##${TAG_NAME}.war"
                         BUILD_WAR="${{ vars.PROD_APP_PATH }}/target/${{ vars.PROD_APP_NAME }}.war"
 
                         # Copy to webapps. Tomcat keeps the old version running for existing users!
