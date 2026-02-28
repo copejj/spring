@@ -24,7 +24,7 @@ public class GlobalAdvice {
 	@Autowired(required = false)
     private GitProperties gitProperties;
 
-    @Value("${app.external-url}")
+    @Value("${app.api.base-url}")
     private String externalUrl;
 
     private final ConfigRepository configRepository;
