@@ -22,9 +22,10 @@ public class Config {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "config_id")
     private Long configId;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name="created_date", nullable = false, updatable = false)
     private OffsetDateTime createdDate = OffsetDateTime.now();
 
     @Column(nullable = false)

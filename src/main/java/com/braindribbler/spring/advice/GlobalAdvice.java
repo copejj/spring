@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import com.braindribbler.spring.enums.admin.ConfigEnvironment;
 import com.braindribbler.spring.models.admin.Config;
 import com.braindribbler.spring.repositories.admin.ConfigRepository;
+import com.braindribbler.spring.service.admin.LabelService;
 
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -28,13 +29,15 @@ public class GlobalAdvice {
     private String externalUrl;
 
     private final ConfigRepository configRepository;
+    private final LabelService labelService;
 
     @Value("${app.config.environment}")
     private ConfigEnvironment currentEnv;
 
-    public GlobalAdvice(ConfigRepository configRepository)
+    public GlobalAdvice(ConfigRepository configRepository, LabelService labelService)
     {
         this.configRepository = configRepository;
+        this.labelService = labelService;
     }
 
     @ModelAttribute("appSettings")
@@ -57,6 +60,11 @@ public class GlobalAdvice {
             .forEach(c -> settings.put(c.getName(), c.getValue()));
 
         return settings;
+    }
+
+    @ModelAttribute("labels")
+    public Map<String, String> addLabelsToModel() {
+        return labelService.getAllLabelsAsMap();
     }
 
     @ModelAttribute
