@@ -62,7 +62,7 @@ public class GlobalAdvice {
         return settings;
     }
 
-    @ModelAttribute("labels")
+    @ModelAttribute("labelSettings")
     public Map<String, String> addLabelsToModel() {
         return labelService.getAllLabelsAsMap();
     }

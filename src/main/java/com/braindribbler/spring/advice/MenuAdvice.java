@@ -37,6 +37,7 @@ public class MenuAdvice {
                 MenuItem adminMenu = new MenuItem("/admin", "Admin");
                 adminMenu.addChild(new MenuItem("/admin/config", "Config"));
                 adminMenu.addChild(new MenuItem("/admin/invite", "Invites"));
+                adminMenu.addChild(new MenuItem("/admin/labels", "Labels"));
                 adminMenu.addChild(new MenuItem("/admin/migrations", "Migrations"));
                 adminMenu.addChild(new MenuItem("/admin/users", "Users"));
                 list.add(adminMenu);

@@ -41,9 +41,9 @@
 			<thead>
 				<tr>
 					<th sec:authorize="hasRole('ADMIN')"></th>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th>Email</th>
+					<th th:text="${labelSettings['first_name']}">first name</th>
+					<th th:text="${labelSettings['last_name']}">last name</th>
+					<th th:text="${labelSettings['user_email']}">email</th>
 				</tr>
 			</thead>
 			<tbody>
