@@ -12,7 +12,7 @@
 						<input class="form-check-input" type="checkbox" 
 							id="isAdmin" name="isAdmin" 
 							th:checked="${userDto.isAdmin}" />
-						<label class="form-check-label" for="isAdmin">System Administrator</label>
+						<label class="form-check-label" for="isAdmin" th:text="${labelSettings['is_admin']}">system administrator</label>
 					</div>
 				</div>
 				
@@ -22,7 +22,7 @@
 						<input class="form-check-input" type="checkbox" 
 							id="canEdit" name="canEdit" 
 							th:checked="${userDto.canEdit}" />
-						<label class="form-check-label" for="canEdit">Can Edit Content</label>
+						<label class="form-check-label" for="canEdit" th:text="${labelSettings['can_edit']}">can edit content</label>
 					</div>
 				</div>
 				
@@ -32,7 +32,7 @@
 						<input class="form-check-input" type="checkbox" 
 							id="isActive" name="isActive" 
 							th:checked="${userDto.isActive}" />
-						<label class="form-check-label" for="canEdit">Active Account</label>
+						<label class="form-check-label" for="isActive" th:text="${labelSettings['is_active']}">active account</label>
 					</div>
 				</div>
 			</div>
