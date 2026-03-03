@@ -32,11 +32,11 @@
                                     title="Filter by this company">
                                     <i class="fa-solid fa-filter"></i>
                                 </a>
-                                <span th:text="${company.logCount}">0</span> Apps
+                                <span th:text="${company.logCount}">0</span> <span th:text="${labelSettings['apps']}">apps</span>
                             </div>
                             <div th:unless="${company.logCount > 0}">
                                 <i class="fa-solid fa-filter text-muted"></i>
-                                <span class="text-muted">0</span> Apps 
+                                <span class="text-muted">0</span> <span th:text="${labelSettings['apps']}">apps</span>
                             </div>
                         </td>
                         <td th:text="${company.companyName}"></td>

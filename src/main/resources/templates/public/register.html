@@ -10,7 +10,7 @@
 						</div>
 						<div class="card-body" th:object="${registrationForm}">
 							<p>Welcome, <strong th:text="*{firstName + ' ' + lastName}">User</strong>!</p>
-							<p class="text-muted">Please set a password for your account (<strong>[[*{email}]]</strong>).</p>
+							<p class="text-muted">Please set a username and password for your account (<strong>[[*{email}]]</strong>).</p>
 
 							<form th:action="@{/join/complete}" th:object="${registrationForm}" method="post">
 								<input type="hidden" th:field="*{key}">
@@ -18,31 +18,31 @@
 
 								<div class="row mb-3">
 									<div class="col">
-										<label class="form-label">First Name</label>
+										<label class="form-label" th:text="${labelSettings['first_name']}">First Name</label>
 										<input type="text" th:field="*{firstName}" class="form-control" readonly>
 									</div>
 									<div class="col">
-										<label class="form-label">Last Name</label>
+										<label class="form-label" th:text="${labelSettings['last_name']}">Last Name</label>
 										<input type="text" th:field="*{lastName}" class="form-control" readonly>
 									</div>
 								</div>
 
 								<div class="mb-3">
-									<label class="form-label">User Name</label>
+									<label class="form-label" th:text="${labelSettings['username']}">User Name</label>
 									<input type="text" th:field="*{userName}" 
 										th:classappend="${#fields.hasErrors('userName')} ? 'is-invalid' : ''" class="form-control">
 									<div class="invalid-feedback" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></div>
 								</div>
 
 								<div class="mb-3">
-									<label class="form-label">Password</label>
+									<label class="form-label" th:text="${labelSettings['password']}">Password</label>
 									<input type="password" th:field="*{password}" 
 										th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''" class="form-control">
 									<div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 								</div>
 
 								<div class="mb-3">
-									<label class="form-label">Confirm Password</label>
+									<label class="form-label" th:text="${labelSettings['confirm_password']}">Confirm Password</label>
 									<input type="password" th:field="*{confirmPassword}" 
 										th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid' : ''" class="form-control">
 									<div class="invalid-feedback" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
