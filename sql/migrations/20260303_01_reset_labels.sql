@@ -1,4 +1,4 @@
-TRUNcATE TABLE public.labels RESTART IDENTITY CASCADE;
+TRUNCATE TABLE public.labels RESTART IDENTITY;
 INSERT INTO public.labels VALUES (5, '2025-08-26 09:44:56.490007-06', 'title', 'Job Title', NULL);
 INSERT INTO public.labels VALUES (6, '2025-08-26 09:44:56.490007-06', 'job_number', 'Job Number', NULL);
 INSERT INTO public.labels VALUES (12, '2025-08-26 09:48:12.497242-06', 'city', 'City', NULL);
