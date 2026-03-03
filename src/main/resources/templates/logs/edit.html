@@ -17,7 +17,7 @@
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Company</label>
+                        <label class="form-label fw-bold" th:text="${labelSettings['company_name']}">company</label>
                         <select th:field="*{companyId}" 
                                 class="form-select"
                                 th:classappend="${#fields.hasErrors('companyId')} ? 'is-invalid' : ''">
@@ -29,7 +29,7 @@
                         <div class="invalid-feedback" th:errors="*{companyId}"></div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Job Title</label>
+                        <label class="form-label fw-bold" th:text="${labelSettings['title']}">job title</label>
                         <input type="text" th:field="*{title}" 
                             class="form-control" 
                             th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''" 
@@ -37,7 +37,7 @@
                         <div class="invalid-feedback" th:errors="*{title}"></div>
                     </div>
                     <div class="col-md-4">
-                        <label class="form-label fw-bold">Action Date</label>
+                        <label class="form-label fw-bold" th:text="${labelSettings['action_date']}">action date</label>
                         <input type="date" th:field="*{actionDate}" 
                             class="form-control" 
                             th:classappend="${#fields.hasErrors('actionDate')} ? 'is-invalid' : ''" />
@@ -47,30 +47,30 @@
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-4">
-                        <label for="contact" class="form-label fw-bold">Contact Name</label>
+                        <label for="contact" class="form-label fw-bold" th:text="${labelSettings['contact']}">contact name</label>
                         <input th:field="*{contact}" type="text" class="form-control" />
                     </div>
                     <div class="col-md-4">
-                        <label for="contactNumber" class="form-label fw-bold">Contact Number</label>
+                        <label for="contactNumber" class="form-label fw-bold" th:text="${labelSettings['contact_number']}">contact number</label>
                         <input th:field="*{contactNumber}" type="text" class="form-control" />
                     </div>
                     <div class="col-md-4">
-                        <label for="confirmation" class="form-label fw-bold">Confirmation</label>
+                        <label for="confirmation" class="form-label fw-bold" th:text="${labelSettings['confirmation']}">confirmation</label>
                         <input th:field="*{confirmation}" type="text" class="form-control" />
                     </div>
                 </div>
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-3">
-                        <label for="contact" class="form-label fw-bold">Job Link</label>
+                        <label for="contact" class="form-label fw-bold" th:text="${labelSettings['job_link']}">job link</label>
                         <input th:field="*{jobLink}" type="text" class="form-control" />
                     </div>
                     <div class="col-md-3">
-                        <label for="jobNumber" class="form-label fw-bold">Job Number</label>
+                        <label for="jobNumber" class="form-label fw-bold" th:text="${labelSettings['job_number']}">Job Number</label>
                         <input th:field="*{jobNumber}" type="text" class="form-control" />
                     </div>
                     <div class="col-md-3">
-                        <label for="notes" class="form-label fw-bold">Application Status</label>
+                        <label for="notes" class="form-label fw-bold" th:text="${labelSettings['status']}">application status</label>
                         <div class="input-group">
                             <select th:field="*{latestStatusId}" id="statusId" class="form-select">
                                 <option value="">-- Select Status --</option>
@@ -86,18 +86,18 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="nextStep" class="form-label fw-bold">Next Step</label>
+                        <label for="nextStep" class="form-label fw-bold" th:text="${labelSettings['next_step']}">next step</label>
                         <input th:field="*{nextStep}" type="text" class="form-control" />
                     </div>
                 </div>
 
                 <div class="row g-3 mb-4">
                     <div class="col-8">
-                        <label for="notes" class="form-label fw-bold">Job Description</label>
+                        <label for="notes" class="form-label fw-bold" th:text="${labelSettings['description']}">job description</label>
                         <textarea th:field="*{description}" class="form-control" rows="10" placeholder="Enter job description here..."></textarea>
                     </div>
                     <div class="col-4">
-                        <label for="notes" class="form-label fw-bold">Notes</label>
+                        <label for="notes" class="form-label fw-bold" th:text="${labelSettings['notes']}">notes</label>
                         <textarea th:field="*{notes}" class="form-control" rows="10" placeholder="Enter additional notes here..."></textarea>
                     </div>
                 </div>
@@ -108,10 +108,9 @@
             <div class="modal fade" id="statusHistoryModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
                     <div class="modal-content border-0 shadow">
-                        
                         <div class="modal-header bg-light py-3">
                             <h5 class="modal-title fw-bold text-dark" id="historyModalLabel">
-                                <i class="bi bi-clock-history me-2"></i>Status History 
+                                <i class="bi bi-clock-history me-2"></i><span th:text="${labelSettings['status_history']}">Status History</span>
                             </h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
@@ -121,22 +120,14 @@
                                 <table class="table table-sm table-hover align-middle">
                                     <thead class="table-light">
                                         <tr>
-                                            <th class="text-center" style="width: 40%;">Date</th>
-                                            <th class="text-center" style="width: 60%;">Status</th>
+                                            <th class="text-center" style="width: 40%;" th:text="${labelSettings['date']}">Date</th>
+                                            <th class="text-center" style="width: 60%;" th:text="${labelSettings['status']}">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr th:each="hist : ${log.logStatuses}">
-                                            <td class="text-center text-nowrap" 
-                                                th:text="${#temporals.format(hist.statusDate, 'yyyy-MM-dd HH:mm')}">
-                                                2023-10-27 14:30
-                                            </td>
-                                            <td class="text-center">
-                                                <span class="badge bg-opacity-10 text-dark border border-info d-inline-block px-4 py-2" 
-                                                    th:text="${hist.status}">
-                                                    Status
-                                                </span>
-                                            </td>
+                                            <td class="text-center text-nowrap" th:text="${#temporals.format(hist.statusDate, 'yyyy-MM-dd HH:mm')}"> </td>
+                                            <td class="text-center"> <span class="badge bg-opacity-10 text-dark border border-info d-inline-block px-4 py-2" th:text="${hist.status}"> </span></td>
                                         </tr>
                                     </tbody>
                                 </table>

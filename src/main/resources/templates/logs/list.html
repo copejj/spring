@@ -44,12 +44,12 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Week</th>
-                        <th>Action Date</th>
-                        <th>Company Name</th>
-                        <th>Title</th>
-                        <th>Current Status</th>
-                        <th>Job Number</th>
+                        <th th:text="${labelSettings['week_id']}">week</th>
+                        <th th:text="${labelSettings['action_date']}">action date</th>
+                        <th th:text="${labelSettings['company_name']}">company name</th>
+                        <th th:text="${labelSettings['title']}">title</th>
+                        <th th:text="${labelSettings['current_status']}">current status</th>
+                        <th th:text="${labelSettings['job_number']}">job number</th>
                     </tr>
                 </thead>
                 <tbody>

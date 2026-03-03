@@ -7,11 +7,11 @@
 			<table id="userTable" class="datatables table table-striped table-hover stripe" style="width:100%;display:none;">
 				<thead>
 					<tr>
-						<th>Started Date</th>
-						<th>Ended Date</th>
-						<th>File Name</th>
-						<th>Status</th>
-						<th>Error Message</th>
+						<th th:text="${labelSettings['start_date']}">started date</th>
+						<th th:text="${labelSettings['end_date']}">ended date</th>
+						<th th:text="${labelSettings['file_name']}">file name</th>
+						<th th:text="${labelSettings['status']}">status</th>
+						<th th:text="${labelSettings['error_message']}">error message</th>
 					</tr>
 				</thead>
 				<tbody>

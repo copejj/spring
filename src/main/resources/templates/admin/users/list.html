@@ -8,14 +8,14 @@
             <table id="userTable" class="datatables table table-striped table-hover stripe" style="display:none;">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>User Name</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Is Admin?</th>
-                        <th>Can Edit?</th>
-                        <th>Inactive Date</th>
+                        <th th:text="${labelSettings['edit_col']}">edit</th>
+                        <th th:text="${labelSettings['username']}">user name</th>
+                        <th th:text="${labelSettings['first_name']}">first name</th>
+                        <th th:text="${labelSettings['last_name']}">last name</th>
+                        <th th:text="${labelSettings['user_email']}">email</th>
+                        <th th:text="${labelSettings['is_admin']}">is admin?</th>
+                        <th th:text="${labelSettings['can_edit']}">can edit?</th>
+                        <th th:text="${labelSettings['inactive_date']}">inactive date</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -7,9 +7,9 @@
             <table id="weeksTable" class="datatables table table-striped table-hover stripe" style="display:none;">
                 <thead>
                     <tr>
-                        <th># Apps</th>
-                        <th>Week Start</th>
-                        <th>Week End</th>
+                        <th th:text="${labelSettings['apps_count']}"># apps</th>
+                        <th th:text="${labelSettings['start_date']}">week start</th>
+                        <th th:text="${labelSettings['end_date']}">week end</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -22,10 +22,10 @@
                                     title="Filter by this company">
                                     <i class="fa-solid fa-filter"></i>
                                 </a>
-                                <span th:text="${week.logCounts}">0</span> Apps
+                                <span th:text="${week.logCounts}">0</span> <span th:text="${labelSettings['apps']}">apps</span>
                             </div>
                             <div th:unless="${week.logCounts > 0}">
-                                <span class="text-muted">0</span> Apps
+                                <span class="text-muted">0</span> <span th:text="${labelSettings['apps']}">apps</span>
                             </div>
                         </td>
                         <td th:text="${week.startDate}" ></td>

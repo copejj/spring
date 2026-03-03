@@ -32,9 +32,9 @@
 			<thead>
 				<tr>
 					<th sec:authorize="hasRole('ADMIN')"></th>
-					<th>Env.</th>
-					<th>Name</th>
-					<th>Value</th>
+					<th th:text="${labelSettings['config_env']}">env.</th>
+					<th th:text="${labelSettings['config_name']}">name</th>
+					<th th:text="${labelSettings['config_value']}">value</th>
 				</tr>
 			</thead>
 			<tbody>

@@ -13,24 +13,24 @@
                 <!-- Row 1: User Info -->
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label for="userName" class="form-label">User Name</label>
+                        <label for="userName" class="form-label" th:text="${labelSettings['username']}">user name</label>
                         <input th:field="*{userName}" type="text" class="form-control bg-light" readonly />
                     </div>
 
                     <div class="col-md-6">
-                        <label for="email" class="form-label">User Email</label>
+                        <label for="email" class="form-label" th:text="${labelSettings['user_email']}">user email</label>
                         <input th:field="*{email}" type="text" class="form-control" />
                     </div>
 
                     <input th:field="*{userId}" type="hidden" />
                     
                     <div class="col-md-6">
-                        <label for="firstName" class="form-label">First Name</label>
+                        <label for="firstName" class="form-label" th:text="${labelSettings['first_name']}">first name</label>
                         <input th:field="*{firstName}" type="text" class="form-control" />
                     </div>
                     
                     <div class="col-md-6">
-                        <label for="lastName" class="form-label">Last Name</label>
+                        <label for="lastName" class="form-label" th:text="${labelSettings['last_name']}">last name</label>
                         <input th:field="*{lastName}" type="text" class="form-control" />
                     </div>
                 </div>
@@ -39,12 +39,12 @@
                 <hr class="my-4">
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
-                        <label for="password" class="form-label">Change Password</label>
+                        <label for="password" class="form-label" th:text="${labelSettings['change_password']}">change password</label>
                         <input th:field="*{passwordData.newPassword}" type="password" class="form-control" placeholder="Leave blank to keep current" />
                     </div>
                     
                     <div class="col-md-6">
-                        <label for="confirmPassword" class="form-label">Confirm Change</label>
+                        <label for="confirmPassword" class="form-label" th:text="${labelSettings['confirm_password']}">confirm change</label>
                         <input th:field="*{passwordData.confirmPassword}" type="password" class="form-control" placeholder="Confirm new password" />
                     </div>
                 </div>

@@ -24,13 +24,13 @@
                         <div class="card-body p-4">
                             <form th:action="@{/login}" method="post">
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">User Name</label>
+                                    <label for="username" class="form-label" th:text="${labelSettings['username']}">user name</label>
                                     <input id="username" name="username" type="text" 
                                         class="form-control" required autofocus />
                                 </div>
                                 
                                 <div class="mb-4">
-                                    <label for="password" class="form-label">Password</label>
+                                    <label for="password" class="form-label" th:text="${labelSettings['password']}">password</label>
                                     <input id="password" name="password" type="password" 
                                         class="form-control" required />
                                 </div>

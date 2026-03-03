@@ -17,19 +17,19 @@
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-4">
-                        <label th:for="companyName" class="form-label">Company Name</label>
+                        <label th:for="companyName" class="form-label" th:text="${labelSettings['company_name']}">company name</label>
                         <input th:field="*{companyName}" type="text" 
                             class="form-control" th:classappend="${#fields.hasErrors('companyName')} ? 'is-invalid' : ''" />
                         <div th:if="${#fields.hasErrors('companyName')}" th:errors="*{companyName}" class="invalid-feedback"></div>
                     </div>
 
                     <div class="col-md-4">
-                        <label th:for="companyEmail" class="form-label">Company Email</label>
+                        <label th:for="companyEmail" class="form-label" th:text="${labelSettings['email']}">company email</label>
                         <input th:field="*{companyEmail}" type="email" class="form-control" />
                     </div>
 
                     <div class="col-md-4">
-                        <label th:for="companyWebsite" class="form-label">Company Website</label>
+                        <label th:for="companyWebsite" class="form-label" th:text="${labelSettings['website']}">company website</label>
                         <div class="input-group">
                             <input th:field="*{companyWebsite}" type="text" class="form-control" placeholder="https://..." />
                             <a th:if="*{companyId != null}" th:href="*{companyWebsite}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-secondary" title="Visit Site">
@@ -41,11 +41,11 @@
 
                 <div class="row g-3 mb-4">
                     <div class="col-md-4">
-                        <label th:for="companyPhone" class="form-label">Company Phone</label>
+                        <label th:for="companyPhone" class="form-label" th:text="${labelSettings['phone']}">company phone</label>
                         <input th:field="*{companyPhone}" type="text" class="form-control" />
                     </div>
                     <div class="col-md-4">
-                        <label th:for="companyFax" class="form-label">Company Fax</label>
+                        <label th:for="companyFax" class="form-label" th:text="${labelSettings['fax']}">company fax</label>
                         <input th:field="*{companyFax}" type="text" class="form-control" />
                     </div>
                 </div>

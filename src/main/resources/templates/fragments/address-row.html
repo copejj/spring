@@ -1,56 +1,53 @@
 <div th:fragment="addressForm(index)" class="address-row border-bottom pb-4 mb-4">
     <!-- Header with dynamic display number -->
-    <h5 class="mb-3">
-        Address #<span class="address-number" 
-                      th:text="${index != null ? index + 1 : 'INDEX_DISPLAY_VAR'}">1</span>
+    <h5 class="mb-3">Address #<span class="address-number" 
+            th:text="${index != null ? index + 1 : 'INDEX_DISPLAY_VAR'}">1</span>
     </h5>
 
-    <!-- Hidden ID field -->
     <input type="hidden" 
-          th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].addressId|" 
-          th:value="${index != null ? company.addresses[index].addressId : ''}" />
+        th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].addressId|" 
+        th:value="${index != null ? company.addresses[index].addressId : ''}" />
 
-    <!-- Row 1: Type, Street, Suite -->
     <div class="row g-3 mb-2">
         <div class="col-md-3">
-            <label class="form-label">Type</label>
+            <label class="form-label" th:text="${labelSettings['address_type']}">type</label>
             <select th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].type|" class="form-select">
                 <option value="">[ Type ]</option>
                 <option th:each="t : ${allAddressTypes}" 
-                        th:value="${t.name}" 
-                        th:text="${t.name}"
-                        th:selected="${index != null && company.addresses[index].type == t.name}">
+                    th:value="${t.name}" 
+                    th:text="${t.name}"
+                    th:selected="${index != null && company.addresses[index].type == t.name}">
                 </option>
             </select>
         </div>
         <div class="col-md-6">
-            <label class="form-label">Street</label>
+            <label class="form-label" th:text="${labelSettings['street']}">Street</label>
             <input type="text" class="form-control"
-                  th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].street|"
-                  th:value="${index != null ? company.addresses[index].street : ''}"
-                  th:attr="autocomplete=${index != null ? 'section-' + index : 'section-INDEX_VAR'} + ' address-line1'"
-                  oninput="parse_address(this)" />
+                th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].street|"
+                th:value="${index != null ? company.addresses[index].street : ''}"
+                th:attr="autocomplete=${index != null ? 'section-' + index : 'section-INDEX_VAR'} + ' address-line1'"
+                oninput="parse_address(this)" />
         </div>
         <div class="col-md-3">
-            <label class="form-label">Suite/Apt</label>
+            <label class="form-label" th:text="${labelSettings['suite_apt']}">Suite/Apt</label>
             <input type="text" class="form-control"
-                  th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].streetExt|"
-                  th:value="${index != null ? company.addresses[index].streetExt : ''}"
-                  th:attr="autocomplete=${index != null ? 'section-' + index : 'section-INDEX_VAR'} + ' address-line2'" />
+                th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].streetExt|"
+                th:value="${index != null ? company.addresses[index].streetExt : ''}"
+                th:attr="autocomplete=${index != null ? 'section-' + index : 'section-INDEX_VAR'} + ' address-line2'" />
         </div>
     </div>
 
     <!-- Row 2: City, State, Zip, Remove Button -->
     <div class="row g-3 mb-3">
         <div class="col-md-4">
-            <label class="form-label">City</label>
+            <label class="form-label" th:text="${labelSettings['city']}">City</label>
             <input type="text" class="form-control"
-                  th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].city|"
-                  th:value="${index != null ? company.addresses[index].city : ''}"
-                  th:attr="autocomplete=${index != null ? 'section-' + index : 'section-INDEX_VAR'} + ' address-level2'" />
+                th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].city|"
+                th:value="${index != null ? company.addresses[index].city : ''}"
+                th:attr="autocomplete=${index != null ? 'section-' + index : 'section-INDEX_VAR'} + ' address-level2'" />
         </div>
         <div class="col-md-4">
-            <label class="form-label">State</label>
+            <label class="form-label" th:text="${labelSettings['state']}">State</label>
             <select th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].stateAbbr|" class="form-select"
                     th:attr="autocomplete=${index != null ? 'section-' + index : 'section-INDEX_VAR'} + ' address-level1'">
                 <option value="">[ State ]</option>
@@ -62,7 +59,7 @@
             </select>
         </div>
         <div class="col-md-2">
-            <label class="form-label">Zip</label>
+            <label class="form-label" th:text="${labelSettings['zip']}">Zip</label>
             <input type="text" class="form-control"
                   th:name="|addresses[${index != null ? index : 'INDEX_VAR'}].zip|"
                   th:value="${index != null ? company.addresses[index].zip : ''}"
