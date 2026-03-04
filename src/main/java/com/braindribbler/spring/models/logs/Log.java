@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.JoinFormula;
 
 import com.braindribbler.spring.models.companies.Company;
 import com.braindribbler.spring.models.users.User;
@@ -100,8 +101,8 @@ public class Log{
 	@Formula("(select ls.status_id from job_log_statuses ls where ls.job_log_id = {alias}.job_log_id order by ls.status_date desc limit 1)")
 	private Long latestStatusId;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "latest_status_id", referencedColumnName="status_id", insertable = false, updatable = false)
+	@ManyToOne(fetch = FetchType.LAZY) 
+	@JoinFormula("(SELECT ls.status_id FROM job_log_statuses ls WHERE ls.job_log_id = job_log_id ORDER BY ls.status_date DESC LIMIT 1)")
 	private LogStatus latestStatus;
 
     public Long getLatestStatusId() { return latestStatusId; } 
