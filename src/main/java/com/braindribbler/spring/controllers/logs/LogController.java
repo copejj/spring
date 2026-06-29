@@ -103,6 +103,7 @@ public class LogController {
         }
 
         model.addAttribute("log", form);
+        model.addAttribute("statuses", statusService.getAllStatuses());
         model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
         
         model.addAttribute("location", "New Log");
