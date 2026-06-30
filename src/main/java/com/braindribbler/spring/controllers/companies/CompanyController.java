@@ -54,8 +54,6 @@ public class CompanyController {
 	@GetMapping("/create")
     public String showCreateForm(Model model) {
         CompanyForm form = new CompanyForm();
-        // Initialize with at least one empty address so the form shows an address row
-        form.getAddresses().add(new AddressFormItem());
 
         model.addAttribute("location", "New Company");
         model.addAttribute("title", "Company Information");
@@ -67,10 +65,10 @@ public class CompanyController {
 
     @PostMapping("/save")
     public String saveCompany(@Valid @ModelAttribute("company") CompanyForm companyForm,
-							BindingResult result,
-							@AuthenticationPrincipal UserDetailsImpl userDetails,
-                            RedirectAttributes redirectAttributes,
-							Model model) {
+        BindingResult result,
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        RedirectAttributes redirectAttributes,
+        Model model) {
         
         cleanAddressList(companyForm); // Move your address cleanup to a private helper
 
