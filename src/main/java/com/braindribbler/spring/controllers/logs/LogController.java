@@ -81,21 +81,20 @@ public class LogController {
 
         Long userId = userDetails.getUserId();
 
-		model.addAttribute("location", "Edit Log");
-		model.addAttribute("title", "Application Information");
-
 		model.addAttribute("log", form);
+		model.addAttribute("title", "Application Information");
         model.addAttribute("statuses", statusService.getAllStatuses());
+		model.addAttribute("location", "Edit Log");
         model.addAttribute("companies", companyService.getAll(userId));
 
 		return "logs/edit";
 	}
 
-        @GetMapping("/create")
-        public String createLogForm(
-                @RequestParam(name = "companyId", required = false) Long companyId,
-                @AuthenticationPrincipal UserDetailsImpl userDetails,
-                Model model) {
+    @GetMapping("/create")
+    public String createLogForm(
+        @RequestParam(name = "companyId", required = false) Long companyId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        Model model) {
 
         LogForm form = new LogForm();
         if (companyId != null) {
@@ -103,22 +102,22 @@ public class LogController {
         }
 
         model.addAttribute("log", form);
-        model.addAttribute("statuses", statusService.getAllStatuses());
-        model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
-        
-        model.addAttribute("location", "New Log");
 		model.addAttribute("title", "Application Information");
+        model.addAttribute("statuses", statusService.getAllStatuses());
+        model.addAttribute("location", "New Log");
+        model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
 
         return "logs/edit";
     }
 
     @PostMapping("/save")
     public String saveLog(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @Valid @ModelAttribute("log") LogForm logForm,
-            BindingResult result,
-            RedirectAttributes redirectAttributes,
-            Model model) {
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @Valid @ModelAttribute("log") LogForm logForm,
+        BindingResult result,
+        @RequestParam(value = "action", required = false) String action,
+        RedirectAttributes redirectAttributes,
+        Model model) {
 
         if (result.hasErrors()) {
             model.addAttribute("title", "Application Information");
@@ -129,9 +128,14 @@ public class LogController {
 
         try {
             Long savedId = logService.saveFromForm(logForm, userDetails.getUserId());
-            
             redirectAttributes.addFlashAttribute("saveSuccess", "Log saved successfully!");
+            
+            if ("saveAndAdd".equals(action)) {
+                return "redirect:/logs/create?companyId=" + logForm.getCompanyId();
+            }
+
             return "redirect:/logs/edit/" + savedId;
+            
         } catch (Exception e) {
             model.addAttribute("saveError", "Error: " + e.getMessage());
             model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
