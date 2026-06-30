@@ -38,10 +38,10 @@ public class LogController {
 
     @GetMapping("/list")
     public String viewLogs(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, // User ID handled internally
-            @RequestParam(required = false) Long weekId,
-            @RequestParam(required = false) Long companyId,
-            Model model) { // Model for passing data to the template
+        @AuthenticationPrincipal UserDetailsImpl userDetails, // User ID handled internally
+        @RequestParam(required = false) Long weekId,
+        @RequestParam(required = false) Long companyId,
+        Model model) { // Model for passing data to the template
 
         List<LogDTO> logs = logService.findLogs(userDetails.getUserId(), weekId, companyId);
 
