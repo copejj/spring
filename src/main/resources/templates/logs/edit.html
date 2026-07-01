@@ -102,7 +102,7 @@
                     </div>
                 </div>
 
-                <div th:replace="~{fragments/forms :: submit-save-new-cancel(cancelUrl='/logs/list')}"></div>
+                <div th:replace="~{fragments/forms :: submit-save-new-cancel(cancelUrl='/logs/list', hasDeleteAuth=${log.logId != null})}"></div>
             </form>
 
             <div class="modal fade" id="statusHistoryModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">

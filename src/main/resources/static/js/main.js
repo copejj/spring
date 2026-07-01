@@ -231,3 +231,7 @@ function copyInvite(btn) {
         }, 2000);
     });
 }
+
+function confirmDelete() {
+    return confirm("Are you absolutely sure you want to delete this item? This action cannot be undone.");
+}
