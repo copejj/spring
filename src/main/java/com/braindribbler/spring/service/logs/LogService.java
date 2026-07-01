@@ -12,4 +12,5 @@ public interface LogService {
 	LogDTO getLogDtoById(Long logId);
     Long saveFromForm(LogForm logForm, Long userId);
 	void updateStatus(Long logId, Long statusId);
+    void deleteById(Long logId, Long userId);
 }

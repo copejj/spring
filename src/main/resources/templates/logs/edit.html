@@ -3,10 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz"
 	layout:decorate="~{layout/default}">
 	<body>
-        <div layout:fragment="content" class="mt-4"> 
-            <div th:if="${saveError}" class="alert alert-danger" th:text="${saveError}"></div>
-            <div th:if="${saveSuccess}" class="alert alert-success" th:text="${saveSuccess}"></div>
-            
+        <div layout:fragment="content"> 
             <form th:action="@{/logs/save}" th:object="${log}" method="post">
                 <input type="hidden" th:field="*{logId}" />
                 <div th:if="${log.companyId != null}" class="mb-3">
@@ -102,7 +99,7 @@
                     </div>
                 </div>
 
-                <div th:replace="~{fragments/forms :: submit-save-new-cancel(cancelUrl='/logs/list')}"></div>
+                <div th:replace="~{fragments/forms :: submit-save-new-cancel(cancelUrl='/logs/list', hasDeleteAuth=${log.logId != null})}"></div>
             </form>
 
             <div class="modal fade" id="statusHistoryModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">

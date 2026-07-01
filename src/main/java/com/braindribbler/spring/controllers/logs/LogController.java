@@ -119,6 +119,24 @@ public class LogController {
         RedirectAttributes redirectAttributes,
         Model model) {
 
+        if ("deleteLog".equals(action)) {
+            try {
+                if (logForm.getLogId() != null) {
+                    logService.deleteById(logForm.getLogId(), userDetails.getUserId());
+                    redirectAttributes.addFlashAttribute("saveSuccess", "Log deleted successfully!");
+                }
+                // Redirect straight to your list view URL
+                return "redirect:/logs/list"; 
+            } catch (Exception e) {
+                // If delete fails, stay on page and show error
+                model.addAttribute("saveError", "Error deleting log: " + e.getMessage());
+                model.addAttribute("title", "Application Information");
+                model.addAttribute("location", "Edit Log");
+                model.addAttribute("companies", companyService.getAll(userDetails.getUserId()));
+                return "logs/edit";
+            }
+        }
+
         if (result.hasErrors()) {
             model.addAttribute("title", "Application Information");
             model.addAttribute("location", logForm.getLogId() == null ? "New Log" : "Edit Log");

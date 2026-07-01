@@ -9,7 +9,10 @@
 			<nav th:replace="~{fragments/navbar :: nav-fragment}"></nav>
 				<div class="content-cont table">
 					<div class="container-fluid py-3">
-						<nav th:replace="~{fragments/header :: title-fragment}"></nav>
+						<dv class="mb-2">
+							<nav th:replace="~{fragments/header :: title-fragment}"></nav>
+						</dv>
+						<div th:replace="~{fragments/message :: message-fragment}"></div>
 						<main layout:fragment="content"></main>
 					</div>
 				</div>

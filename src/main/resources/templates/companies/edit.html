@@ -4,9 +4,6 @@
 	layout:decorate="~{layout/default}">
 	<body>
         <div layout:fragment="content" class="mt-4"> 
-            <div th:if="${saveError}" class="alert alert-danger" th:text="${saveError}"></div>
-            <div th:if="${saveSuccess}" class="alert alert-success" th:text="${saveSuccess}"></div>
-
             <form th:action="@{/companies/save}" th:object="${company}" th:method="post">
                 <input type="hidden" th:field="*{companyId}" />
                 <div th:if="${company.companyId != null}" class="mb-3">

@@ -4,12 +4,7 @@
 	layout:decorate="~{layout/default}">
 	<body>
         <div layout:fragment="content" class="mt-4"> 
-            <!-- Alerts -->
-            <div th:if="${saveError}" class="alert alert-danger" th:text="${saveError}"></div>
-            <div th:if="${saveSuccess}" class="alert alert-success" th:text="${saveSuccess}"></div>
-
             <form th:action="@{/admin/users}" th:object="${user}" th:method="put" class="needs-validation">
-                
                 <!-- Row 1: User Info -->
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">

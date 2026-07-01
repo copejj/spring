@@ -146,6 +146,28 @@ public class LogServiceImpl implements LogService {
         return saved.getLogId();
     }
 
+    @Override
+    @Transactional // Required to allow modifying queries to execute safely
+    public void deleteById(Long logId, Long userId) {
+        // 1. Guard clause against null inputs
+        if (logId == null || userId == null) {
+            throw new IllegalArgumentException("Log ID and User ID must not be null");
+        }
+
+        // 2. Fetch the entity cleanly (using your standard findById mapping pattern)
+        Log log = logRepository.findById(logId)
+                .orElseThrow(() -> new RuntimeException("Log not found with id: " + logId));
+
+        // 3. Verify security ownership using the entity's userId field
+        // Note: If log.getUserId() is an Integer, cast it or use .longValue() to compare to Long userId
+        if (log.getUserId() != null && !Long.valueOf(log.getUserId()).equals(userId)) {
+            throw new SecurityException("You do not have permission to delete this log.");
+        }
+
+        // 4. Execute standard spring data delete call
+        logRepository.deleteById(logId);
+    }
+
     private Week createNewWeek(LocalDate date) {
         LocalDate start = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
         LocalDate end = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
