@@ -14,24 +14,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="week : ${weeks}">
-                        <td th:data-order="${week.logCounts ?: 0}">
-                            <div th:if="${week.logCounts > 0}">
-                                <a th:href="@{/logs/list(weekId=${week.weekId})}" 
-                                    style="text-decoration: none;"
-                                    title="Filter by this company">
-                                    <i class="fa-solid fa-filter"></i>
+                    <tr th:each="week : ${weeks}"> 
+                        <td th:data-order="${week.logCounts ?: 0}"> 
+                            <div th:if="${week.logCounts > 0}"> 
+                                <!-- Existing Filter Link -->
+                                <a th:href="@{/logs/list(weekId=${week.weekId})}" class="btn btn-sm btn-outline-secondary py-0 px-1 border-0" title="Filter logs by this week"> 
+                                    <i class="fa-solid fa-filter text-primary"></i> 
+                                </a> 
+                                
+                                <!-- New Details Workspace Link -->
+                                <a th:href="@{/logs/details(weekId=${week.weekId})}" class="btn btn-sm btn-outline-secondary py-0 px-1 border-0 me-1" title="Go to plain text clipboard staging"> 
+                                    <i class="fa-solid fa-square-poll-horizontal text-success"></i> 
                                 </a>
-                                <span th:text="${week.logCounts}">0</span> <span th:text="${labelSettings['apps']}">apps</span>
-                            </div>
-                            <div th:unless="${week.logCounts > 0}">
-                                <span class="text-muted">0</span> <span th:text="${labelSettings['apps']}">apps</span>
-                            </div>
-                        </td>
-                        <td th:text="${week.startDate}" ></td>
-                        <td th:text="${week.endDate}"></td>
-                        <td></td>
-                    </tr>
+
+                                <span th:text="${week.logCounts}">0</span> 
+                                <span th:text="${labelSettings['apps']}">apps</span> 
+                            </div> 
+                            <div th:unless="${week.logCounts > 0}"> 
+                                <span class="text-muted">0</span> 
+                                <span th:text="${labelSettings['apps']}">apps</span> 
+                            </div> 
+                        </td> 
+                        <td th:text="${week.startDate}"></td> 
+                        <td th:text="${week.endDate}"></td> 
+                        <td></td> 
+                    </tr> 
                 </tbody>
             </table>
             <script>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head></head>
+<body>
+
+    <!-- Higher-Tier Component: Compact Company Card Layout -->
+    <!-- Parameters: log (The active entry iteration variable) -->
+    <div th:fragment="detailsCompany(log)" class="card shadow-sm mb-4 border-1 d-inline-block text-start w-100" style="max-width: 600px;">
+        <div class="card-header py-2">
+            <h5 class="mb-0 fw-bold" th:text="${log.companyName}">Company Name</h5>
+            <small class="" th:text="${log.title}">Job Title</small>
+        </div>
+        <div class="card-body p-0">
+            <!-- Fixed layout constraints prevent columns from bowing or over-stretching -->
+            <table class="table table-sm table-striped table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
+                <colgroup>
+                    <col style="width: 30%;">
+                    <col style="width: 70%;">
+                </colgroup>
+                <tbody>
+                    <!-- Week Range -->
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.startDate + ' - ' + log.endDate}, name='Week', isBold=false)}"></tr>
+                    
+                    <!-- Action Date -->
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.actionDate}, name='Action Date', isBold=false)}"></tr>
+                    
+                    <!-- Company Name -->
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyName}, name='Company Name', isBold=true)}"></tr>
+                    
+                    <!-- Job Title -->
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.title}, name='Job Title', isBold=false)}"></tr>
+                    
+                    <!-- Status Mapping -->
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.latestStatus != null ? log.latestStatus.status : 'N/A'}, name='Application Status', isBold=false)}"></tr>
+                    
+                    <!-- Job Number -->
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.jobNumber}, name='Job Number', isBold=false)}"></tr>
+                    
+                    <!-- Notes Box -->
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.notes}, name='Notes', isBold=false)}"></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Lower-Tier Component: Compact Staging Row -->
+    <tr th:fragment="detailsRow(text, name, isBold)">
+        <!-- Small headers match compact grid expectations -->
+        <th th:text="${name}" class="text-secondary small fw-bold text-uppercase pt-2 ps-3 text-truncate" style="font-size: 0.7rem; letter-spacing: 0.5px;">Name</th>
+        <td th:classappend="${isBold} ? 'fw-bold' : ''" class="pe-3">
+            <!-- Using content-driven widths instead of full stretching vectors -->
+            <div class="d-inline-flex justify-content-between align-items-center w-100 py-1">
+                <span th:text="${text}" class="text-wrap me-2 text-break"></span>
+                <button class="btn btn-link p-0 text-muted border-0 ms-auto copy-grid-btn flex-shrink-0" 
+                        th:data-copy-val="${text}" 
+                        th:title="'Copy ' + ${name}">
+                    <i class="fa-regular fa-copy small"></i>
+                </button>
+            </div>
+        </td>
+    </tr>
+
+</body>
+</html>
