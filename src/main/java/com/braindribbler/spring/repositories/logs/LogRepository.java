@@ -10,16 +10,20 @@ import org.springframework.data.repository.query.Param;
 import com.braindribbler.spring.models.logs.Log;
 
 public interface LogRepository extends JpaRepository<Log, Long> {
-	Optional<Log> findByLogId(Long logId);
 
-	List<Log> findByUserId(Long userId);
+    Optional<Log> findByLogId(Long logId);
 
-	@Query("SELECT l FROM Log l WHERE l.userId = :userId " +
+    List<Log> findByUserId(Long userId);
+
+	@Query("SELECT DISTINCT l FROM Log l " +
+		"LEFT JOIN FETCH l.company c " +
+		"WHERE l.userId = :userId " +
 		"AND (:weekId IS NULL OR l.weekId = :weekId) " +
-		"AND (:companyId IS NULL OR l.companyId = :companyId)")
-	List<Log> findFilteredLogs(
-		@Param("userId") Long userId, 
-		@Param("weekId") Long weekId, 
-		@Param("companyId") Long companyId
-	);
+		"AND (:companyId IS NULL OR c.companyId = :companyId)" +
+        "ORDER BY l.actionDate ASC, c.companyName ASC, l.title ASC")
+    List<Log> findFilteredLogs(
+        @Param("userId") Long userId, 
+        @Param("weekId") Long weekId, 
+        @Param("companyId") Long companyId
+    );
 }

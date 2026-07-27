@@ -20,7 +20,6 @@ public record CompanyAddressDTO(
             addr.getStreet(),
             addr.getStreetExt(),
             addr.getCity(),
-            // Null-safe check for State
             state != null ? state.getAbbr() : "", 
             state != null ? state.getName() : "",
             addr.getZip()

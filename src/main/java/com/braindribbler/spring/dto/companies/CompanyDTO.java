@@ -23,4 +23,3 @@ public record CompanyDTO (
 	List<CompanyAddressDTO> addresses
 )
 {}
-

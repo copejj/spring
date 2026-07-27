@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.braindribbler.spring.dto.companies.CompanyAddressDTO;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -29,6 +31,10 @@ public record LogDTO (
 
 	Long companyId,
 	String companyName,
+
+	String companyEmail,
+    String companyWebsite,
+    CompanyAddressDTO companyAddress, 
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@NotNull(message = "Action date is required")

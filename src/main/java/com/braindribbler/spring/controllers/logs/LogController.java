@@ -54,6 +54,24 @@ public class LogController {
         return "logs/list"; 
     }
 
+    @GetMapping("/details")
+    public String viewLogDetails(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestParam(required = false) Long weekId,
+            @RequestParam(required = false) Long companyId,
+            Model model) {
+                
+        List<LogDTO> logs = logService.findLogs(userDetails.getUserId(), weekId, companyId);
+        
+        model.addAttribute("location", "Logs");
+        model.addAttribute("title", "Applications Details");
+        model.addAttribute("logs", logs);
+        model.addAttribute("selectedWeek", weekId);
+        model.addAttribute("selectedCompany", companyId);
+        
+        return "logs/details";
+    }
+
 	@GetMapping("/edit/{logId}")
 	public String editLog(
         @AuthenticationPrincipal UserDetailsImpl userDetails,

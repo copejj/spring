@@ -14,24 +14,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="week : ${weeks}">
-                        <td th:data-order="${week.logCounts ?: 0}">
-                            <div th:if="${week.logCounts > 0}">
-                                <a th:href="@{/logs/list(weekId=${week.weekId})}" 
-                                    style="text-decoration: none;"
-                                    title="Filter by this company">
-                                    <i class="fa-solid fa-filter"></i>
-                                </a>
-                                <span th:text="${week.logCounts}">0</span> <span th:text="${labelSettings['apps']}">apps</span>
-                            </div>
-                            <div th:unless="${week.logCounts > 0}">
-                                <span class="text-muted">0</span> <span th:text="${labelSettings['apps']}">apps</span>
-                            </div>
-                        </td>
-                        <td th:text="${week.startDate}" ></td>
-                        <td th:text="${week.endDate}"></td>
-                        <td></td>
-                    </tr>
+                    <tr th:each="week : ${weeks}"> 
+                        <td th:data-order="${week.logCounts ?: 0}"> 
+                            <div th:if="${week.logCounts > 0}"> 
+                                <a th:href="@{/logs/list(weekId=${week.weekId})}" title="Filter logs by this week"><i class="fa-solid fa-filter"></i></a> 
+                                <a th:href="@{/logs/details(weekId=${week.weekId})}" title="Go to plain text clipboard staging" target="_blank"><i class="fa-solid fa-square-poll-horizontal"></i></a>
+                                <span th:text="${week.logCounts}">0</span> 
+                                <span th:text="${labelSettings['apps']}">apps</span> 
+                            </div> 
+                            <div th:unless="${week.logCounts > 0}"> 
+                                <span class="text-muted">0</span> 
+                                <span th:text="${labelSettings['apps']}">apps</span> 
+                            </div> 
+                        </td> 
+                        <td th:text="${week.startDate}"></td> 
+                        <td th:text="${week.endDate}"></td> 
+                        <td></td> 
+                    </tr> 
                 </tbody>
             </table>
             <script>
