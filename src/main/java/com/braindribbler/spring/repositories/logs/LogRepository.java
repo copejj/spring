@@ -12,6 +12,7 @@ import com.braindribbler.spring.models.logs.Log;
 public interface LogRepository extends JpaRepository<Log, Long> {
 
     Optional<Log> findByLogId(Long logId);
+    Optional<Log> findByLogIdAndUserId(Long logId, Long userId);
 
     List<Log> findByUserId(Long userId);
 

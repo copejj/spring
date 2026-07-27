@@ -2,6 +2,8 @@ package com.braindribbler.spring.controllers.logs;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.braindribbler.spring.dto.logs.LogDTO;
@@ -50,8 +53,31 @@ public class LogController {
         model.addAttribute("logs", logs);
         model.addAttribute("selectedWeek", weekId);
         model.addAttribute("selectedCompany", companyId);
+        model.addAttribute("allStatuses", statusService.getAllStatuses());
 
         return "logs/list"; 
+    }
+
+    @PostMapping("/update-status")
+    @ResponseBody 
+    public ResponseEntity<String> updateStatus(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestParam("logId") Long logId, 
+            @RequestParam(value = "statusId", required = false) Long statusId) {
+        try {
+            Long userId = userDetails.getUserId();
+            LogDTO logDto = logService.getLogDtoByIdAndUserId(logId, userId);
+            if (logDto == null) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized access to this log record.");
+            }
+            
+            logService.updateStatus(logId, statusId);
+            
+            return ResponseEntity.ok("Status successfully updated");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body("Error updating status: " + e.getMessage());
+        }
     }
 
     @GetMapping("/details")

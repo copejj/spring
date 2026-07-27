@@ -54,6 +54,17 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public LogDTO getLogDtoByIdAndUserId(Long logId, Long userId) {
+        if (logId == null || userId == null) {
+            throw new IllegalArgumentException("Log ID and User ID must not be null");
+        }
+        return logRepository.findByLogIdAndUserId(logId, userId)
+                .map(this::convertToDto)
+                .orElseThrow(() -> new RuntimeException("Log not found with id: " + logId));
+    }
+
+    @Override
     @Transactional
     public void updateLog(LogDTO dto) {
         Long logId = dto.logId();
