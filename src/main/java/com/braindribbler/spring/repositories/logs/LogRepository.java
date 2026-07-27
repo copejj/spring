@@ -17,11 +17,9 @@ public interface LogRepository extends JpaRepository<Log, Long> {
 
 	@Query("SELECT DISTINCT l FROM Log l " +
 		"LEFT JOIN FETCH l.company c " +
-		"LEFT JOIN FETCH l.logStatuses ls " +
-		"LEFT JOIN FETCH l.latestStatus lst " +
 		"WHERE l.userId = :userId " +
 		"AND (:weekId IS NULL OR l.weekId = :weekId) " +
-		"AND (:companyId IS NULL OR l.companyId = :companyId)" +
+		"AND (:companyId IS NULL OR c.companyId = :companyId)" +
         "ORDER BY l.actionDate ASC, c.companyName ASC, l.title ASC")
     List<Log> findFilteredLogs(
         @Param("userId") Long userId, 

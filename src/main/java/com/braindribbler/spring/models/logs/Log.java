@@ -101,8 +101,8 @@ public class Log{
 	@Formula("(select ls.status_id from job_log_statuses ls where ls.job_log_id = {alias}.job_log_id order by ls.status_date desc limit 1)")
 	private Long latestStatusId;
 
-	@ManyToOne(fetch = FetchType.LAZY) 
-	@JoinFormula("(SELECT ls.status_id FROM job_log_statuses ls WHERE ls.job_log_id = job_log_id ORDER BY ls.status_date DESC LIMIT 1)")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinFormula("(SELECT ls.job_log_status_id FROM job_log_statuses ls WHERE ls.job_log_id = {alias}.job_log_id ORDER BY ls.status_date DESC LIMIT 1)")
 	private LogStatus latestStatus;
 
     public Long getLatestStatusId() { return latestStatusId; } 
