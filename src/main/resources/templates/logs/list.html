@@ -54,7 +54,7 @@
                                 title="Click to filter or click again to clear">
                                 <i class="fa-solid fa-filter"></i>
                             </a>
-                            <a th:href="@{/logs/details(weekId=${selectedWeek == log.weekId ? '' : log.weekId})}" title="Go to plain text clipboard staging" target="_blank"><i class="fa-solid fa-square-poll-horizontal"></i></a>
+                            <a th:href="@{/logs/details(weekId=${log.weekId})}" title="Go to plain text clipboard staging" target="_blank"><i class="fa-solid fa-square-poll-horizontal"></i></a>
                             <span th:text="${log.startDate} + ' - ' + ${log.endDate}"></span>
                         </td>
                         <td th:text="${log.actionDate}"></td>
@@ -76,7 +76,19 @@
                             <span th:text="${log.companyName}"></span>
                         </td>
                         <td th:text="${log.title}"></td>
-                        <td th:text="${log.latestStatus != null ? log.latestStatus.status : ''}"></td>
+                        <td>
+                            <span th:text="${log.latestStatus != null ? log.latestStatus.status : ''}" style="display:none;"></span>
+                            <select class="form-select form-select-sm py-0 status-dropdown" 
+                                    th:data-log-id="${log.logId}"
+                                    style="width: 100%; height: auto; font-size: 0.875rem;">
+                                <option value="" th:selected="${log.latestStatus == null}">[ Select Status ]</option>
+                                <option th:each="status : ${allStatuses}" 
+                                        th:value="${status.statusId}" 
+                                        th:text="${status.status}"
+                                        th:selected="${log.latestStatus != null && log.latestStatusId == status.statusId}">
+                                </option>
+                            </select>
+                        </td>
                         <td th:text="${log.jobNumber}"></td>
                     </tr>
                 </tbody>
@@ -105,6 +117,49 @@
                             $(this).addClass('d-some');
                         }
                     });
+                });
+                
+                document.addEventListener('DOMContentLoaded', function () {
+                    const table = document.getElementById('logsTable');
+                    
+                    if (table) {
+                        table.addEventListener('change', function (event) {
+                            // Check if the changed element is our status dropdown
+                            if (event.target && event.target.classList.contains('status-dropdown')) {
+                                const dropdown = event.target;
+                                const logId = dropdown.getAttribute('data-log-id');
+                                const statusId = dropdown.value;
+
+                                // Send the asynchronous POST request to your Spring Boot backend
+                                fetch('/logs/update-status', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/x-www-form-urlencoded',
+                                        // Include this line if your Spring Security setup requires CSRF protection
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf"]')?.content
+                                    },
+                                    body: new URLSearchParams({
+                                        'logId': logId,
+                                        'statusId': statusId
+                                    })
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        // Visual success confirmation: flash the border green
+                                        dropdown.style.borderColor = '#198754'; 
+                                        setTimeout(() => dropdown.style.borderColor = '', 1500);
+                                    } else {
+                                        alert('Failed to save status. Reloading page to reset...');
+                                        window.location.reload();
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error saving status:', error);
+                                    alert('A connection error occurred. Status not saved.');
+                                });
+                            }
+                        });
+                    }
                 });
             </script>
         </div>
