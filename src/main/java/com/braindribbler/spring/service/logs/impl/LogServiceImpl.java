@@ -9,9 +9,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.braindribbler.spring.dto.companies.CompanyAddressDTO;
 import com.braindribbler.spring.dto.logs.LogDTO;
 import com.braindribbler.spring.dto.logs.LogStatusDTO;
 import com.braindribbler.spring.forms.logs.LogForm;
+import com.braindribbler.spring.models.companies.Company;
 import com.braindribbler.spring.models.logs.Log;
 import com.braindribbler.spring.models.logs.LogStatus;
 import com.braindribbler.spring.models.logs.Status;
@@ -31,9 +33,9 @@ public class LogServiceImpl implements LogService {
     private final WeekRepository weekRepository;
 
     public LogServiceImpl(LogRepository logRepository, 
-                        LogStatusRepository logStatusRepository, 
-                        StatusRepository statusRepository, 
-                        WeekRepository weekRepository) {
+                          LogStatusRepository logStatusRepository, 
+                          StatusRepository statusRepository, 
+                          WeekRepository weekRepository) {
         this.logRepository = logRepository;
         this.weekRepository = weekRepository;
         this.logStatusRepository = logStatusRepository;
@@ -44,11 +46,11 @@ public class LogServiceImpl implements LogService {
     @Transactional(readOnly = true)
     public LogDTO getLogDtoById(Long logId) {
         if (logId == null) {
-            throw new IllegalArgumentException("User ID must not be null");
+            throw new IllegalArgumentException("Log ID must not be null");
         }
         return logRepository.findById(logId)
-            .map(this::convertToDto)
-            .orElseThrow(() -> new RuntimeException("Log not found with id: " + logId));
+                .map(this::convertToDto)
+                .orElseThrow(() -> new RuntimeException("Log not found with id: " + logId));
     }
 
     @Override
@@ -56,18 +58,16 @@ public class LogServiceImpl implements LogService {
     public void updateLog(LogDTO dto) {
         Long logId = dto.logId();
         if (logId == null) {
-            throw new IllegalArgumentException("User ID must not be null");
+            throw new IllegalArgumentException("Log ID must not be null");
         }
         Log log = logRepository.findById(logId)
-            .orElseThrow(() -> new RuntimeException("Log not found"));
-        
+                .orElseThrow(() -> new RuntimeException("Log not found with id: " + logId));
         updateEntityFromDto(log, dto);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<LogDTO> findLogs(Long userId) {
-        // Casting userId to Integer to match the Entity definition
         return logRepository.findByUserId(userId).stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
@@ -76,15 +76,12 @@ public class LogServiceImpl implements LogService {
     @Override
     @Transactional(readOnly = true)
     public List<LogDTO> findLogs(Long userId, Long weekId, Long companyId) {
-        // If all optional filters are null, you can default to the simple findByUserId
         if (weekId == null && companyId == null) {
-            return findLogs(userId); 
+            return findLogs(userId);
         }
-
-        // Call a repository method designed to handle nulls
         return logRepository.findFilteredLogs(userId, weekId, companyId).stream()
-            .map(this::convertToDto)
-            .collect(Collectors.toList());
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -94,17 +91,19 @@ public class LogServiceImpl implements LogService {
             throw new IllegalArgumentException("Log and Status ID must not be null");
         }
 
-        Log log = logRepository.findById(logId).get();
+        Log log = logRepository.findById(logId)
+                .orElseThrow(() -> new RuntimeException("Log not found with id: " + logId));
+
         if (statusId.equals(log.getLatestStatusId())) {
-            return; // No update needed if the status is the same
+            return; 
         }
 
-        Status status = statusRepository.findById(statusId).get();
+        Status status = statusRepository.findById(statusId)
+                .orElseThrow(() -> new RuntimeException("Status not found with id: " + statusId));
 
         LogStatus logStatus = new LogStatus();
         logStatus.setLog(log);
         logStatus.setStatus(status);
-
         logStatusRepository.save(logStatus);
     }
 
@@ -112,13 +111,12 @@ public class LogServiceImpl implements LogService {
     @Transactional
     public Long saveFromForm(LogForm form, Long userId) {
         Log log;
-
         if (form.getLogId() != null) {
             log = logRepository.findByLogId(form.getLogId())
-                .orElseThrow(() -> new RuntimeException("Log not found with id: " + form.getLogId()));
+                    .orElseThrow(() -> new RuntimeException("Log not found with id: " + form.getLogId()));
         } else {
             log = new Log();
-            log.setUserId(userId); 
+            log.setUserId(userId);
         }
 
         log.setTitle(form.getTitle());
@@ -134,7 +132,7 @@ public class LogServiceImpl implements LogService {
         log.setCompanyId(form.getCompanyId());
 
         Week week = weekRepository.findWeekByDate(form.getActionDate())
-            .orElseGet(() -> createNewWeek(form.getActionDate()));
+                .orElseGet(() -> createNewWeek(form.getActionDate()));
         log.setWeekId(week.getWeekId());
 
         Log saved = logRepository.save(log);
@@ -147,59 +145,74 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    @Transactional // Required to allow modifying queries to execute safely
+    @Transactional
     public void deleteById(Long logId, Long userId) {
-        // 1. Guard clause against null inputs
         if (logId == null || userId == null) {
             throw new IllegalArgumentException("Log ID and User ID must not be null");
         }
 
-        // 2. Fetch the entity cleanly (using your standard findById mapping pattern)
         Log log = logRepository.findById(logId)
                 .orElseThrow(() -> new RuntimeException("Log not found with id: " + logId));
 
-        // 3. Verify security ownership using the entity's userId field
-        // Note: If log.getUserId() is an Integer, cast it or use .longValue() to compare to Long userId
         if (log.getUserId() != null && !Long.valueOf(log.getUserId()).equals(userId)) {
             throw new SecurityException("You do not have permission to delete this log.");
         }
 
-        // 4. Execute standard spring data delete call
         logRepository.deleteById(logId);
     }
 
     private Week createNewWeek(LocalDate date) {
         LocalDate start = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.SUNDAY));
         LocalDate end = date.with(TemporalAdjusters.nextOrSame(DayOfWeek.SATURDAY));
-
+        
         Week newWeek = new Week();
         newWeek.setStartDate(start);
         newWeek.setEndDate(end);
-        
         return weekRepository.save(newWeek);
     }
 
     private LogDTO convertToDto(Log log) {
-        LogStatusDTO latestStatusDto = null;
-        List<LogStatusDTO> statusDtos = null;
+        Company company = log.getCompany();
+        String companyEmail = null;
+        String companyWebsite = null;
+        CompanyAddressDTO companyFirstAddress = null;
+
+        if (company != null) {
+            companyEmail = company.getCompanyEmail();
+            companyWebsite = company.getCompanyWebsite();
+            var addresses = company.getCompanyAddresses();
+            if (addresses != null && !addresses.isEmpty()) {
+                companyFirstAddress = CompanyAddressDTO.fromEntity(addresses.get(0));
+            }
+        }
+
+        List<LogStatusDTO> logStatusDtos = null;
         if (log.getLogStatuses() != null) {
-            statusDtos = log.getLogStatuses().stream()
-                .map(status -> new LogStatusDTO(
-                    status.getLogStatusId(),
-                    status.getStatusDate(),
-                    status.getStatus() != null ? status.getStatus().getStatus() : null,
-                    status.getStatus() != null ? status.getStatus().getStatusId() : null
-                )) 
-                .toList();
-            if (!statusDtos.isEmpty()) {
-                latestStatusDto = statusDtos.get(0); 
-            }   
+            logStatusDtos = log.getLogStatuses().stream()
+                    .map(ls -> new LogStatusDTO(
+                        ls.getLogStatusId(),
+                        ls.getStatusDate(),
+                        ls.getStatus() != null ? ls.getStatus().getStatus() : null,
+                        ls.getStatus() != null ? ls.getStatus().getStatusId() : null
+                    )) 
+                    .collect(Collectors.toList());
+        }
+
+        LogStatusDTO latestStatusDto = null;
+        if (log.getLatestStatus() != null) {
+            LogStatus ls = log.getLatestStatus();
+            latestStatusDto = new LogStatusDTO(
+                ls.getLogStatusId(),
+                ls.getStatusDate(),
+                ls.getStatus() != null ? ls.getStatus().getStatus() : null,
+                ls.getStatus() != null ? ls.getStatus().getStatusId() : null
+            );
         }
 
         return new LogDTO(
             log.getLogId(),
             log.getCreatedDate(),
-            log.getUserId() != null ? log.getUserId().longValue() : null, // Handle Long/Integer conversion
+            log.getUserId() != null ? log.getUserId().longValue() : null,
             log.getTitle(),
             log.getJobNumber(),
             log.getNextStep(),
@@ -210,14 +223,17 @@ public class LogServiceImpl implements LogService {
             log.getContact(),
             log.getContactNumber(),
             log.getCompanyId(),
-            log.getCompany() != null ? log.getCompany().getCompanyName() : null, // Get name from relationship
+            company != null ? company.getCompanyName() : null,
+            companyEmail,
+            companyWebsite,
+            companyFirstAddress,
             log.getActionDate(),
             log.getWeekId(),
             log.getWeek() != null ? log.getWeek().getStartDate() : null,
             log.getWeek() != null ? log.getWeek().getEndDate() : null,
             log.getLatestStatusId(),
             latestStatusDto,
-            statusDtos
+            logStatusDtos
         );
     }
 

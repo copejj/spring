@@ -1,7 +1,6 @@
 package com.braindribbler.spring.controllers.logs;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -65,7 +64,7 @@ public class LogController {
         List<LogDTO> logs = logService.findLogs(userDetails.getUserId(), weekId, companyId);
         
         model.addAttribute("location", "Logs");
-        model.addAttribute("title", "Application Details Dashboard");
+        model.addAttribute("title", "Applications Details");
         model.addAttribute("logs", logs);
         model.addAttribute("selectedWeek", weekId);
         model.addAttribute("selectedCompany", companyId);
