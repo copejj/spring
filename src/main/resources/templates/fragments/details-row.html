@@ -5,6 +5,11 @@
     <div th:fragment="detailsCompany(log)" class="card shadow-sm mb-4 border-1 d-inline-block text-start w-100" style="max-width: 600px;">
         <div class="card-header py-2 d-flex align-items-center justify-content-between">
             <div class="d-flex flex-column justify-content-center">
+                <!-- 3. Dynamic Application Counter Container -->
+                <span th:if="${iterStat != null}" class="text-primary small fw-bold mb-1" 
+                    th:text="${iterStat.count} + ' of ' + ${iterStat.size} + ' Applications'">
+                    1 of N Applications
+                </span>
                 <span class="fw-bold fs-5" th:text="${log.companyName}">Company Name</span>
                 <span class="text-muted small lh-lg" th:text="${log.title}">Job Title</span>
             </div>
