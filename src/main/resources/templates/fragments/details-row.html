@@ -3,10 +3,21 @@
 <head></head>
 <body>
     <div th:fragment="detailsCompany(log)" class="card shadow-sm mb-4 border-1 d-inline-block text-start w-100" style="max-width: 600px;">
-        <div class="card-header py-2">
-            <h5 class="mb-0 fw-bold" th:text="${log.companyName}">Company Name</h5>
-            <small class="" th:text="${log.title}">Job Title</small>
+        <div class="card-header py-2 d-flex align-items-center justify-content-between">
+            <div class="d-flex flex-column justify-content-center">
+                <span class="fw-bold fs-5" th:text="${log.companyName}">Company Name</span>
+                <span class="text-muted small lh-lg" th:text="${log.title}">Job Title</span>
+            </div>
+            <div class="d-flex flex-column justify-content-center align-items-end ms-auto">
+                <a th:href="@{/companies/edit/{id}(id=${log.companyId})}" title="Edit this company" target="_blank" class="lh-lg py-0.5">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a th:href="@{/logs/edit/{id}(id=${log.logId})}" title="Edit this application" target="_blank" class="lh-lg py-0.5">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+            </div>
         </div>
+
         <div class="card-body p-0">
             <table class="detailsDashboardTable table table-sm table-striped table-hover align-middle mb-0" style="table-layout: fixed; width: 100%;">
                 <colgroup>
@@ -14,26 +25,26 @@
                     <col style="width: 70%;">
                 </colgroup>
                 <tbody>
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.startDate + ' - ' + log.endDate}, name='Week', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.actionDate}, name='Action Date', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyName}, name='Company Name', isBold=true)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.street : ''}, name='Company Address', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.streetExt : ''}, name='Company Address 2', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.city : ''}, name='Company City', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.stateAbbr : ''}, name='Company State', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.zip : ''}, name='Company ZIP Code', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyWebsite}, name='Company Website', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.title}, name='Job Title', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.latestStatus != null ? log.latestStatus.status : 'N/A'}, name='Application Status', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.jobNumber}, name='Job Number', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.notes}, name='Notes', isBold=false)}"></tr>
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.startDate + ' - ' + log.endDate}, name='week_id', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.actionDate}, name='action_date', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyName}, name='company_name', isBold=true)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.street : ''}, name='street', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.streetExt : ''}, name='street_ext', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.city : ''}, name='city', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.stateAbbr : ''}, name='state', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.zip : ''}, name='zip', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyWebsite}, name='website', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.title}, name='title', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.latestStatus != null ? log.latestStatus.status : 'N/A'}, name='status', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.jobNumber}, name='job_number', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.notes}, name='notes', isBold=false)}"></tr>
                 </tbody>
             </table>
         </div>
     </div>
 
     <tr th:fragment="detailsRow(text, name, isBold)">
-        <th th:text="${name}" class="text-secondary small fw-bold text-uppercase pt-2 ps-3 text-truncate" style="font-size: 0.7rem; letter-spacing: 0.5px;">Name</th>
+        <th th:text="${labelSettings.get(name)}" class="text-secondary small fw-bold text-uppercase pt-2 ps-3 text-truncate" style="font-size: 0.7rem; letter-spacing: 0.5px;">Name</th>
         <td th:classappend="${isBold} ? 'fw-bold' : ''" class="pe-3">
             <div class="d-inline-flex justify-content-between align-items-center w-100 py-1">
                 <span th:text="${text}" class="text-wrap me-2 text-break"></span>
@@ -45,6 +56,5 @@
             </div>
         </td>
     </tr>
-
 </body>
 </html>

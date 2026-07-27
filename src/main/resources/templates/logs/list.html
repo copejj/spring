@@ -48,15 +48,13 @@
                             </a>
                         </td>
                         <td>
-                            <a th:href="@{/logs/list(
-                                    companyId=${selectedCompany}, 
-                                    weekId=${selectedWeek == log.weekId ? '' : log.weekId}
-                                )}" 
+                            <a th:href="@{/logs/list(companyId=${selectedCompany}, weekId=${selectedWeek == log.weekId ? '' : log.weekId})}" 
                                 th:classappend="${selectedWeek == log.weekId? 'active-filter' : ''}"
                                 style="text-decoration: none;"
                                 title="Click to filter or click again to clear">
                                 <i class="fa-solid fa-filter"></i>
                             </a>
+                            <a th:href="@{/logs/details(weekId=${selectedWeek == log.weekId ? '' : log.weekId})}" title="Go to plain text clipboard staging" target="_blank"><i class="fa-solid fa-square-poll-horizontal"></i></a>
                             <span th:text="${log.startDate} + ' - ' + ${log.endDate}"></span>
                         </td>
                         <td th:text="${log.actionDate}"></td>
@@ -97,9 +95,9 @@
                         "order": [{ "idx": 2, "dir": 'desc' }, { "idx": 3, "dir": 'asc' }], 
                         "columnDefs": [
                             { width: '3%', targets: [0] }, 
-                            { width: '13%', targets: [1] }, 
+                            { width: '15%', targets: [1] }, 
                             { width: '8%', targets: [2] }, 
-                            { width: '20%', targets: [3] }, 
+                            { width: '22%', targets: [3] }, 
                             { orderable: false, targets: [0] }
                         ],
                         "responsive": true,
