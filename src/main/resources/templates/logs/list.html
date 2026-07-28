@@ -159,7 +159,13 @@
                                         if ($.fn.DataTable.isDataTable('#logsTable')) {
                                             const dtTable = $('#logsTable').DataTable();
                                             
-                                            dtTable.cell(cellElement).invalidate();
+                                            // Find the exact DataTables row and column indexes
+                                            const rowIndex = dtTable.row(dropdown.closest('tr')).index();
+                                            const colIndex = dtTable.column(cellElement).index();
+                                            
+                                            // Invalidate the specific cell and the row index structure
+                                            dtTable.cell(rowIndex, colIndex).invalidate();
+                                            dtTable.rows().invalidate();
                                         }
                                     } else {
                                         alert('Failed to save status. Reloading page to reset...');
