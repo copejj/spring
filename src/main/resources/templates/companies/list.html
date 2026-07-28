@@ -13,7 +13,6 @@
                         <th th:text="${labelSettings['apps_count']}"># app.</th>
                         <th th:text="${labelSettings['company_name']}">Name</th>
                         <th th:text="${labelSettings['website']}">Website</th>
-                        <th th:text="${labelSettings['email']}">Email</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,14 +33,15 @@
                                 </a>
                                 <span th:text="${company.logCount}">0</span> <span th:text="${labelSettings['apps']}">apps</span>
                             </div>
-                            <div th:unless="${company.logCount > 0}">
+                            <div th:data-order="0" th:unless="${company.logCount > 0}">
                                 <i class="fa-solid fa-filter text-muted"></i>
                                 <span class="text-muted">0</span> <span th:text="${labelSettings['apps']}">apps</span>
                             </div>
                         </td>
                         <td th:text="${company.companyName}"></td>
-                        <td><a th:href="${company.companyWebsite}" th:text="${company.companyUrl}" target="_blank">  </a></td>
-                        <td th:text="${company.companyEmail}"></td>
+                        <td th:data-order="${company.companyWebsite}">
+                            <a th:href="${company.companyWebsite}" th:text="${company.companyUrl}" target="_blank">  </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
