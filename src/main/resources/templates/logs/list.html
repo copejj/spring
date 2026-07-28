@@ -31,30 +31,31 @@
             <table id="logsTable" class="datatables table table-striped table-hover stripe" style="display:none;">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th th:text="${labelSettings['week_id']}">week</th>
+                        <th class="ps-5" th:text="${labelSettings['week_id']}">week</th>
                         <th th:text="${labelSettings['action_date']}">action date</th>
-                        <th th:text="${labelSettings['company_name']}">company name</th>
-                        <th th:text="${labelSettings['title']}">title</th>
+                        <th class="ps-5" th:text="${labelSettings['company_name']}">company name</th>
+                        <th class="ps-5" th:text="${labelSettings['title']}">title</th>
                         <th th:text="${labelSettings['current_status']}">current status</th>
                         <th th:text="${labelSettings['job_number']}">job number</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="log : ${logs}">
-                        <td style="text-align: center;">
-                            <a th:href="@{/logs/edit/{id}(id=${log.logId})}">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                        </td>
                         <td>
+                            <a th:href="@{/logs/details(weekId=${log.weekId})}" 
+                                title="View weeks application details" 
+                                style="text-decoration: none;"
+                                class="text-secondary p-0"
+                                target="_blank">
+                                <i class="fa-solid fa-square-poll-horizontal"></i>
+                            </a>
                             <a th:href="@{/logs/list(companyId=${selectedCompany}, weekId=${selectedWeek == log.weekId ? '' : log.weekId})}" 
                                 th:classappend="${selectedWeek == log.weekId? 'active-filter' : ''}"
                                 style="text-decoration: none;"
-                                title="Click to filter or click again to clear">
+                                class="text-secondary p-0"
+                                title="Click to filter on this week or click again to clear">
                                 <i class="fa-solid fa-filter"></i>
                             </a>
-                            <a th:href="@{/logs/details(weekId=${log.weekId})}" title="Go to plain text clipboard staging" target="_blank"><i class="fa-solid fa-square-poll-horizontal"></i></a>
                             <span th:text="${log.startDate} + ' - ' + ${log.endDate}"></span>
                         </td>
                         <td th:text="${log.actionDate}"></td>
@@ -70,12 +71,15 @@
                                 )}" 
                                 th:classappend="${selectedCompany == log.companyId ? 'active-filter' : ''}"
                                 style="text-decoration: none;"
-                                title="Click to filter or click again to clear">
+                                title="Click to filter on this company or click again to clear">
                                 <i class="fa-solid fa-filter"></i>
                             </a>
                             <span th:text="${log.companyName}"></span>
                         </td>
-                        <td th:text="${log.title}"></td>
+                        <td>
+                            <a th:href="@{/logs/edit/{id}(id=${log.logId})}"><i class="fa-solid fa-pen-to-square"></i></a>
+                            <span th:text="${log.title}"></span>
+                        </td>
                         <td th:data-order="${log.latestStatus != null ? log.latestStatus.status : ''}"
                             th:data-search="${log.latestStatus != null ? log.latestStatus.status : ''}">
                             <span th:text="${log.latestStatus != null ? log.latestStatus.status : ''}" style="display:none;"></span>
@@ -107,11 +111,9 @@
                         "autoWidth": false,
                         "order": [{ "idx": 2, "dir": 'desc' }, { "idx": 3, "dir": 'asc' }], 
                         "columnDefs": [
-                            { width: '3%', targets: [0] }, 
-                            { width: '15%', targets: [1] }, 
-                            { width: '8%', targets: [2] }, 
-                            { width: '22%', targets: [3] }, 
-                            { orderable: false, targets: [0] }
+                            { width: '15%', targets: [0] }, 
+                            { width: '8%', targets: [1] }, 
+                            { width: '22%', targets: [2] }, 
                         ],
                         "responsive": true,
                         initComplete: function() {
