@@ -1,63 +1,84 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-	xmlns:layout="http://www.ultraq.net.nz"
-	layout:decorate="~{layout/default}">
-	<body>
-        <div layout:fragment="content" class="mp-4"> 
-            <table id="weeksTable" class="datatables table table-striped table-hover stripe" style="display:none;">
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://ultraq.net.nz" layout:decorate="~{layout/default}">
+<body>
+<div layout:fragment="content" class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12 col-md-8 col-lg-6">
+            
+            <table id="weeksTable" class="datatables table table-striped table-hover" style="display:none; width:100%;">
                 <thead>
                     <tr>
-                        <th th:text="${labelSettings['apps_count']}"># apps</th>
-                        <th th:text="${labelSettings['start_date']}">week start</th>
-                        <th th:text="${labelSettings['end_date']}">week end</th>
-                        <th></th>
+                        <th class="text-start ps-5" th:text="${labelSettings['start_date']}">week start</th>
+                        <th class="text-start" th:text="${labelSettings['end_date']}">week end</th>
+                        <th class="text-start" th:text="${labelSettings['apps_count']}"># apps</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="week : ${weeks}"> 
-                        <td th:data-order="${week.logCounts ?: 0}"> 
-                            <div th:if="${week.logCounts > 0}"> 
-                                <a th:href="@{/logs/list(weekId=${week.weekId})}" title="Filter logs by this week"><i class="fa-solid fa-filter"></i></a> 
-                                <a th:href="@{/logs/details(weekId=${week.weekId})}" title="Go to plain text clipboard staging" target="_blank"><i class="fa-solid fa-square-poll-horizontal"></i></a>
-                                <span th:text="${week.logCounts}">0</span> 
-                                <span th:text="${labelSettings['apps']}">apps</span> 
-                            </div> 
-                            <div th:unless="${week.logCounts > 0}"> 
-                                <span class="text-muted">0</span> 
-                                <span th:text="${labelSettings['apps']}">apps</span> 
-                            </div> 
-                        </td> 
-                        <td th:text="${week.startDate}"></td> 
-                        <td th:text="${week.endDate}"></td> 
-                        <td></td> 
-                    </tr> 
+                    <tr th:each="week : ${weeks}">
+                        <td class="text-start">
+                            <div class="d-flex align-items-center gap-2">
+                                <a th:if="${week.logCounts > 0}" th:href="@{/logs/details(weekId=${week.weekId})}" class="text-secondary p-0" title="Go to plain text clipboard staging" target="_blank">
+                                    <i class="fa-solid fa-square-poll-horizontal"></i>
+                                </a>
+                                <span th:unless="${week.logCounts > 0}" class="text-secondary p-0 opacity-50" title="No clipboard data">
+                                    <i class="fa-solid fa-square-poll-horizontal"></i>
+                                </span>
+
+                                <a th:if="${week.logCounts > 0}" th:href="@{/logs/list(weekId=${week.weekId})}" class="text-secondary p-0" title="Filter logs by this week">
+                                    <i class="fa-solid fa-filter"></i>
+                                </a>
+                                <span th:unless="${week.logCounts > 0}" class="text-secondary p-0 opacity-50" title="No logs to filter">
+                                    <i class="fa-solid fa-filter"></i>
+                                </span>
+
+                                <span th:text="${week.startDate}"></span>
+                            </div>
+                        </td>
+                        
+                        <td class="text-start" th:text="${week.endDate}"></td>
+                        
+                        <td class="text-start" th:data-order="${week.logCounts ?: 0}">
+                            <div th:if="${week.logCounts > 0}" class="d-flex align-items-center gap-2">
+                                <span class="fw-bold" th:text="${week.logCounts}">0</span>
+                                <span class="text-muted small" th:text="${labelSettings['apps']}">apps</span>
+                            </div>
+                            <div th:unless="${week.logCounts > 0}" class="d-flex align-items-center gap-2 text-muted">
+                                <span>0</span>
+                                <span class="small" th:text="${labelSettings['apps']}">apps</span>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
-            <script>
-                $(document).ready(function () {
-                    $('#weeksTable').DataTable({
-                        "pageLength": 10,
-                        "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
-                        "paging": true,
-                        "lengthChange": true,
-                        "searching": true,
-                        "ordering": true,
-                        "info": true,
-                        "autoWidth": false,
-                        "order": [{ "idx": 1, "dir": 'desc' }], 
-                        "columnDefs": [
-                            { type: "num", width: '10%', targets: [0] }, 
-                            { width: '30%', targets: [1, 2] }, 
-                            { orderable: false, targets: [3] }
-                        ],
-                        "responsive": true,
-                        initComplete: function() {
-                            $(this).addClass('d-some');
-                        }
-                    });
-                });
-            </script>
+
         </div>
-		</div>
-	</body>
+    </div>
+
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#weeksTable').DataTable({
+                "pageLength": 10,
+                "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ],
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                // Default sorts by column 0 (Week Start Date) descending
+                "order": [ [ 0, 'desc' ] ], 
+                "columnDefs": [
+                    { width: '40%', targets: 0 },       // Week Start + Actions
+                    { width: '30%', targets: 1 },       // Week End
+                    { type: "num", width: '10%', targets: 2 }  // # apps
+                ],
+                "responsive": true,
+                initComplete: function() {
+                    $(this).show();
+                }
+            });
+        });
+    </script>
+</div>
+</body>
 </html>
