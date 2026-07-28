@@ -31,7 +31,7 @@
                 </colgroup>
                 <tbody>
                     <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.startDate + ' - ' + log.endDate}, name='week_id', isBold=false)}"></tr> 
-                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.actionDate}, name='action_date', isBold=false)}"></tr> 
+                    <tr th:replace="~{fragments/details-row :: detailsRow(text=${#temporals.format(log.actionDate, 'M/d/yy')}, name='action_date', isBold=false)}"></tr>
                     <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyName}, name='company_name', isBold=true)}"></tr> 
                     <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.street : ''}, name='street', isBold=false)}"></tr> 
                     <tr th:replace="~{fragments/details-row :: detailsRow(text=${log.companyAddress != null ? log.companyAddress.streetExt : ''}, name='street_ext', isBold=false)}"></tr> 
