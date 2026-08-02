@@ -6,7 +6,6 @@
 		<h2>/logs/list.html</h2>
         <div layout:fragment="content"> 
             <div th:replace="~{fragments/forms :: direct-button(url='/logs/create', text='Add New Application')}"></div>
-
             <div class='filter-box' th:if="${selectedWeek != null or selectedCompany != null}">
                 <span class="title">Active Filters:</span>
                 <span class="clear-button" th:if="${selectedCompany != null}">
@@ -45,8 +44,7 @@
                             <a th:href="@{/logs/details(weekId=${log.weekId})}" 
                                 title="View weeks application details" 
                                 style="text-decoration: none;"
-                                class="text-secondary p-0"
-                                target="_blank">
+                                class="text-secondary p-0">
                                 <i class="fa-solid fa-square-poll-horizontal"></i>
                             </a>
                             <a th:href="@{/logs/list(companyId=${selectedCompany}, weekId=${selectedWeek == log.weekId ? '' : log.weekId})}" 

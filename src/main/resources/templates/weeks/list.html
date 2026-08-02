@@ -17,7 +17,7 @@
                     <tr th:each="week : ${weeks}">
                         <td class="text-start">
                             <div class="d-flex align-items-center gap-2">
-                                <a th:if="${week.logCounts > 0}" th:href="@{/logs/details(weekId=${week.weekId})}" class="text-secondary p-0" title="Go to plain text clipboard staging" target="_blank">
+                                <a th:if="${week.logCounts > 0}" th:href="@{/logs/details(weekId=${week.weekId})}" class="text-secondary p-0" title="Go to plain text clipboard staging">
                                     <i class="fa-solid fa-square-poll-horizontal"></i>
                                 </a>
                                 <span th:unless="${week.logCounts > 0}" class="text-secondary p-0 opacity-50" title="No clipboard data">
