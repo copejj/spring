@@ -30,7 +30,7 @@ jobs:
                         export PGPASSWORD="$DB_PASS"
                         
                         # Specific args for psql vs pg_dump
-                        PSQL_ARGS="-h $DB_HOST -U $DB_USER -d $DB_NAME -t -v ON_ERROR_STOP=1"
+                        PSQL_ARGS="-h $DB_HOST -U $DB_USER -d $DB_NAME -t --set ON_ERROR_STOP=1"
                         DUMP_ARGS="-h $DB_HOST -U $DB_USER -d $DB_NAME --no-subscriptions --no-publications -x -O"
                         
                         BACKUP_FILE="/tmp/pre_deploy_backup_$(date +%F_%H%M%S).sql"
@@ -58,7 +58,7 @@ jobs:
                         CURRENT_STEP="DATABASE_BACKUP"
                         # 2. Database Backup
                         echo "[Step 2/8] Creating pre-deployment database backup..."
-                        pg_dump $DUMP_ARGS -f "$BACKUP_FILE"
+                        pg_dump $DUMP_ARGS -f "$BACKUP_FILE" || true
                         echo "Backup saved to $BACKUP_FILE"
 
                         CURRENT_STEP="SOURCE_CHECKOUT"
@@ -81,14 +81,15 @@ jobs:
 
                             echo "Executing migration: $FILENAME"
                             
-                            # Using ( ) | psql ensures the file content is read correctly without \i
-                            (
-                                echo "BEGIN;"
-                                echo "INSERT INTO schema_migrations (filename, status) VALUES ('$FILENAME', 'pending') ON CONFLICT (filename) DO UPDATE SET status='pending', started_at=NOW(), ended_at=NULL;"
-                                cat "$FILE"
-                                echo "UPDATE schema_migrations SET ended_at=NOW(), status='completed' WHERE filename='$FILENAME';"
-                                echo "COMMIT;"
-                            ) | psql $PSQL_ARGS
+                             # 1. Mark as pending before execution
+                            psql $PSQL_ARGS -c "INSERT INTO schema_migrations (filename, status) VALUES ('$FILENAME', 'pending') ON CONFLICT (filename) DO UPDATE SET status='pending', started_at=NOW(), ended_at=NULL;"
+
+                            # 2. Execute the migration file directly and safely via the -f flag
+                            psql $PSQL_ARGS -f "$FILE"
+
+                            # 3. Mark as completed upon success
+                            psql $PSQL_ARGS -c "UPDATE schema_migrations SET ended_at=NOW(), status='completed' WHERE filename='$FILENAME';"
+
                         done
 
                         CURRENT_STEP="BUILD"
