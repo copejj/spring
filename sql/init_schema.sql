@@ -25,6 +25,9 @@ BEGIN
         NEW.error_message := NULL;
     ELSIF NEW.error_message IS NOT NULL THEN
         NEW.status := 'failed';
+    ELSE
+        NEW.status := 'pending';
+        NEW.error_message := NULL;
     END IF;
     RETURN NEW;
 END;
