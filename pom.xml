@@ -32,7 +32,6 @@
 		<my.warName>spring-job-log</my.warName>
 	</properties>
 	<dependencies>
-		<!-- CORE STARTERS (Versions are handled by Parent 3.4.2) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
@@ -90,8 +89,6 @@
 			<artifactId>bcprov-jdk18on</artifactId>
 			<version>1.78.1</version>
 		</dependency>
-
-		<!-- CONSOLIDATED TEST STARTER (Replaces all 5 of your test errors) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
